@@ -9,7 +9,8 @@ import subprocess
 import sys
 from utilities import *
 
-DEFAULT_FONT = ("Helvetica", 14)
+BIGGER_FONT = ("Helvetica", 14)
+SMALLER_FONT = ("Helvetica", 12)
 SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
 
 class TranslationTool:
@@ -25,6 +26,10 @@ class TranslationTool:
         # Window setup
         self.window.title("AutoDrive Translation Tool")
         self.window.geometry(load_setting("Settings", "window_size") or "1366x768")
+        
+        style = ttk.Style()
+        style.configure("TButton", font=SMALLER_FONT)
+        style.configure("TMenubutton", font=SMALLER_FONT)
 
         # Configure the window's columns and rows to expand
         self.window.columnconfigure(0, weight=1)
@@ -46,23 +51,22 @@ class TranslationTool:
         # -----------------------------------------------------------------------------------------------
 
         # Language selection frame
-        frame_translation = ttk.Frame(main_frame)
-        frame_translation.grid(column=0, row=0, sticky=(N, W, E, S))
-        frame_translation.configure(borderwidth=1, relief="solid")
+        frame_translation = ttk.Frame(main_frame, width=10, height=10)
+        frame_translation.grid(column=0, row=0, sticky=(N, S, W, E))
 
-        # DEBUGGING
-        # Configure the entire grid to expand and fill the space
-        for i in range(5):  # Adjust the range based on the number of rows and columns you have
-            frame_translation.columnconfigure(i, weight=1)
-            frame_translation.rowconfigure(i, weight=1)
+        # Vertical expansion weights
+        frame_translation.rowconfigure(0, weight=1)
+        frame_translation.rowconfigure(1, weight=1)
+        frame_translation.rowconfigure(2, weight=1)
+        frame_translation.rowconfigure(3, weight=1)
+        frame_translation.rowconfigure(4, weight=1)
         
-        # Now, let's create a visible grid for debugging
-        #for r in range(5):  # Adjust the range based on the number of rows you actually use
-        #    for c in range(5):  # Adjust the range based on the number of columns you actually use
-        #        debug_frame = ttk.Frame(frame_translation, borderwidth=1, relief="solid", height=20, width=50, style=WARNING)
-        #        debug_frame.grid(row=r, column=c, padx=1, pady=1, sticky="nsew")
-        #        debug_frame.grid_propagate(False)  # Prevents the frame from resizing to fit its contents
-        # DEBUGGING
+        # Horizontal expansion weights
+        frame_translation.columnconfigure(0, weight=1)
+        frame_translation.columnconfigure(1, weight=1)
+        frame_translation.columnconfigure(2, weight=1)
+        frame_translation.columnconfigure(3, weight=1)
+        frame_translation.columnconfigure(4, weight=1)
 
         self.dropdown_select_target_lang = ttk.OptionMenu(
             frame_translation,
@@ -70,7 +74,7 @@ class TranslationTool:
             *SUPPORTED_LANGUAGES,
             bootstyle=PRIMARY,
         )
-        self.dropdown_select_target_lang.grid(column=0, row=0, sticky=(N, W, E))
+        self.dropdown_select_target_lang.grid(column=0, row=0, sticky=(N, S, W, E))
 
         button_translate = ttk.Button(
             frame_translation,
@@ -78,8 +82,7 @@ class TranslationTool:
             command=self.run_script,
             bootstyle=PRIMARY,
         )
-        
-        button_translate.grid(column=1, row=0, sticky=(N, W, E))
+        button_translate.grid(column=0, row=1, sticky=(N, S, W, E))
 
         button_save_settings = ttk.Button(
             frame_translation,
@@ -87,7 +90,7 @@ class TranslationTool:
             command=self.save_settings,
             bootstyle=PRIMARY,
         )
-        button_save_settings.grid(column=3, row=4, sticky=(S, W, E))
+        button_save_settings.grid(column=0, row=4, sticky=(N, S, W, E))
 
         button_reset_settings = ttk.Button(
             frame_translation,
@@ -95,7 +98,7 @@ class TranslationTool:
             command=self.reset_settings,
             bootstyle=PRIMARY,
         )
-        button_reset_settings.grid(column=4, row=4, sticky=(S, W, E))
+        button_reset_settings.grid(column=1, row=4, sticky=(N, S, W, E))
 
         # -----------------------------------------------------------------------------------------------
 
@@ -119,28 +122,40 @@ class TranslationTool:
         frame_lang_management.columnconfigure(0, weight=1)
         frame_lang_management.columnconfigure(1, weight=1)
 
-        self.listbox_language_edit = tk.Listbox(frame_lang_management, font=DEFAULT_FONT, selectmode="multiple")
-        self.listbox_language_edit.grid(
-            column=0, row=0, columnspan=2, sticky=(N, S, W, E)
-        )
+        self.listbox_language_edit = tk.Listbox(
+            frame_lang_management,
+            font=BIGGER_FONT,
+            selectmode="multiple")
+        self.listbox_language_edit.grid(column=0, row=0, columnspan=2, sticky=(N, S, W, E))
         for language in SUPPORTED_LANGUAGES:
             self.listbox_language_edit.insert(ttk.END, language)
 
-        self.entry_new_language = ttk.Entry(frame_lang_management, font=DEFAULT_FONT)
+        self.entry_new_language = ttk.Entry(
+            frame_lang_management,
+            font=BIGGER_FONT)
         self.entry_new_language.grid(column=0, row=1, columnspan=2, sticky=(N, S, W, E))
 
         button_add_language = ttk.Button(
-            frame_lang_management, text="Add", command=self.add_language
+            frame_lang_management,
+            text="Add",
+            command=self.add_language,
+            bootstyle=PRIMARY,
         )
         button_add_language.grid(column=0, row=2, sticky=(N, S, W, E))
         
         button_remove_language = ttk.Button(
-            frame_lang_management, text="Remove", command=self.remove_language
+            frame_lang_management,
+            text="Remove",
+            command=self.remove_language,
+            bootstyle=PRIMARY,
         )
         button_remove_language.grid(column=1, row=2, sticky=(N, S, W, E))
 
         button_save_languages = ttk.Button(
-            frame_lang_management, text="Save Changes", command=self.save_languages
+            frame_lang_management,
+            text="Save Changes",
+            command=self.save_languages,
+            bootstyle=PRIMARY,
         )
         button_save_languages.grid(column=0, row=3, columnspan=2, sticky=(N, S, W, E))
 
