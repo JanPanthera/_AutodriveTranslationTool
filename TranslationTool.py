@@ -1,97 +1,253 @@
-import ttkbootstrap as ttkb
+import tkinter as tk
+from tkinter import font
+from turtle import bgcolor, width
+import ttkbootstrap as ttk
+from ttkbootstrap import style
 from ttkbootstrap.constants import *
-import configparser
+from ttkbootstrap import Bootstyle, utility
 import subprocess
 import sys
+from utilities import *
 
-SUPPORTED_LANGUAGES = ["Select",
-                       "English", "German", "French", "Italian", "Spanish",
-                       "Polish", "Czech", "Russian", "Hungarian", "Dutch",
-                       "Portuguese", "Turkish", "Japanese", "Korean", "Chinese"]
+DEFAULT_FONT = ("Helvetica", 14)
+SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
 
 class TranslationTool:
     def __init__(self):
-        self.root = ttkb.Window(themename="darkly")
-        self.selected_language = ttkb.StringVar(value="English")
+        self.window = ttk.Window(themename="darkly")
+        self.selected_language = ttk.StringVar(
+            value=load_setting("Settings", "selected_language") or "English"
+        )
         self.console_output = None
         self.init_gui()
 
     def init_gui(self):
-        self.root.title("AutoDrive Translation Tool")
-        self.root.geometry("1366x768")
+        # Window setup
+        self.window.title("AutoDrive Translation Tool")
+        self.window.geometry(load_setting("Settings", "window_size") or "1366x768")
+
+        # Configure the window's columns and rows to expand
+        self.window.columnconfigure(0, weight=1)
+        self.window.rowconfigure(0, weight=1)
+
+        # Main frame configuration
+        main_frame = ttk.Frame(self.window)
+        main_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+
+        # Vertical expansion weights
+        main_frame.rowconfigure(0, weight=1)
+        main_frame.rowconfigure(1, weight=1)
+
+        # Horizontal expansion weights
+        main_frame.columnconfigure(0, weight=2)
+        main_frame.columnconfigure(1, weight=0)
+        main_frame.columnconfigure(2, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        # Language selection frame
+        frame_translation = ttk.Frame(main_frame)
+        frame_translation.grid(column=0, row=0, sticky=(N, W, E, S))
+        frame_translation.configure(borderwidth=1, relief="solid")
+
+        # DEBUGGING
+        # Configure the entire grid to expand and fill the space
+        for i in range(5):  # Adjust the range based on the number of rows and columns you have
+            frame_translation.columnconfigure(i, weight=1)
+            frame_translation.rowconfigure(i, weight=1)
         
-        label_select_target_lang = ttkb.Label(self.root, text="Select Target Language", bootstyle="primary")
-        label_select_target_lang.pack(side=TOP, pady=10)
+        # Now, let's create a visible grid for debugging
+        #for r in range(5):  # Adjust the range based on the number of rows you actually use
+        #    for c in range(5):  # Adjust the range based on the number of columns you actually use
+        #        debug_frame = ttk.Frame(frame_translation, borderwidth=1, relief="solid", height=20, width=50, style=WARNING)
+        #        debug_frame.grid(row=r, column=c, padx=1, pady=1, sticky="nsew")
+        #        debug_frame.grid_propagate(False)  # Prevents the frame from resizing to fit its contents
+        # DEBUGGING
+
+        self.dropdown_select_target_lang = ttk.OptionMenu(
+            frame_translation,
+            self.selected_language,
+            *SUPPORTED_LANGUAGES,
+            bootstyle=PRIMARY,
+        )
+        self.dropdown_select_target_lang.grid(column=0, row=0, sticky=(N, W, E))
+
+        button_translate = ttk.Button(
+            frame_translation,
+            text="Translate",
+            command=self.run_script,
+            bootstyle=PRIMARY,
+        )
         
-        dropdown_select_target_lang = ttkb.OptionMenu(self.root, self.selected_language, *SUPPORTED_LANGUAGES)
-        dropdown_select_target_lang.pack(side=TOP, pady=0)
+        button_translate.grid(column=1, row=0, sticky=(N, W, E))
+
+        button_save_settings = ttk.Button(
+            frame_translation,
+            text="Save Settings",
+            command=self.save_settings,
+            bootstyle=PRIMARY,
+        )
+        button_save_settings.grid(column=3, row=4, sticky=(S, W, E))
+
+        button_reset_settings = ttk.Button(
+            frame_translation,
+            text="Reset Settings",
+            command=self.reset_settings,
+            bootstyle=PRIMARY,
+        )
+        button_reset_settings.grid(column=4, row=4, sticky=(S, W, E))
+
+        # -----------------------------------------------------------------------------------------------
+
+        # seperator
+        frame_seperator = ttk.Separator(main_frame, orient=tk.VERTICAL)
+        frame_seperator.grid(column=1, row=0, rowspan=2, sticky=(N, S))
+
+        # -----------------------------------------------------------------------------------------------
+
+        # Language management frame
+        frame_lang_management = ttk.Frame(main_frame, width=10, height=10)
+        frame_lang_management.grid(column=2, row=0, rowspan=2, sticky=(N, S, W, E))
+
+        # Vertical expansion weights
+        frame_lang_management.rowconfigure(0, weight=10)
+        frame_lang_management.rowconfigure(1, weight=1)
+        frame_lang_management.rowconfigure(2, weight=1)
+        frame_lang_management.rowconfigure(3, weight=1)
+
+        # Horizontal expansion weights
+        frame_lang_management.columnconfigure(0, weight=1)
+        frame_lang_management.columnconfigure(1, weight=1)
+
+        self.listbox_language_edit = tk.Listbox(frame_lang_management, font=DEFAULT_FONT, selectmode="multiple")
+        self.listbox_language_edit.grid(
+            column=0, row=0, columnspan=2, sticky=(N, S, W, E)
+        )
+        for language in SUPPORTED_LANGUAGES:
+            self.listbox_language_edit.insert(ttk.END, language)
+
+        self.entry_new_language = ttk.Entry(frame_lang_management, font=DEFAULT_FONT)
+        self.entry_new_language.grid(column=0, row=1, columnspan=2, sticky=(N, S, W, E))
+
+        button_add_language = ttk.Button(
+            frame_lang_management, text="Add", command=self.add_language
+        )
+        button_add_language.grid(column=0, row=2, sticky=(N, S, W, E))
         
-        button_translate = ttkb.Button(self.root, text="Translate", command=self.run_script, bootstyle="primary")
-        button_translate.pack(side=TOP, pady=20)
-        
-        self.console_output = ttkb.ScrolledText(self.root, height=10)
-        self.console_output.pack(side=BOTTOM, fill=BOTH, expand=True)
+        button_remove_language = ttk.Button(
+            frame_lang_management, text="Remove", command=self.remove_language
+        )
+        button_remove_language.grid(column=1, row=2, sticky=(N, S, W, E))
+
+        button_save_languages = ttk.Button(
+            frame_lang_management, text="Save Changes", command=self.save_languages
+        )
+        button_save_languages.grid(column=0, row=3, columnspan=2, sticky=(N, S, W, E))
+
+        # -----------------------------------------------------------------------------------------------
+
+        # Console output frame
+        self.console_output = ttk.ScrolledText(main_frame, width=10, height=10)
+        self.console_output.grid(column=0, row=1, sticky=(N, W, E, S))
         self.console_output.config(state=DISABLED)  # Make the console output read-only
+
+        # -----------------------------------------------------------------------------------------------
         
-        self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
-        self.load_settings()
-        self.root.mainloop()
+         # Bind the on_closing method to the window closing event
+        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
+    
+        self.window.mainloop()
 
     def run_script(self):
-        self.console_output.config(state=ttkb.NORMAL)  # Enable text widget for updates
-        self.console_output.delete('1.0', ttkb.END)  # Clear existing content
+        self.console_output.config(state=ttk.NORMAL)  # Enable text widget for updates
+        self.console_output.delete("1.0", ttk.END)  # Clear existing content
 
         def read_output(process, is_stderr=False):
-            next_line = process.stderr.readline() if is_stderr else process.stdout.readline()
-            
+            next_line = (
+                process.stderr.readline() if is_stderr else process.stdout.readline()
+            )
+
             if next_line:
-                self.console_output.insert(ttkb.END, next_line)
-                self.console_output.see(ttkb.END)  # Auto-scroll to the bottom
-                self.root.after(1, read_output, process, is_stderr)
+                self.console_output.insert(ttk.END, next_line)
+                self.console_output.see(ttk.END)  # Auto-scroll to the bottom
+                self.window.after(1, read_output, process, is_stderr)
             elif process.poll() is None:
-                self.root.after(1, read_output, process, is_stderr)
+                self.window.after(1, read_output, process, is_stderr)
             else:
                 if not is_stderr:  # Start reading stderr
-                    self.root.after(1, read_output, process, True)
+                    self.window.after(1, read_output, process, True)
                 else:
-                    self.console_output.config(state=ttkb.DISABLED)  # Disable edits once process is complete
+                    self.console_output.config(
+                        state=ttk.DISABLED
+                    )  # Disable edits once process is complete
 
         try:
             process = subprocess.Popen(
-                [sys.executable, 'translate.py', self.selected_language.get()],
+                [sys.executable, "translate.py", self.selected_language.get()],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                text=True
+                text=True,
             )
-            self.root.after(1, read_output, process)
+            self.window.after(1, read_output, process)
         except Exception as e:
-            self.console_output.insert(ttkb.END, f"Failed to run the script: {str(e)}\n")
-            self.console_output.config(state=ttkb.DISABLED)
+            self.console_output.insert(ttk.END, f"Failed to run the script: {str(e)}\n")
+            self.console_output.config(state=ttk.DISABLED)
+
+    def add_language(self):
+        new_language = self.entry_new_language.get().strip()
+        if new_language and new_language not in SUPPORTED_LANGUAGES:
+            SUPPORTED_LANGUAGES.append(new_language)
+            self.listbox_language_edit.insert(ttk.END, new_language)
+            self.entry_new_language.delete(0, ttk.END)  # Clear the entry widget
+
+    def remove_language(self):
+        selected_indices = self.listbox_language_edit.curselection()
+        for i in reversed(selected_indices):  # Reverse to avoid index shifting
+            SUPPORTED_LANGUAGES.remove(self.listbox_language_edit.get(i))
+            self.listbox_language_edit.delete(i)
+
+    def save_languages(self):
+        SUPPORTED_LANGUAGES.sort()
+        save_setting("Settings", "supported_languages", ",".join(SUPPORTED_LANGUAGES))
+        # Update the dropdown widget and reset the selected language
+        self.selected_language.set(SUPPORTED_LANGUAGES[0])
+        self.update_dropdown_widget(self.dropdown_select_target_lang)
+
+    def update_dropdown_widget(self, widget):
+        widget["menu"].delete(0, "end")
+        for language in SUPPORTED_LANGUAGES:
+            widget["menu"].add_command(
+                label=language, command=tk._setit(self.selected_language, language)
+            )
+
+    def update_listbox_widget(self, widget):
+        widget.delete(0, tk.END)
+        for language in SUPPORTED_LANGUAGES:
+            widget.insert(tk.END, language)
 
     def save_settings(self):
-        config = configparser.ConfigParser()
-        config['Settings'] = {
-            'WindowSize': f"{self.root.winfo_width()}x{self.root.winfo_height()}",
-            'SelectedLanguage': self.selected_language.get()
-        }
-        with open('config/config.ini', 'w') as config_file:
-            config.write(config_file)
+        save_setting("Settings", "selected_language", self.selected_language.get())
 
-    def load_settings(self):
-        config = configparser.ConfigParser()
-        config.read('config/config.ini')
-        if 'Settings' in config:
-            if 'WindowSize' in config['Settings']:
-                self.root.geometry(config['Settings']['WindowSize'])
-            if 'SelectedLanguage' in config['Settings']:
-                self.selected_language.set(config['Settings']['SelectedLanguage'])
+    def reset_settings(self):
+        global SUPPORTED_LANGUAGES
+        
+        reset_settings() # reset settings file to default values
+        
+        self.window.geometry(load_setting("Settings", "window_size", "1366x768"))
+        self.selected_language.set(load_setting("Settings", "selected_language", "English"))
+        SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
+
+        self.update_dropdown_widget(self.dropdown_select_target_lang)
+        self.update_listbox_widget(self.listbox_language_edit)
 
     def on_closing(self):
-        self.save_settings()
-        self.root.destroy()
+        save_setting("Settings", "window_size", self.window.winfo_geometry())
+        self.window.destroy()
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Main entry point
 
 if __name__ == "__main__":
+    utility.enable_high_dpi_awareness()
     app = TranslationTool()
