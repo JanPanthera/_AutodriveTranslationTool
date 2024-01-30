@@ -20,42 +20,35 @@ class TranslationTool:
         self.console_output = None
         self.init_gui()
 
-    def create_frame_main(self):
-        # Main frame configuration
-        self.frame_main = ttk.Frame(self.tab_control)
-        self.frame_main.grid(column=0, row=0, sticky=(N, W, E, S))
-
-        # Vertical expansion weights
-        self.frame_main.rowconfigure(0, weight=1)
-        self.frame_main.rowconfigure(1, weight=1)
-
-        # Horizontal expansion weights
-        self.frame_main.columnconfigure(0, weight=2)
-        self.frame_main.columnconfigure(1, weight=0)
-        self.frame_main.columnconfigure(2, weight=1)
-
-        # -----------------------------------------------------------------------------------------------
-
-        # Language selection frame
-        self.frame_translation = ttk.Frame(self.frame_main, width=10, height=10)
-        self.frame_translation.grid(column=0, row=0, sticky=(N, S, W, E))
+    def create_frame_translation(self):
+        # Translation frame configuration
+        self.frame_translation = ttk.Frame(self.tab_control)
 
         # Vertical expansion weights
         self.frame_translation.rowconfigure(0, weight=1)
         self.frame_translation.rowconfigure(1, weight=1)
-        self.frame_translation.rowconfigure(2, weight=1)
-        self.frame_translation.rowconfigure(3, weight=1)
-        self.frame_translation.rowconfigure(4, weight=1)
+
+        # Horizontal expansion weights
+        self.frame_translation.columnconfigure(0, weight=2)
+        self.frame_translation.columnconfigure(1, weight=0)
+        self.frame_translation.columnconfigure(2, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        # Language selection frame
+        self.frame_language_selection = ttk.Frame(self.frame_translation, width=10, height=10)
+        self.frame_language_selection.grid(column=0, row=0, sticky=(N, S, W, E))
+
+        # Vertical expansion weights
+        self.frame_language_selection.rowconfigure(0, weight=0)
+        self.frame_language_selection.rowconfigure(1, weight=0)
         
         # Horizontal expansion weights
-        self.frame_translation.columnconfigure(0, weight=1)
-        self.frame_translation.columnconfigure(1, weight=1)
-        self.frame_translation.columnconfigure(2, weight=1)
-        self.frame_translation.columnconfigure(3, weight=1)
-        self.frame_translation.columnconfigure(4, weight=1)
+        self.frame_language_selection.columnconfigure(0, weight=0)
+        self.frame_language_selection.columnconfigure(1, weight=0)
 
         self.dropdown_select_target_lang = ttk.OptionMenu(
-            self.frame_translation,
+            self.frame_language_selection,
             self.selected_language,
             self.selected_language.get(),
             *SUPPORTED_LANGUAGES,
@@ -64,7 +57,7 @@ class TranslationTool:
         self.dropdown_select_target_lang.grid(column=0, row=0, sticky=(N, S, W, E))
 
         self.button_translate = ttk.Button(
-            self.frame_translation,
+            self.frame_language_selection,
             text="Translate",
             command=self.run_script,
             bootstyle=PRIMARY,
@@ -73,26 +66,36 @@ class TranslationTool:
 
         # -----------------------------------------------------------------------------------------------
 
-        # seperator
-        self.frame_seperator = ttk.Separator(self.frame_main, orient=tk.VERTICAL)
-        self.frame_seperator.grid(column=1, row=0, rowspan=2, sticky=(N, S))
+        # Console output frame
+        self.console_output = ttk.ScrolledText(self.frame_translation, width=10, height=10)
+        self.console_output.grid(column=0, row=1, sticky=(N, W, E, S))
+        self.console_output.config(state=DISABLED)
 
         # -----------------------------------------------------------------------------------------------
 
-        # Language management frame
-        self.frame_lang_management = ttk.Frame(self.frame_main, width=10, height=10)
-        self.frame_lang_management.grid(column=2, row=0, rowspan=2, sticky=(N, S, W, E))
+    def create_frame_languages(self):
+        self.frame_languages = ttk.Frame(self.tab_control)
 
-        # Vertical expansion weights
-        self.frame_lang_management.rowconfigure(0, weight=10)
+        # Vertical expansion weights ~ frame_languages
+
+        # Horizontal expansion weights ~ frame_languages
+
+        # -----------------------------------------------------------------------------------------------
+
+        # language management frame
+        self.frame_lang_management = ttk.Frame(self.frame_languages)
+        self.frame_lang_management.grid(column=0, row=0, sticky=(N, S, W, E))
+        
+        # Vertical expansion weights ~ frame_lang_management
+        self.frame_lang_management.rowconfigure(0, weight=1)
         self.frame_lang_management.rowconfigure(1, weight=1)
         self.frame_lang_management.rowconfigure(2, weight=1)
         self.frame_lang_management.rowconfigure(3, weight=1)
-
-        # Horizontal expansion weights
+        
+        # Horizontal expansion weights ~ frame_lang_management
         self.frame_lang_management.columnconfigure(0, weight=1)
         self.frame_lang_management.columnconfigure(1, weight=1)
-
+        
         self.listbox_language_edit = tk.Listbox(
             self.frame_lang_management,
             font=BIGGER_FONT,
@@ -105,7 +108,7 @@ class TranslationTool:
             self.frame_lang_management,
             font=BIGGER_FONT)
         self.entry_new_language.grid(column=0, row=1, columnspan=2, sticky=(N, S, W, E))
-
+        
         self.button_add_language = ttk.Button(
             self.frame_lang_management,
             text="Add",
@@ -121,7 +124,7 @@ class TranslationTool:
             bootstyle=PRIMARY,
         )
         self.button_remove_language.grid(column=1, row=2, sticky=(N, S, W, E))
-
+        
         self.button_save_languages = ttk.Button(
             self.frame_lang_management,
             text="Save Changes",
@@ -131,12 +134,6 @@ class TranslationTool:
         self.button_save_languages.grid(column=0, row=3, columnspan=2, sticky=(N, S, W, E))
 
         # -----------------------------------------------------------------------------------------------
-
-        # Console output frame
-        self.console_output = ttk.ScrolledText(self.frame_main, width=10, height=10)
-        self.console_output.grid(column=0, row=1, sticky=(N, W, E, S))
-        # Make the console output read-only
-        self.console_output.config(state=DISABLED)
 
     def create_frame_options(self):
         self.frame_options = ttk.Frame(self.tab_control)
@@ -148,7 +145,7 @@ class TranslationTool:
         self.frame_options.columnconfigure(0, weight=1)
 
         # -----------------------------------------------------------------------------------------------
-        
+
         self.frame_checkboxes = ttk.Frame(self.frame_options)
         self.frame_checkboxes.grid(column=0, row=0, sticky=(N, S, W, E))
 
@@ -245,9 +242,11 @@ class TranslationTool:
         self.window.rowconfigure(0, weight=1)
 
         self.tab_control = ttk.Notebook(self.window)
-        self.create_frame_main()
+        self.create_frame_translation()
+        self.create_frame_languages()
         self.create_frame_options()
-        self.tab_control.add(self.frame_main, text="Translation")
+        self.tab_control.add(self.frame_translation, text="Translation")
+        self.tab_control.add(self.frame_languages, text="Languages")
         self.tab_control.add(self.frame_options, text="Options")
         self.tab_control.pack(expand=1, fill="both")
 
