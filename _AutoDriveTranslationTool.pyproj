@@ -25,6 +25,7 @@
     <Content Include="translationLists\TranslationList_German.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="customCtkWidgets.py" />
     <Compile Include="TranslationTool.py" />
     <Compile Include="translate.py" />
     <Compile Include="utilities.py" />

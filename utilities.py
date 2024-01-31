@@ -1,4 +1,6 @@
 import configparser
+import subprocess
+import sys
 import os
 
 DEFAULT_CONFIG_FILE_PATH = "config/config-default.ini"
@@ -76,3 +78,36 @@ def get_dpi_scaling_factor():
         pass  # Maintain the default scaling factor of 1.0
 
     return scaling_factor
+
+def run_script(console_output, window, script, args, after_callback):
+    console_output.configure(state='normal')
+    console_output.delete("1.0", 'end')
+
+    def read_output(process, is_stderr=False):
+        next_line = process.stderr.readline() if is_stderr else process.stdout.readline()
+
+        if next_line:
+            console_output.insert('end', next_line)
+            console_output.see('end')  # Auto-scroll to the bottom
+            after_callback(1, lambda: read_output(process, is_stderr))
+        elif process.poll() is None:
+            after_callback(1, lambda: read_output(process, is_stderr))
+        else:
+            if not is_stderr:  # Start reading stderr
+                after_callback(1, lambda: read_output(process, True))
+            else:
+                console_output.configure(state='disabled')  # Disable edits once process is complete
+
+    try:
+        # Create the command to run the script with its arguments
+        command = [sys.executable, script] + args
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        after_callback(1, lambda: read_output(process))
+    except Exception as e:
+        console_output.insert('end', f"Failed to run the script: {e}\n")
+        console_output.configure(state='disabled')
