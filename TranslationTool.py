@@ -1,9 +1,19 @@
 from textwrap import fill
+from tkinter import font
 import customtkinter as ctk
 import customCtkWidgets as cCtk
 import utilities as utils
 
 SUPPORTED_LANGUAGES = utils.load_setting("Settings", "supported_languages", default_value="English").split(",")
+FONT = "Helvetica"
+FONT_BIGGER_BOLD = (FONT, 24, "bold")
+FONT_BIGGER = (FONT, 24)
+FONT_BIG_BOLD = (FONT, 18, "bold")
+FONT_BIG = (FONT, 18)
+FONT_MEDIUM_BOLD = (FONT, 14, "bold")
+FONT_MEDIUM = (FONT, 14)
+FONT_SMALL_BOLD = (FONT, 10, "bold")
+FONT_SMALL = (FONT, 10)
 
 class Window_Main(ctk.CTk):
     def __init__(self, translation_tool_instance=None):
@@ -53,20 +63,60 @@ class Window_Main(ctk.CTk):
 
 class TranslationFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
-        super().__init__(parent, corner_radius=20)
+        super().__init__(parent, corner_radius=15)
         self.translation_tool = translation_tool_instance
         self.window = translation_tool_instance.window
-        
+
         self.selected_language = ctk.StringVar(value=utils.load_setting("Settings", "selected_language", "Select"))
 
     def create_widgets(self):
-        self.pack(fill="both", expand=True, padx=200, pady=100)
+        self.pack(fill="both", expand=True, padx=20, pady=20)
+
+        # -----------------------------------------------------------------------------------------------
 
         # Vertical expansion weights
         self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=20)
 
         # Horizontal expansion weights
         self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+        self.columnconfigure(3, weight=20)
+        self.columnconfigure(4, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.label_select_target_lang = ctk.CTkLabel(
+            self,
+            text="Target Language -->",
+            font=FONT_BIG_BOLD,
+        )
+        self.label_select_target_lang.grid(column=0, row=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
+
+        self.dropdown_select_target_lang = ctk.CTkOptionMenu(
+            self,
+            font=FONT_BIG_BOLD,
+            variable=self.window.translation_frame.selected_language,
+            values=SUPPORTED_LANGUAGES,
+        )
+        self.dropdown_select_target_lang.grid(column=1, row=0, sticky="nsew", padx=(5, 5), pady=(10, 5))
+
+        self.button_translate = ctk.CTkButton(
+            self,
+            text="Translate",
+            font=FONT_BIG_BOLD,
+            command=self.run_translate_script,
+        )
+        self.button_translate.grid(column=2, row=0, sticky="nsew", padx=(5, 5), pady=(10, 5))
+
+        self.button_clear_console_output = ctk.CTkButton(
+            self,
+            text="Clear Console",
+            font=FONT_BIG_BOLD,
+            command=self.clear_console_output,
+        )
+        self.button_clear_console_output.grid(column=4, row=0, sticky="nsew", padx=(5, 10), pady=(10, 5))
 
         # -----------------------------------------------------------------------------------------------
 
@@ -74,51 +124,14 @@ class TranslationFrame(ctk.CTkFrame):
             self,
             activate_scrollbars=True,
         )
-        self.window.console_output.grid(column=0, row=0, sticky="nsew")
+        self.window.console_output.grid(column=0, row=1, columnspan=5, sticky="nsew", padx=(10, 10), pady=(5, 10))
         self.window.console_output.configure(state="disabled")
 
         # -----------------------------------------------------------------------------------------------
 
-        self.frame_language_selection = ctk.CTkFrame(self)
-        self.frame_language_selection.grid(column=1, row=0, sticky="nsew", padx=(10, 10), pady=(0, 0))
-
-        # Vertical expansion weights
-        self.frame_language_selection.rowconfigure(3, weight=1)
-
-        self.label_select_target_lang = ctk.CTkLabel(
-            self.frame_language_selection,
-            text="Target Language",
-            corner_radius=10,
-        )
-        self.label_select_target_lang.grid(column=0, row=0, sticky="ns", pady=(0, 20))
-
-        self.dropdown_select_target_lang = ctk.CTkOptionMenu(
-            self.frame_language_selection,
-            variable=self.window.translation_frame.selected_language,
-            values=SUPPORTED_LANGUAGES,
-        )
-        self.dropdown_select_target_lang.grid(column=0, row=1, sticky="ns")
-        
-        self.button_translate = ctk.CTkButton(
-            self.frame_language_selection,
-            text="Translate",
-            command=self.run_translate_script,
-        )
-        self.button_translate.grid(column=0, row=2, sticky="ns")
-
-        self.seperator_1 = ctk.CTkFrame(self.frame_language_selection, fg_color="transparent")
-        self.seperator_1.grid(column=0, row=3, sticky="nsew")
-
-        self.button_clear_console_output = ctk.CTkButton(
-            self.frame_language_selection,
-            text="Clear Console",
-            command=self.clear_console_output,
-        )
-        self.button_clear_console_output.grid(column=0, row=4, sticky="ns")
-
-        # -----------------------------------------------------------------------------------------------
-
     def run_translate_script(self):
+        if self.selected_language.get() == "Select":
+            return
         utils.run_script(
             console_output=self.window.console_output,
             window=self.window,
@@ -156,6 +169,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.listbox_languages = cCtk.ScrollableCheckBoxFrame(
             self,
             item_list=SUPPORTED_LANGUAGES,
+            custom_font=FONT_BIG_BOLD,
         )
         self.listbox_languages.grid(column=0, row=0, columnspan=3, sticky="nsew", padx=(10, 10), pady=(10, 10))
 
@@ -163,6 +177,7 @@ class LanguagesFrame(ctk.CTkFrame):
             self,
             height=40,
             placeholder_text="New Language",
+            font=FONT_BIG_BOLD,
         )
         self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
 
@@ -171,6 +186,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.button_add_language = ctk.CTkButton(
             self,
             text="Add Language",
+            font=FONT_BIG_BOLD,
             command=self.list_box_add_language,
         )
         self.button_add_language.grid(column=0, row=2, sticky="nsew", padx=(10, 5), pady=(10, 5))
@@ -178,6 +194,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.button_remove_language = ctk.CTkButton(
             self,
             text="Remove Language",
+            font=FONT_BIG_BOLD,
             command=self.list_box_remove_language
         )
         self.button_remove_language.grid(column=1, row=2, sticky="nsew", padx=(5, 5), pady=(10, 5))
@@ -187,6 +204,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.button_save_custom = ctk.CTkButton(
             self,
             text="Save Custom",
+            font=FONT_BIG_BOLD,
             command=self.list_box_save_custom
         )
         self.button_save_custom.grid(column=0, row=3, sticky="nsew", padx=(10, 5), pady=(5, 10))
@@ -194,6 +212,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.button_load_custom = ctk.CTkButton(
             self,
             text="Load Custom",
+            font=FONT_BIG_BOLD,
             command=self.list_box_load_custom
         )
         self.button_load_custom.grid(column=1, row=3, sticky="nsew", padx=(5, 5), pady=(5, 10))
@@ -201,6 +220,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.button_load_default = ctk.CTkButton(
             self,
             text="Load Default",
+            font=FONT_BIG_BOLD,
             command=self.list_box_load_default
         )
         self.button_load_default.grid(column=2, row=3, sticky="nsew", padx=(5, 10), pady=(5, 10))
@@ -240,20 +260,33 @@ class OptionsFrame(ctk.CTkFrame):
         self.save_selected_language = ctk.BooleanVar(value=utils.load_setting("Settings", "save_selected_language", default_value=False))
 
     def create_widgets(self):
-        self.pack(fill="both", expand=True, padx=200, pady=100)
+        self.pack(fill="both", expand=True, padx=20, pady=20)
+        
+        # -----------------------------------------------------------------------------------------------
 
-        self.frame_checkboxes = ctk.CTkFrame(self)
-        self.frame_checkboxes.grid(column=0, row=0, sticky="nsew")
+        self.rowconfigure(0, weight=0)
+        self.rowconfigure(1, weight=0)
+        self.rowconfigure(2, weight=0)
+        self.rowconfigure(3, weight=0)
+        self.rowconfigure(4, weight=0)
+        self.rowconfigure(5, weight=1)
+
+        self.columnconfigure(0, weight=0)
+        self.columnconfigure(1, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
 
         self.label_save_on_close = ctk.CTkLabel(
-            self.frame_checkboxes,
+            self,
             text="Save on Window Close",
+            font=FONT_BIGGER_BOLD,
         )
         self.label_save_on_close.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 10))
 
         self.checkbox_save_window_pos = ctk.CTkCheckBox(
-            self.frame_checkboxes,
+            self,
             text="Window Size/Pos",
+            font=FONT_BIG_BOLD,
             variable=self.save_window_pos,
             onvalue=True,
             offvalue=False,
@@ -261,40 +294,35 @@ class OptionsFrame(ctk.CTkFrame):
         self.checkbox_save_window_pos.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
         self.checkbox_save_selected_language = ctk.CTkCheckBox(
-            self.frame_checkboxes,
+            self,
             text="Selected Language",
+            font=FONT_BIG_BOLD,
             variable=self.save_selected_language,
             onvalue=True,
             offvalue=False,
             command=lambda: utils.save_setting("Settings", "save_selected_language", str(self.save_selected_language.get())))
-        self.checkbox_save_selected_language.grid(
-            column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
-
-        self.frame_seperator = ctk.CTkFrame(self, width=10, height=10)
-        self.frame_seperator.grid(column=0, row=2, sticky="nsew")
-
-        self.frame_buttons = ctk.CTkFrame(self)
-        self.frame_buttons.grid(column=0, row=3, sticky="nsew")
-
-        self.button_reset_window_geometry = ctk.CTkButton(
-            self.frame_buttons,
-            text="Reset Window",
-            command=lambda: self.window.reset_window_geometry(),
-        )
-        self.button_reset_window_geometry.grid(
-            column=0, row=0, sticky="nsew")
+        self.checkbox_save_selected_language.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
         self.button_reset_settings = ctk.CTkButton(
-            self.frame_buttons,
+            self,
             text="Reset Settings",
+            font=FONT_BIG_BOLD,
             command=lambda: self.reset_settings(),
         )
-        self.button_reset_settings.grid(column=1, row=0, sticky="nsew")
+        self.button_reset_settings.grid(column=0, row=3, sticky="nsew", padx=(10, 10), pady=(10, 5))
         
+        self.button_reset_window_geometry = ctk.CTkButton(
+            self,
+            text="Reset Window",
+            font=FONT_BIG_BOLD,
+            command=lambda: self.window.reset_window_geometry(),
+        )
+        self.button_reset_window_geometry.grid(column=0, row=4, sticky="nsew", padx=(10, 10), pady=(5, 10))
+
     def reset_settings(self):
         # reset config-custom.ini to config-default.ini
         utils.reset_settings()
-        
+
         self.window.options_frame.save_window_pos.set(utils.load_setting("Settings", "save_window_pos", default_value=False))
         self.window.options_frame.save_selected_language.set(utils.load_setting("Settings", "save_selected_language", default_value=False))
         self.window.translation_frame.selected_language.set(utils.load_setting("Settings", "selected_language", "Select"))
