@@ -1,15 +1,15 @@
 import customtkinter
 
 class ScrollableCheckBoxFrame(customtkinter.CTkScrollableFrame):
-    def __init__(self, master, item_list, command=None, **kwargs):
+    def __init__(self, master, item_list, command=None, custom_font=None, **kwargs):
         super().__init__(master, **kwargs)
 
         self.command = command
         self.checkbox_list = []
-        self.populate(item_list)  # Use the populate method to add items
+        self.populate(item_list, custom_font)  # Use the populate method to add items
 
-    def add_item(self, item):
-        checkbox = customtkinter.CTkCheckBox(self, text=item)  # Add directly to self
+    def add_item(self, item, custom_font=None):
+        checkbox = customtkinter.CTkCheckBox(self, text=item, font=custom_font)  # Add directly to self
         if self.command is not None:
             checkbox.configure(command=self.command)
         checkbox.grid(row=len(self.checkbox_list), column=0, pady=(0, 5), sticky='nw')  # Add sticky='nw' for proper alignment
@@ -35,11 +35,11 @@ class ScrollableCheckBoxFrame(customtkinter.CTkScrollableFrame):
             checkbox.destroy()
         self.checkbox_list.clear()
 
-    def populate(self, item_list):
+    def populate(self, item_list, custom_font=None):
         # Clear existing items before populating
         self.remove_all_items()
         for item in item_list:
-            self.add_item(item)
+            self.add_item(item, custom_font)
             
     def sort(self):
         checked_items = self.get_all_items()
