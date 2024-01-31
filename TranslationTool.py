@@ -1,3 +1,4 @@
+from textwrap import fill
 import customtkinter as ctk
 import customCtkWidgets as cCtk
 import utilities as utils
@@ -14,8 +15,8 @@ class Window_Main(ctk.CTk):
 
     def init(self):
         #ctk.deactivate_automatic_dpi_awareness()
-        #ctk.set_widget_scaling(get_dpi_scaling_factor())
-        #ctk.set_window_scaling(get_dpi_scaling_factor())
+        #ctk.set_widget_scaling(utils.get_dpi_scaling_factor())
+        #ctk.set_window_scaling(utils.get_dpi_scaling_factor())
 
         self.title("AutoDrive Translation Tool")
         self.geometry(utils.load_window_geometry())
@@ -52,14 +53,14 @@ class Window_Main(ctk.CTk):
 
 class TranslationFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
-        super().__init__(parent)
+        super().__init__(parent, corner_radius=20)
         self.translation_tool = translation_tool_instance
         self.window = translation_tool_instance.window
         
         self.selected_language = ctk.StringVar(value=utils.load_setting("Settings", "selected_language", "Select"))
 
     def create_widgets(self):
-        self.pack(fill="both", expand=True)
+        self.pack(fill="both", expand=True, padx=200, pady=100)
 
         # Vertical expansion weights
         self.rowconfigure(0, weight=1)
@@ -133,82 +134,105 @@ class TranslationFrame(ctk.CTkFrame):
 
 class LanguagesFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
-        super().__init__(parent)
+        super().__init__(parent, corner_radius=15)
         self.translation_tool = translation_tool_instance
 
     def create_widgets(self):
-        self.pack()
+        self.pack(fill="both", expand=True, padx=20, pady=20)
 
         # -----------------------------------------------------------------------------------------------
 
-        self.listbox_language_edit = cCtk.ScrollableCheckBoxFrame(
+        self.rowconfigure(0, weight=10)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=2)
+        self.rowconfigure(3, weight=2)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.listbox_languages = cCtk.ScrollableCheckBoxFrame(
             self,
             item_list=SUPPORTED_LANGUAGES,
         )
-        self.listbox_language_edit.pack(fill="both", expand=True)
-        
+        self.listbox_languages.grid(column=0, row=0, columnspan=3, sticky="nsew", padx=(10, 10), pady=(10, 10))
+
         self.entry_new_language = ctk.CTkEntry(
             self,
+            height=40,
             placeholder_text="New Language",
         )
-        self.entry_new_language.pack(fill="both", expand=True)
+        self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
 
         # -----------------------------------------------------------------------------------------------
 
-        self.frame_lang_management_controls = ctk.CTkFrame(self)
-        self.frame_lang_management_controls.pack(fill="both", expand=True)
-
-        self.frame1 = ctk.CTkFrame(self.frame_lang_management_controls)
-        self.frame1.pack(fill="both", expand=True)
-
         self.button_add_language = ctk.CTkButton(
-            self.frame1,
-            text="Add",
+            self,
+            text="Add Language",
             command=self.list_box_add_language,
         )
-        self.button_add_language.pack(fill="both", expand=True, side="left")
-        
+        self.button_add_language.grid(column=0, row=2, sticky="nsew", padx=(10, 5), pady=(10, 5))
+
         self.button_remove_language = ctk.CTkButton(
-            self.frame1,
-            text="Remove",
+            self,
+            text="Remove Language",
             command=self.list_box_remove_language
         )
-        self.button_remove_language.pack(fill="both", expand=True, side="left")
+        self.button_remove_language.grid(column=1, row=2, sticky="nsew", padx=(5, 5), pady=(10, 5))
 
-        self.frame2 = ctk.CTkFrame(self.frame_lang_management_controls)
-        self.frame2.pack(fill="both", expand=True)
+        # -----------------------------------------------------------------------------------------------
 
-        self.button_apply_changes = ctk.CTkButton(
-            self.frame2,
-            text="Apply Changes",
-            command=self.list_box_apply_changes
+        self.button_save_custom = ctk.CTkButton(
+            self,
+            text="Save Custom",
+            command=self.list_box_save_custom
         )
-        self.button_apply_changes.pack(fill="both", expand=True, side="left")
-        
-        self.button_reset_changes = ctk.CTkButton(
-            self.frame2,
-            text="Reset Changes",
-            command=self.list_box_reset_changes
+        self.button_save_custom.grid(column=0, row=3, sticky="nsew", padx=(10, 5), pady=(5, 10))
+
+        self.button_load_custom = ctk.CTkButton(
+            self,
+            text="Load Custom",
+            command=self.list_box_load_custom
         )
-        self.button_reset_changes.pack(fill="both", expand=True, side="left")
+        self.button_load_custom.grid(column=1, row=3, sticky="nsew", padx=(5, 5), pady=(5, 10))
+
+        self.button_load_default = ctk.CTkButton(
+            self,
+            text="Load Default",
+            command=self.list_box_load_default
+        )
+        self.button_load_default.grid(column=2, row=3, sticky="nsew", padx=(5, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
 
     def list_box_add_language(self):
-        self.listbox_language_edit.add_item(self.entry_new_language.get())
+        self.listbox_languages.add_item(self.entry_new_language.get())
+        self.entry_new_language.delete(0, ctk.END)
+        self.listbox_languages.sort()
 
     def list_box_remove_language(self):
-        self.listbox_language_edit.remove_checked_items()
+        self.listbox_languages.remove_checked_items()
+        self.listbox_languages.sort()
 
-    def list_box_apply_changes(self):
-        pass
+    def list_box_save_custom(self):
+        self.entry_new_language.delete(0, ctk.END)
+        utils.save_setting("Settings", "supported_languages", ",".join(self.listbox_languages.get_all_items()))
+        global SUPPORTED_LANGUAGES
+        SUPPORTED_LANGUAGES = utils.load_setting("Settings", "supported_languages", default_value="English").split(",")
 
-    def list_box_reset_changes(self):
-        pass
+    def list_box_load_custom(self):
+        self.listbox_languages.remove_all_items()
+        self.listbox_languages.populate(SUPPORTED_LANGUAGES)
+
+    def list_box_load_default(self):
+        self.listbox_languages.remove_all_items()
+        self.listbox_languages.populate(utils.load_setting("Settings", "supported_languages", default_value="English", use_default_config=True).split(","))
 
 class OptionsFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
-        super().__init__(parent)
+        super().__init__(parent, corner_radius=20)
         self.translation_tool = translation_tool_instance
         self.window = translation_tool_instance.window
 
@@ -216,7 +240,7 @@ class OptionsFrame(ctk.CTkFrame):
         self.save_selected_language = ctk.BooleanVar(value=utils.load_setting("Settings", "save_selected_language", default_value=False))
 
     def create_widgets(self):
-        self.pack(fill="both", expand=True)
+        self.pack(fill="both", expand=True, padx=200, pady=100)
 
         self.frame_checkboxes = ctk.CTkFrame(self)
         self.frame_checkboxes.grid(column=0, row=0, sticky="nsew")
@@ -268,17 +292,12 @@ class OptionsFrame(ctk.CTkFrame):
         self.button_reset_settings.grid(column=1, row=0, sticky="nsew")
         
     def reset_settings(self):
-        global SUPPORTED_LANGUAGES
-
         # reset config-custom.ini to config-default.ini
         utils.reset_settings()
         
         self.window.options_frame.save_window_pos.set(utils.load_setting("Settings", "save_window_pos", default_value=False))
         self.window.options_frame.save_selected_language.set(utils.load_setting("Settings", "save_selected_language", default_value=False))
         self.window.translation_frame.selected_language.set(utils.load_setting("Settings", "selected_language", "Select"))
-        
-        # TODO: Move to LanguagesFrame
-        # SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
 
 class TranslationTool:
     def __init__(self):
@@ -286,11 +305,6 @@ class TranslationTool:
         self.window.init()
 
         self.window.mainloop()
-
-    def update_listbox_widget(self, widget):
-        widget.delete(0, ctk.END)
-        for language in SUPPORTED_LANGUAGES:
-            widget.insert(ctk.END, language)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
