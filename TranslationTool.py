@@ -1,358 +1,340 @@
-import tkinter as tk
+from textwrap import fill
 from tkinter import font
-from turtle import bgcolor, width
-import ttkbootstrap as ttk
-from ttkbootstrap import style
-from ttkbootstrap.constants import *
-from ttkbootstrap import Bootstyle, utility
-import subprocess
-import sys
-from utilities import *
+import customtkinter as ctk
+import customCtkWidgets as cCtk
+import utilities as utils
 
-BIGGER_FONT = ("Helvetica", 14)
-SMALLER_FONT = ("Helvetica", 12)
-SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
+SUPPORTED_LANGUAGES = utils.load_setting("Settings", "supported_languages", default_value="English").split(",")
+FONT = "Helvetica"
+FONT_BIGGER_BOLD = (FONT, 24, "bold")
+FONT_BIGGER = (FONT, 24)
+FONT_BIG_BOLD = (FONT, 18, "bold")
+FONT_BIG = (FONT, 18)
+FONT_MEDIUM_BOLD = (FONT, 14, "bold")
+FONT_MEDIUM = (FONT, 14)
+FONT_SMALL_BOLD = (FONT, 10, "bold")
+FONT_SMALL = (FONT, 10)
 
-class TranslationTool:
-    def __init__(self):
-        self.window = ttk.Window(themename="darkly")
-        self.selected_language = tk.StringVar(value=load_setting("Settings", "selected_language", "Select"))
+class Window_Main(ctk.CTk):
+    def __init__(self, translation_tool_instance=None):
+        super().__init__()  # Initialize the CTk parent class (root/window)
+
+        self.translation_tool = translation_tool_instance
+
         self.console_output = None
-        self.init_gui()
 
-    def create_frame_translation(self):
-        # Translation frame configuration
-        self.frame_translation = ttk.Frame(self.tab_control)
+    def init(self):
+        #ctk.deactivate_automatic_dpi_awareness()
+        #ctk.set_widget_scaling(utils.get_dpi_scaling_factor())
+        #ctk.set_window_scaling(utils.get_dpi_scaling_factor())
 
-        # Vertical expansion weights
-        self.frame_translation.rowconfigure(0, weight=1)
-        self.frame_translation.rowconfigure(1, weight=1)
+        self.title("AutoDrive Translation Tool")
+        self.geometry(utils.load_window_geometry())
+        #self.resizable(False, False)
 
-        # Horizontal expansion weights
-        self.frame_translation.columnconfigure(0, weight=2)
-        self.frame_translation.columnconfigure(1, weight=0)
-        self.frame_translation.columnconfigure(2, weight=1)
+        self.tab_view = ctk.CTkTabview(self, fg_color="transparent", bg_color="transparent")
+        self.tab_view.pack(fill="both", expand=True)
+
+        self.translation_frame = TranslationFrame(self.tab_view.add("Translation"), self.translation_tool)
+        self.translation_frame.create_widgets()
+
+        self.languages_frame = LanguagesFrame(self.tab_view.add("Languages"), self.translation_tool)
+        self.languages_frame.create_widgets()
+
+        self.options_frame = OptionsFrame(self.tab_view.add("Options"), self.translation_tool)
+        self.options_frame.create_widgets()
+
+        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def reset_window_geometry(self):
+        utils.reset_setting("WindowGeometry", "width")
+        utils.reset_setting("WindowGeometry", "height")
+        utils.reset_setting("WindowGeometry", "pos_x")
+        utils.reset_setting("WindowGeometry", "pos_y")
+        self.geometry(utils.load_window_geometry())
+        self.geometry(utils.load_window_geometry())
+        
+    def on_closing(self):
+        if self.options_frame.save_window_pos.get():
+            utils.save_window_geometry(self.geometry())
+        if self.options_frame.save_selected_language.get():
+            utils.save_setting("Settings", "selected_language", self.translation_frame.selected_language.get())
+        self.destroy()
+
+class TranslationFrame(ctk.CTkFrame):
+    def __init__(self, parent, translation_tool_instance=None):
+        super().__init__(parent, corner_radius=15)
+        self.translation_tool = translation_tool_instance
+        self.window = translation_tool_instance.window
+
+        self.selected_language = ctk.StringVar(value=utils.load_setting("Settings", "selected_language", "Select"))
+
+    def create_widgets(self):
+        self.pack(fill="both", expand=True, padx=20, pady=20)
 
         # -----------------------------------------------------------------------------------------------
 
-        # Language selection frame
-        self.frame_language_selection = ttk.Frame(self.frame_translation, width=10, height=10)
-        self.frame_language_selection.grid(column=0, row=0, sticky=(N, S, W, E))
-
         # Vertical expansion weights
-        self.frame_language_selection.rowconfigure(0, weight=0)
-        self.frame_language_selection.rowconfigure(1, weight=0)
-        
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=20)
+
         # Horizontal expansion weights
-        self.frame_language_selection.columnconfigure(0, weight=0)
-        self.frame_language_selection.columnconfigure(1, weight=0)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+        self.columnconfigure(3, weight=20)
+        self.columnconfigure(4, weight=1)
 
-        self.dropdown_select_target_lang = ttk.OptionMenu(
-            self.frame_language_selection,
-            self.selected_language,
-            self.selected_language.get(),
-            *SUPPORTED_LANGUAGES,
-            bootstyle=PRIMARY,
+        # -----------------------------------------------------------------------------------------------
+
+        self.label_select_target_lang = ctk.CTkLabel(
+            self,
+            text="Target Language -->",
+            font=FONT_BIG_BOLD,
         )
-        self.dropdown_select_target_lang.grid(column=0, row=0, sticky=(N, S, W, E))
+        self.label_select_target_lang.grid(column=0, row=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
 
-        self.button_translate = ttk.Button(
-            self.frame_language_selection,
+        self.dropdown_select_target_lang = ctk.CTkOptionMenu(
+            self,
+            font=FONT_BIG_BOLD,
+            variable=self.window.translation_frame.selected_language,
+            values=SUPPORTED_LANGUAGES,
+        )
+        self.dropdown_select_target_lang.grid(column=1, row=0, sticky="nsew", padx=(5, 5), pady=(10, 5))
+
+        self.button_translate = ctk.CTkButton(
+            self,
             text="Translate",
-            command=self.run_script,
-            bootstyle=PRIMARY,
+            font=FONT_BIG_BOLD,
+            command=self.run_translate_script,
         )
-        self.button_translate.grid(column=0, row=1, sticky=(N, S, W, E))
+        self.button_translate.grid(column=2, row=0, sticky="nsew", padx=(5, 5), pady=(10, 5))
 
-        # -----------------------------------------------------------------------------------------------
-
-        # Console output frame
-        self.console_output = ttk.ScrolledText(self.frame_translation, width=10, height=10)
-        self.console_output.grid(column=0, row=1, sticky=(N, W, E, S))
-        self.console_output.config(state=DISABLED)
-
-        # -----------------------------------------------------------------------------------------------
-
-    def create_frame_languages(self):
-        self.frame_languages = ttk.Frame(self.tab_control)
-
-        # Vertical expansion weights ~ frame_languages
-
-        # Horizontal expansion weights ~ frame_languages
-
-        # -----------------------------------------------------------------------------------------------
-
-        # language management frame
-        self.frame_lang_management = ttk.Frame(self.frame_languages)
-        self.frame_lang_management.grid(column=0, row=0, sticky=(N, S, W, E))
-        
-        # Vertical expansion weights ~ frame_lang_management
-        self.frame_lang_management.rowconfigure(0, weight=1)
-        self.frame_lang_management.rowconfigure(1, weight=1)
-        self.frame_lang_management.rowconfigure(2, weight=1)
-        self.frame_lang_management.rowconfigure(3, weight=1)
-        
-        # Horizontal expansion weights ~ frame_lang_management
-        self.frame_lang_management.columnconfigure(0, weight=1)
-        self.frame_lang_management.columnconfigure(1, weight=1)
-        
-        self.listbox_language_edit = tk.Listbox(
-            self.frame_lang_management,
-            font=BIGGER_FONT,
-            selectmode="multiple")
-        self.listbox_language_edit.grid(column=0, row=0, columnspan=2, sticky=(N, S, W, E))
-        for language in SUPPORTED_LANGUAGES:
-            self.listbox_language_edit.insert(ttk.END, language)
-
-        self.entry_new_language = ttk.Entry(
-            self.frame_lang_management,
-            font=BIGGER_FONT)
-        self.entry_new_language.grid(column=0, row=1, columnspan=2, sticky=(N, S, W, E))
-        
-        self.button_add_language = ttk.Button(
-            self.frame_lang_management,
-            text="Add",
-            command=self.add_language,
-            bootstyle=PRIMARY,
+        self.button_clear_console_output = ctk.CTkButton(
+            self,
+            text="Clear Console",
+            font=FONT_BIG_BOLD,
+            command=self.clear_console_output,
         )
-        self.button_add_language.grid(column=0, row=2, sticky=(N, S, W, E))
-        
-        self.button_remove_language = ttk.Button(
-            self.frame_lang_management,
-            text="Remove",
-            command=self.remove_language,
-            bootstyle=PRIMARY,
-        )
-        self.button_remove_language.grid(column=1, row=2, sticky=(N, S, W, E))
-        
-        self.button_save_languages = ttk.Button(
-            self.frame_lang_management,
-            text="Save Changes",
-            command=self.save_languages,
-            bootstyle=PRIMARY,
-        )
-        self.button_save_languages.grid(column=0, row=3, columnspan=2, sticky=(N, S, W, E))
+        self.button_clear_console_output.grid(column=4, row=0, sticky="nsew", padx=(5, 10), pady=(10, 5))
 
         # -----------------------------------------------------------------------------------------------
 
-    def create_frame_options(self):
-        self.frame_options = ttk.Frame(self.tab_control)
-
-        # Vertical expansion weights ~ frame_options
-        self.frame_options.rowconfigure(0, weight=1)
-
-        # Horizontal expansion weights ~ frame_options
-        self.frame_options.columnconfigure(0, weight=1)
+        self.window.console_output = ctk.CTkTextbox(
+            self,
+            activate_scrollbars=True,
+        )
+        self.window.console_output.grid(column=0, row=1, columnspan=5, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.window.console_output.configure(state="disabled")
 
         # -----------------------------------------------------------------------------------------------
 
-        self.frame_checkboxes = ttk.Frame(self.frame_options)
-        self.frame_checkboxes.grid(column=0, row=0, sticky=(N, S, W, E))
+    def run_translate_script(self):
+        if self.selected_language.get() == "Select":
+            return
+        utils.run_script(
+            console_output=self.window.console_output,
+            window=self.window,
+            script="translate.py",
+            args=[self.window.translation_frame.selected_language.get()],
+            after_callback=self.window.after
+        )
 
-        # Vertical expansion weights ~ frame_checkboxes
-        self.frame_checkboxes.rowconfigure(0, weight=0)
-        self.frame_checkboxes.rowconfigure(1, weight=0)
-        self.frame_checkboxes.rowconfigure(2, weight=0)
+    def clear_console_output(self):
+        self.window.console_output.configure(state=ctk.NORMAL)
+        self.window.console_output.delete("1.0", ctk.END)
+        self.window.console_output.configure(state=ctk.DISABLED)
 
-        # Horizontal expansion weights
-        self.frame_checkboxes.columnconfigure(0, weight=0)
+class LanguagesFrame(ctk.CTkFrame):
+    def __init__(self, parent, translation_tool_instance=None):
+        super().__init__(parent, corner_radius=15)
+        self.translation_tool = translation_tool_instance
 
-        # label above checkboxes "Save on Window Close"
-        self.label_save_on_close = ttk.Label(
-            self.frame_checkboxes,
+    def create_widgets(self):
+        self.pack(fill="both", expand=True, padx=20, pady=20)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.rowconfigure(0, weight=10)
+        self.rowconfigure(1, weight=1)
+        self.rowconfigure(2, weight=2)
+        self.rowconfigure(3, weight=2)
+
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+        self.columnconfigure(2, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.listbox_languages = cCtk.ScrollableCheckBoxFrame(
+            self,
+            item_list=SUPPORTED_LANGUAGES,
+            custom_font=FONT_BIG_BOLD,
+        )
+        self.listbox_languages.grid(column=0, row=0, columnspan=3, sticky="nsew", padx=(10, 10), pady=(10, 10))
+
+        self.entry_new_language = ctk.CTkEntry(
+            self,
+            height=40,
+            placeholder_text="New Language",
+            font=FONT_BIG_BOLD,
+        )
+        self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.button_add_language = ctk.CTkButton(
+            self,
+            text="Add Language",
+            font=FONT_BIG_BOLD,
+            command=self.list_box_add_language,
+        )
+        self.button_add_language.grid(column=0, row=2, sticky="nsew", padx=(10, 5), pady=(10, 5))
+
+        self.button_remove_language = ctk.CTkButton(
+            self,
+            text="Remove Language",
+            font=FONT_BIG_BOLD,
+            command=self.list_box_remove_language
+        )
+        self.button_remove_language.grid(column=1, row=2, sticky="nsew", padx=(5, 5), pady=(10, 5))
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.button_save_custom = ctk.CTkButton(
+            self,
+            text="Save Custom",
+            font=FONT_BIG_BOLD,
+            command=self.list_box_save_custom
+        )
+        self.button_save_custom.grid(column=0, row=3, sticky="nsew", padx=(10, 5), pady=(5, 10))
+
+        self.button_load_custom = ctk.CTkButton(
+            self,
+            text="Load Custom",
+            font=FONT_BIG_BOLD,
+            command=self.list_box_load_custom
+        )
+        self.button_load_custom.grid(column=1, row=3, sticky="nsew", padx=(5, 5), pady=(5, 10))
+
+        self.button_load_default = ctk.CTkButton(
+            self,
+            text="Load Default",
+            font=FONT_BIG_BOLD,
+            command=self.list_box_load_default
+        )
+        self.button_load_default.grid(column=2, row=3, sticky="nsew", padx=(5, 10), pady=(5, 10))
+
+        # -----------------------------------------------------------------------------------------------
+
+    def list_box_add_language(self):
+        self.listbox_languages.add_item(self.entry_new_language.get())
+        self.entry_new_language.delete(0, ctk.END)
+        self.listbox_languages.sort()
+
+    def list_box_remove_language(self):
+        self.listbox_languages.remove_checked_items()
+        self.listbox_languages.sort()
+
+    def list_box_save_custom(self):
+        self.entry_new_language.delete(0, ctk.END)
+        utils.save_setting("Settings", "supported_languages", ",".join(self.listbox_languages.get_all_items()))
+        global SUPPORTED_LANGUAGES
+        SUPPORTED_LANGUAGES = utils.load_setting("Settings", "supported_languages", default_value="English").split(",")
+
+    def list_box_load_custom(self):
+        self.listbox_languages.remove_all_items()
+        self.listbox_languages.populate(SUPPORTED_LANGUAGES)
+
+    def list_box_load_default(self):
+        self.listbox_languages.remove_all_items()
+        self.listbox_languages.populate(utils.load_setting("Settings", "supported_languages", default_value="English", use_default_config=True).split(","))
+
+class OptionsFrame(ctk.CTkFrame):
+    def __init__(self, parent, translation_tool_instance=None):
+        super().__init__(parent, corner_radius=20)
+        self.translation_tool = translation_tool_instance
+        self.window = translation_tool_instance.window
+
+        self.save_window_pos = ctk.BooleanVar(value=utils.load_setting("Settings", "save_window_pos", default_value=False))
+        self.save_selected_language = ctk.BooleanVar(value=utils.load_setting("Settings", "save_selected_language", default_value=False))
+
+    def create_widgets(self):
+        self.pack(fill="both", expand=True, padx=20, pady=20)
+        
+        # -----------------------------------------------------------------------------------------------
+
+        self.rowconfigure(0, weight=0)
+        self.rowconfigure(1, weight=0)
+        self.rowconfigure(2, weight=0)
+        self.rowconfigure(3, weight=0)
+        self.rowconfigure(4, weight=0)
+        self.rowconfigure(5, weight=1)
+
+        self.columnconfigure(0, weight=0)
+        self.columnconfigure(1, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.label_save_on_close = ctk.CTkLabel(
+            self,
             text="Save on Window Close",
-            font=BIGGER_FONT,
-            bootstyle=PRIMARY,
-            )
-        # widget.grid(row=1, column=1, sticky="NW", padx=(left_padding, 0), pady=(top_padding, 0))
-        self.label_save_on_close.grid(column=0, row=0, sticky=(N, S, W, E), padx=(10, 10), pady=(10, 10))
+            font=FONT_BIGGER_BOLD,
+        )
+        self.label_save_on_close.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 10))
 
-        self.save_window_pos = tk.BooleanVar(value=load_setting("Settings", "save_window_pos", default_value=False))
-        self.checkbox_save_window_pos = ttk.Checkbutton(
-            self.frame_checkboxes,
+        self.checkbox_save_window_pos = ctk.CTkCheckBox(
+            self,
             text="Window Size/Pos",
+            font=FONT_BIG_BOLD,
             variable=self.save_window_pos,
             onvalue=True,
             offvalue=False,
-            command=lambda: save_setting("Settings", "save_window_pos", str(self.save_window_pos.get()))
-        )
-        self.checkbox_save_window_pos.grid(column=0, row=1, sticky=(N, S, W, E), padx=(10, 10), pady=(5, 5))
-        
-        self.save_selected_language = tk.BooleanVar(value=load_setting("Settings", "save_selected_language", default_value=False))
-        self.checkbox_save_selected_language = ttk.Checkbutton(
-            self.frame_checkboxes,
+            command=lambda: utils.save_setting("Settings", "save_window_pos", str(self.save_window_pos.get())))
+        self.checkbox_save_window_pos.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
+
+        self.checkbox_save_selected_language = ctk.CTkCheckBox(
+            self,
             text="Selected Language",
+            font=FONT_BIG_BOLD,
             variable=self.save_selected_language,
             onvalue=True,
             offvalue=False,
-            command=lambda: save_setting("Settings", "save_selected_language", str(self.save_selected_language.get()))
-        )
-        self.checkbox_save_selected_language.grid(column=0, row=2, sticky=(N, S, W, E), padx=(10, 10), pady=(5, 5))
+            command=lambda: utils.save_setting("Settings", "save_selected_language", str(self.save_selected_language.get())))
+        self.checkbox_save_selected_language.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
-        # -----------------------------------------------------------------------------------------------
-
-        # seperator frame
-        self.frame_seperator = ttk.Separator(self.frame_options, orient=tk.HORIZONTAL)
-        self.frame_seperator.grid(column=0, row=2, sticky=(N, S, W, E))
-
-        # -----------------------------------------------------------------------------------------------
-
-        # button frame
-        self.frame_buttons = ttk.Frame(self.frame_options)
-        self.frame_buttons.grid(column=0, row=3, sticky=(N, S, W, E))
-        
-        # Vertical expansion weights ~ frame_buttons
-        self.frame_buttons.rowconfigure(0, weight=1)
-        
-        # Horizontal expansion weights ~ frame_buttons
-        self.frame_buttons.columnconfigure(0, weight=1)
-        self.frame_buttons.columnconfigure(1, weight=1)
-
-        # button_reset_window_geometry left bottom
-        self.button_reset_window_geometry = ttk.Button(
-            self.frame_buttons,
-            text="Reset Window",
-            command=lambda: self.reset_window_geometry(),
-            bootstyle=PRIMARY,
-        )
-        self.button_reset_window_geometry.grid(column=0, row=0, sticky=(N, S, W, E))
-        
-        # reset_settings beside button_reset_window_geometry
-        self.button_reset_settings = ttk.Button(
-            self.frame_buttons,
+        self.button_reset_settings = ctk.CTkButton(
+            self,
             text="Reset Settings",
+            font=FONT_BIG_BOLD,
             command=lambda: self.reset_settings(),
-            bootstyle=PRIMARY,
         )
-        self.button_reset_settings.grid(column=1, row=0, sticky=(N, S, W, E))
-
-        # -----------------------------------------------------------------------------------------------
-
-    def init_gui(self):
-        # Window setup
-        self.window.title("AutoDrive Translation Tool")
-        self.window.geometry(load_window_geometry(self.window))
-
-        self.style = ttk.Style()
-        self.style.configure("TButton", font=SMALLER_FONT)
-        self.style.configure("TMenubutton", font=SMALLER_FONT)
-
-        # Configure the window's columns and rows to expand
-        self.window.columnconfigure(0, weight=1)
-        self.window.rowconfigure(0, weight=1)
-
-        self.tab_control = ttk.Notebook(self.window)
-        self.create_frame_translation()
-        self.create_frame_languages()
-        self.create_frame_options()
-        self.tab_control.add(self.frame_translation, text="Translation")
-        self.tab_control.add(self.frame_languages, text="Languages")
-        self.tab_control.add(self.frame_options, text="Options")
-        self.tab_control.pack(expand=1, fill="both")
-
-         # Bind the on_closing method to the window closing event
-        self.window.protocol("WM_DELETE_WINDOW", self.on_closing)
-    
-        self.window.mainloop()
-
-    def run_script(self):
-        self.console_output.config(state=ttk.NORMAL)  # Enable text widget for updates
-        self.console_output.delete("1.0", ttk.END)  # Clear existing content
-
-        def read_output(process, is_stderr=False):
-            next_line = (
-                process.stderr.readline() if is_stderr else process.stdout.readline()
-            )
-
-            if next_line:
-                self.console_output.insert(ttk.END, next_line)
-                self.console_output.see(ttk.END)  # Auto-scroll to the bottom
-                self.window.after(1, read_output, process, is_stderr)
-            elif process.poll() is None:
-                self.window.after(1, read_output, process, is_stderr)
-            else:
-                if not is_stderr:  # Start reading stderr
-                    self.window.after(1, read_output, process, True)
-                else:
-                    self.console_output.config(
-                        state=ttk.DISABLED
-                    )  # Disable edits once process is complete
-
-        try:
-            process = subprocess.Popen(
-                [sys.executable, "translate.py", self.selected_language.get()],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-            self.window.after(1, read_output, process)
-        except Exception as e:
-            self.console_output.insert(ttk.END, f"Failed to run the script: {str(e)}\n")
-            self.console_output.config(state=ttk.DISABLED)
-
-    def add_language(self):
-        new_language = self.entry_new_language.get().strip()
-        if new_language and new_language not in SUPPORTED_LANGUAGES:
-            SUPPORTED_LANGUAGES.append(new_language)
-            self.listbox_language_edit.insert(ttk.END, new_language)
-            self.entry_new_language.delete(0, ttk.END)  # Clear the entry widget
-
-    def remove_language(self):
-        selected_indices = self.listbox_language_edit.curselection()
-        for i in reversed(selected_indices):  # Reverse to avoid index shifting
-            SUPPORTED_LANGUAGES.remove(self.listbox_language_edit.get(i))
-            self.listbox_language_edit.delete(i)
-
-    def save_languages(self):
-        SUPPORTED_LANGUAGES.sort()
-        save_setting("Settings", "supported_languages", ",".join(SUPPORTED_LANGUAGES))
-        self.update_dropdown_widget(self.dropdown_select_target_lang)
-
-    def update_dropdown_widget(self, widget):
-        if self.selected_language.get() not in SUPPORTED_LANGUAGES:
-            self.selected_language.set(SUPPORTED_LANGUAGES[0])
-        widget["menu"].delete(0, "end")
-        for language in SUPPORTED_LANGUAGES:
-            widget["menu"].add_command(
-                label=language, command=tk._setit(self.selected_language, language)
-            )
-
-    def update_listbox_widget(self, widget):
-        widget.delete(0, tk.END)
-        for language in SUPPORTED_LANGUAGES:
-            widget.insert(tk.END, language)
+        self.button_reset_settings.grid(column=0, row=3, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        
+        self.button_reset_window_geometry = ctk.CTkButton(
+            self,
+            text="Reset Window",
+            font=FONT_BIG_BOLD,
+            command=lambda: self.window.reset_window_geometry(),
+        )
+        self.button_reset_window_geometry.grid(column=0, row=4, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
     def reset_settings(self):
-        global SUPPORTED_LANGUAGES
-
         # reset config-custom.ini to config-default.ini
-        reset_settings()
+        utils.reset_settings()
 
-        self.save_window_pos.set(load_setting("Settings", "save_window_pos", default_value=False))
-        self.save_selected_language.set(load_setting("Settings", "save_selected_language", default_value=False))
-        self.selected_language.set(load_setting("Settings", "selected_language", "Select"))
-        SUPPORTED_LANGUAGES = load_setting("Settings", "supported_languages", default_value="English").split(",")
+        self.window.options_frame.save_window_pos.set(utils.load_setting("Settings", "save_window_pos", default_value=False))
+        self.window.options_frame.save_selected_language.set(utils.load_setting("Settings", "save_selected_language", default_value=False))
+        self.window.translation_frame.selected_language.set(utils.load_setting("Settings", "selected_language", "Select"))
 
-        self.update_dropdown_widget(self.dropdown_select_target_lang)
-        self.update_listbox_widget(self.listbox_language_edit)
+class TranslationTool:
+    def __init__(self):
+        self.window = Window_Main(self)
+        self.window.init()
 
-    def reset_window_geometry(self):
-        reset_setting("WindowGeometry", "width")
-        reset_setting("WindowGeometry", "height")
-        reset_setting("WindowGeometry", "pos_x")
-        reset_setting("WindowGeometry", "pos_y")
-        self.window.geometry(load_window_geometry(self.window))
-
-    def on_closing(self):
-        if self.save_window_pos.get():
-            save_window_geometry(self.window)
-        if self.save_selected_language.get():
-            save_setting("Settings", "selected_language", self.selected_language.get())
-        self.window.destroy()
+        self.window.mainloop()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Main entry point
 
 if __name__ == "__main__":
-    utility.enable_high_dpi_awareness()
     app = TranslationTool()
