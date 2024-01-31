@@ -41,6 +41,9 @@ class Window_Main(ctk.CTk):
         self.languages_frame = LanguagesFrame(self.tab_view.add("Languages"), self.translation_tool)
         self.languages_frame.create_widgets()
 
+        self.dictionary_frame = DictionaryFrame(self.tab_view.add("Dictionary"), self.translation_tool)
+        self.dictionary_frame.create_widgets()
+
         self.options_frame = OptionsFrame(self.tab_view.add("Options"), self.translation_tool)
         self.options_frame.create_widgets()
 
@@ -53,7 +56,7 @@ class Window_Main(ctk.CTk):
         utils.reset_setting("WindowGeometry", "pos_y")
         self.geometry(utils.load_window_geometry())
         self.geometry(utils.load_window_geometry())
-        
+
     def on_closing(self):
         if self.options_frame.save_window_pos.get():
             utils.save_window_geometry(self.geometry())
@@ -149,6 +152,7 @@ class LanguagesFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
         super().__init__(parent, corner_radius=15)
         self.translation_tool = translation_tool_instance
+        self.window = translation_tool_instance.window
 
     def create_widgets(self):
         self.pack(fill="both", expand=True, padx=20, pady=20)
@@ -166,9 +170,11 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-        self.listbox_languages = cCtk.ScrollableCheckBoxFrame(
+        self.listbox_languages = cCtk.ScrollableSelectionFrame(
             self,
             item_list=SUPPORTED_LANGUAGES,
+            command=None,
+            multi_select=True,
             custom_font=FONT_BIG_BOLD,
         )
         self.listbox_languages.grid(column=0, row=0, columnspan=3, sticky="nsew", padx=(10, 10), pady=(10, 10))
@@ -230,25 +236,134 @@ class LanguagesFrame(ctk.CTkFrame):
     def list_box_add_language(self):
         self.listbox_languages.add_item(self.entry_new_language.get())
         self.entry_new_language.delete(0, ctk.END)
-        self.listbox_languages.sort()
+        self.listbox_languages.sort_alphabetically()
 
     def list_box_remove_language(self):
         self.listbox_languages.remove_checked_items()
-        self.listbox_languages.sort()
+        self.listbox_languages.sort_alphabetically()
 
     def list_box_save_custom(self):
         self.entry_new_language.delete(0, ctk.END)
         utils.save_setting("Settings", "supported_languages", ",".join(self.listbox_languages.get_all_items()))
         global SUPPORTED_LANGUAGES
         SUPPORTED_LANGUAGES = utils.load_setting("Settings", "supported_languages", default_value="English").split(",")
+        self.window.dictionary_frame.update_dropdown_dictionary_languages_select()
 
     def list_box_load_custom(self):
         self.listbox_languages.remove_all_items()
         self.listbox_languages.populate(SUPPORTED_LANGUAGES)
+        self.window.dictionary_frame.update_dropdown_dictionary_languages_select()
 
     def list_box_load_default(self):
         self.listbox_languages.remove_all_items()
         self.listbox_languages.populate(utils.load_setting("Settings", "supported_languages", default_value="English", use_default_config=True).split(","))
+
+class DictionaryFrame(ctk.CTkFrame):
+    def __init__(self, parent, translation_tool_instance=None):
+        super().__init__(parent, corner_radius=15)
+        self.translation_tool = translation_tool_instance
+        self.create_widgets()
+
+        self.dropdown_dictionary_languages_select = None
+
+    def create_widgets(self):
+        self.pack(fill="both", expand=True, padx=20, pady=20)
+
+        # -----------------------------------------------------------------------------------------------
+        
+        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=0)
+        self.rowconfigure(2, weight=0)
+        
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=1)
+
+        # -----------------------------------------------------------------------------------------------
+
+        self.frame_file_edit = ctk.CTkTextbox(
+            self,
+            activate_scrollbars=True,
+            font=FONT_BIG_BOLD,
+        )
+        self.frame_file_edit.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
+
+        self.button_load_file = ctk.CTkButton(
+            self,
+            text="Load File",
+            font=FONT_BIG_BOLD,
+            command=self.load_file
+        )
+        self.button_load_file.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
+
+        self.button_save_file = ctk.CTkButton(
+            self,
+            text="Save File",
+            font=FONT_BIG_BOLD,
+            command=self.save_file
+        )
+        self.button_save_file.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
+
+        # -----------------------------------------------------------------------------------------------
+        
+        self.frame_dictionary_files_list = cCtk.ScrollableSelectionFrame(
+            self,
+            item_list=utils.get_all_file_names_in_directory("dictionaries"),
+            command=None,
+            multi_select=False,
+            custom_font=FONT_BIG_BOLD,
+        )
+        self.frame_dictionary_files_list.grid(column=1, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
+
+        self.dropdown_dictionary_languages_select = ctk.CTkOptionMenu(
+            self,
+            font=FONT_BIG_BOLD,
+            values=SUPPORTED_LANGUAGES,
+        )
+        self.dropdown_dictionary_languages_select.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
+
+        self.button_create_file = ctk.CTkButton(
+            self,
+            text="Add File",
+            font=FONT_BIG_BOLD,
+            command=self.create_file,
+        )
+        self.button_create_file.grid(column=1, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+
+        self.button_delete_file = ctk.CTkButton(
+            self,
+            text="Delete File",
+            font=FONT_BIG_BOLD,
+            command=self.delete_file,
+        )
+        self.button_delete_file.grid(column=1, row=3, sticky="nsew", padx=(10, 10), pady=(5, 10))
+
+        # -----------------------------------------------------------------------------------------------
+
+    def create_file(self):
+        file_name = "Dictionary_" + self.dropdown_dictionary_languages_select.get() + ".dic"
+        if file_name not in self.frame_dictionary_files_list.get_all_items():
+            file_path = "dictionaries/" + file_name
+            utils.create_file(file_path)
+            self.frame_dictionary_files_list.add_item(file_name)
+
+    def delete_file(self):
+        if self.frame_dictionary_files_list.get_checked_items():
+            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            utils.delete_file(file_path)
+            self.frame_dictionary_files_list.remove_checked_items()
+
+    def save_file(self):
+        if self.frame_dictionary_files_list.get_checked_items():
+            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            utils.save_file(self.frame_file_edit, file_path)
+            
+    def load_file(self):
+        if self.frame_dictionary_files_list.get_checked_items():
+            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            utils.load_file(self.frame_file_edit, file_path)
+            
+    def update_dropdown_dictionary_languages_select(self):
+        self.dropdown_dictionary_languages_select.configure(values=SUPPORTED_LANGUAGES)
 
 class OptionsFrame(ctk.CTkFrame):
     def __init__(self, parent, translation_tool_instance=None):
