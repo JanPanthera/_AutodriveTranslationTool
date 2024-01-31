@@ -111,3 +111,33 @@ def run_script(console_output, window, script, args, after_callback):
     except Exception as e:
         console_output.insert('end', f"Failed to run the script: {e}\n")
         console_output.configure(state='disabled')
+
+def load_file(textbox, file_path):
+    textbox.delete("1.0", "end")
+    if not os.path.exists(file_path):
+        textbox.insert("1.0", f"File not found: {file_path}")
+        return
+    with open(file_path, "r") as file:
+        textbox.insert("1.0", file.read())
+
+def save_file(textbox, file_path):
+    with open(file_path, "w") as file:
+        file.write(textbox.get("1.0", "end-1c"))
+
+def create_file(file_path):
+    try:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Ensure the directory exists
+        with open(file_path, "w") as file:
+            file.write("")
+    except Exception as e:
+        print(f"Failed to create file {file_path}: {e}")
+
+def delete_file(file_path):
+    try:
+        os.remove(file_path)
+    except Exception as e:
+        print(f"Failed to delete file {file_path}: {e}")
+
+def get_all_file_names_in_directory(directory):
+    files = os.listdir(directory)
+    return files
