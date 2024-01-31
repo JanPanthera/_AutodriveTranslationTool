@@ -5,11 +5,13 @@ class ScrollableCheckBoxFrame(customtkinter.CTkScrollableFrame):
         super().__init__(master, **kwargs)
 
         self.command = command
+        self.custom_font = custom_font
+        
         self.checkbox_list = []
-        self.populate(item_list, custom_font)  # Use the populate method to add items
+        self.populate(item_list)  # Use the populate method to add items
 
-    def add_item(self, item, custom_font=None):
-        checkbox = customtkinter.CTkCheckBox(self, text=item, font=custom_font)  # Add directly to self
+    def add_item(self, item):
+        checkbox = customtkinter.CTkCheckBox(self, text=item, font=self.custom_font)  # Add directly to self
         if self.command is not None:
             checkbox.configure(command=self.command)
         checkbox.grid(row=len(self.checkbox_list), column=0, pady=(0, 5), sticky='nw')  # Add sticky='nw' for proper alignment
@@ -35,12 +37,12 @@ class ScrollableCheckBoxFrame(customtkinter.CTkScrollableFrame):
             checkbox.destroy()
         self.checkbox_list.clear()
 
-    def populate(self, item_list, custom_font=None):
+    def populate(self, item_list):
         # Clear existing items before populating
         self.remove_all_items()
         for item in item_list:
-            self.add_item(item, custom_font)
-            
+            self.add_item(item)
+
     def sort(self):
         checked_items = self.get_all_items()
         checked_items.sort()  # Sort the checked items
@@ -51,8 +53,6 @@ class ScrollableCheckBoxFrame(customtkinter.CTkScrollableFrame):
 
     def get_all_items(self):
         return [checkbox.cget("text") for checkbox in self.checkbox_list]
-
-
 
 class ScrollableRadioButtonFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, item_list, command=None, **kwargs):
@@ -96,8 +96,6 @@ class ScrollableRadioButtonFrame(customtkinter.CTkScrollableFrame):
 
     def get_all_items(self):
         return [radio_button.cget("text") for radio_button in self.radio_button_list]
-
-
 
 class ScrollableLabelFrame(customtkinter.CTkScrollableFrame):
     def __init__(self, master, item_list, command=None, **kwargs):
