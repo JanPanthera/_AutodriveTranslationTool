@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import customtkinter as ctk
-from custom_widgets.CustomContextMenu import CustomContextMenu  # Ensure correct import path
+from custom_widgets.CustomContextMenu import CustomContextMenu  # Ensure the correct import path
 
 class ScriptRunningTextbox(ctk.CTkTextbox):
     def __init__(self, parent, autoscroll=True, max_lines=1000, **kwargs):
@@ -14,14 +14,14 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
         self.create_context_menu()
 
     def run_script(self, script, args):
-        if hasattr(self, 'process') and self.process.poll() is None:
+        if hasattr(self, 'process') and self.process and self.process.poll() is None:
             self.process.terminate()  # Ensure previous process is terminated
 
         def read_output(process, is_stderr=False):
             stream = process.stderr if is_stderr else process.stdout
             next_line = stream.readline()
             if next_line:
-                self.insert_text(next_line, 'error' if is_stderr else None)
+                self.insert_text(next_line)
                 if self.autoscroll:
                     self.see('end')
                 self.parent.after(1, lambda: read_output(process, is_stderr))
@@ -45,13 +45,9 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
         self.delete("1.0", 'end')
         self.configure(state='disabled')
 
-    def insert_text(self, text, tag=None):
+    def insert_text(self, text):
         self.configure(state='normal')
-        if tag:
-            self.tag_configure(tag, foreground="red" if tag == 'error' else "black")
-            self.insert('end', text, tag)
-        else:
-            self.insert('end', text)
+        self.insert('end', text)
         self.limit_text_length()
         if self.autoscroll:
             self.see('end')
@@ -63,29 +59,17 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
             self.delete('1.0', f'{lines - self.max_lines + 1}.0')
 
     def create_context_menu(self):
-        def clear_action():
-            self.clear_text()
-
-        def copy_action():
-            self.copy_selection()
-
         menu_items = [
-            {"text": "Clear", "command": clear_action},
-            {"text": "Copy", "command": copy_action}
+            {"text": "Clear", "command": self.clear_text},
+            {"text": "Copy", "command": self.copy_selection}
         ]
-
         self.bind("<Button-3>", lambda event: self.show_context_menu(event, menu_items))
 
     def show_context_menu(self, event, menu_items):
-        print("Right-click event detected")  # Debugging print statement
         if self.context_menu and self.context_menu.winfo_exists():
-            print("Closing existing menu")  # Debugging print statement
             self.context_menu.destroy()  # Explicitly destroy the existing menu
-    
-        print(f"Showing menu at {event.x_root}, {event.y_root}")  # Debugging print statement
         self.context_menu = CustomContextMenu(self, menu_items)
         self.context_menu.show(event.x_root, event.y_root)
-
 
     def copy_selection(self):
         try:

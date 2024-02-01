@@ -11,8 +11,12 @@ class TranslationFrame(ctk.CTkFrame):
         super().__init__(widget)
         self.window = parent
 
+        self.selected_languages = ""
+
         is_save_lang = config.load_setting("Settings", "save_selected_language", default_value="false").lower() in ["true", "1", "t", "y", "yes"]
-        self.selected_target_language = ctk.StringVar(value=config.load_setting("Settings", "selected_language", "Select") if is_save_lang else "Select")
+        if is_save_lang:
+            saved_language_setting = config.load_setting("Settings", "selected_language", "")
+            self.selected_languages = saved_language_setting.split(',')
 
     def create_widgets(self):
         self.pack(fill="both", expand=True, padx=20, pady=20)
@@ -32,17 +36,40 @@ class TranslationFrame(ctk.CTkFrame):
         self.frame1 = ctk.CTkFrame(self)
         self.frame1.grid(column=0, row=0, sticky="nsew", padx=(20, 5), pady=(20, 20))
 
-        self.frame1.rowconfigure(0, weight=1)
-        self.frame1.rowconfigure(1, weight=0)
+        self.frame1.rowconfigure(0, weight=0)
+        self.frame1.rowconfigure(1, weight=1)
+        self.frame1.rowconfigure(3, weight=0)
 
         self.scrollable_selection_frame = ScrollableSelectionFrame(
             self.frame1,
             item_list=self.window.supported_languages,
-            command=self.selected_target_language.set,
+            widget_type='checkbox',
+            single_select=False,
+            command=None,
             custom_font=self.window.font_big_bold,
-            multi_select=True,
+            logger=self.window.logger,
         )
-        self.scrollable_selection_frame.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        self.scrollable_selection_frame.grid(column=0, row=1, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+
+        if self.selected_languages:
+            # Directly pass the list of selected languages to toggle_selection
+            self.scrollable_selection_frame.toggle_selection(self.selected_languages)
+
+        self.button_check_all = ctk.CTkButton(
+            self.frame1,
+            text="Check All",
+            font=self.window.font_big_bold,
+            command=self.scrollable_selection_frame.check_all,
+        )
+        self.button_check_all.grid(column=0, row=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
+
+        self.button_uncheck_all = ctk.CTkButton(
+            self.frame1,
+            text="Uncheck All",
+            font=self.window.font_big_bold,
+            command=self.scrollable_selection_frame.uncheck_all,
+        )
+        self.button_uncheck_all.grid(column=1, row=0, sticky="nsew", padx=(5, 10), pady=(10, 5))
 
         self.button_translate = ctk.CTkButton(
             self.frame1,
@@ -50,7 +77,7 @@ class TranslationFrame(ctk.CTkFrame):
             font=self.window.font_big_bold,
             command=self.run_translate_script,
         )
-        self.button_translate.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_translate.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
 
@@ -68,13 +95,6 @@ class TranslationFrame(ctk.CTkFrame):
             max_lines=1000,
             font=self.window.font_big_bold,
         )
-
-        # self.window.console_output = ctk.CTkTextbox(
-        #     self.frame2,
-        #     activate_scrollbars=True,
-        #     font=self.window.font_big_bold,
-        # )
-        
         self.window.console_output.grid(column=0, row=0, columnspan=2, sticky="nsew", padx=(10, 10), pady=(10, 5))
         self.window.console_output.configure(state="disabled")
 
@@ -87,6 +107,10 @@ class TranslationFrame(ctk.CTkFrame):
         self.button_clear_console_output.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
+
+    def update_scrollable_selection_frame(self):
+        self.scrollable_selection_frame.remove_all_items()
+        self.scrollable_selection_frame.populate(self.window.supported_languages, sort_items=True)
 
     def run_translate_script(self):
         self.window.console_output.run_script(

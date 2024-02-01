@@ -81,7 +81,7 @@ def main():
 
         perform_translation("_input", output_path, dictionary_file_name, selected_language)
 
-    print("Translation process completed.")
+    print("Translation process completed.\n\n")
 
 if __name__ == "__main__":
     main()

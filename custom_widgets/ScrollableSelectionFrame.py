@@ -1,88 +1,150 @@
 import customtkinter as ctk
 
-
 class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
-    def __init__(self, master, item_list, command=None, custom_font=None, multi_select=True, **kwargs):
+    def __init__(self, master, item_list, widget_type='checkbox', single_select=False, command=None, custom_font=None, logger=None, **kwargs):
         super().__init__(master, **kwargs)
-
         self.command = command
         self.custom_font = custom_font
-        self.multi_select = multi_select  # Determines if multiple items can be selected
-        
-        self.selection_widgets = []  # Could be checkboxes or labels for single selection
-        self.selected_item = None  # Used for single-select mode
+        self.widget_type = widget_type
+        self.single_select = single_select
+        self.logger = logger
+        self.selection_widgets = []
+        self.selection_states = {}
         self.populate(item_list)
 
-    def add_item(self, item):
-        if self.multi_select:
-            widget = ctk.CTkCheckBox(self, text=item, font=self.custom_font)
-            if self.command is not None:
-                widget.configure(command=lambda item=item: self.command(item))
-        else:
-            widget = ctk.CTkLabel(self, text=item, font=self.custom_font)
-            widget.original_bg_color = widget.cget("bg_color")  # Store the original bg_color
-            widget.original_text_color = widget.cget("text_color")  # Store the original text_color
-            widget.bind("<Button-1>", self.on_label_click)
-    
+    def add_item(self, item, sort_items=False):
+        """Adds an item to the frame as the specified widget type, avoiding duplicates."""
+        if item in self.selection_states:
+            if self.logger:
+                self.logger.warning(f"Attempted to add a duplicate item: '{item}'")
+            else:
+                print(f"Warning: Attempted to add a duplicate item: '{item}'")
+            return
+        self.selection_states[item] = False
+        widget_command = lambda item=item: self.toggle_selection(item)
+        widget = self.create_widget(item, widget_command)
         widget.grid(row=len(self.selection_widgets), column=0, pady=(0, 5), sticky='nw')
         self.selection_widgets.append(widget)
+        if sort_items:
+            self.sort_items()
 
-    def on_label_click(self, event):
-        ctk_label = event.widget.master if isinstance(event.widget.master, ctk.CTkLabel) else None
-    
-        if ctk_label and not self.multi_select:
-            if self.selected_item:
-                # Reset the previous selection's appearance to original colors
-                self.selected_item.configure(bg_color=self.selected_item.original_bg_color,
-                                             text_color=self.selected_item.original_text_color)
-            self.selected_item = ctk_label
-            # Highlight the new selection
-            ctk_label.configure(bg_color="gray75", text_color="black")
-    
-            if self.command is not None:
-                self.command(ctk_label.cget("text"))
+    def create_widget(self, item, command):
+        """Creates a widget based on the specified type and returns it."""
+        if self.widget_type == 'checkbox':
+            return ctk.CTkCheckBox(self, text=item, font=self.custom_font, command=command)
+        elif self.widget_type == 'radio':
+            widget = ctk.CTkRadioButton(self, text=item, font=self.custom_font, command=lambda: None)
+            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item))
+            return widget
+        else:
+            widget = ctk.CTkLabel(self, text=item, font=self.custom_font)
+            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item))
+            return widget
 
-    def remove_item(self, item):
+    def update_widget_state(self, item):
+        """Updates the visual state of a widget based on its selection state."""
+        for widget in self.selection_widgets:
+            if widget.cget("text") == item:
+                self.set_widget_state(widget, item)
+
+    def set_widget_state(self, widget, item):
+        """Sets the state of a widget based on its type and selection state."""
+        if self.widget_type == 'checkbox' or self.widget_type == 'radio':
+            widget.select() if self.selection_states[item] else widget.deselect()
+        elif self.widget_type == 'label':
+            widget.configure(bg_color="gray75" if self.selection_states[item] else "transparent", text_color="gray14" if self.selection_states[item] else "gray84")
+
+    def execute_command(self, item):
+        """Executes the command associated with widget selection, if any."""
+        try:
+            if self.command:
+                self.command(item)
+        except Exception as e:
+            if self.logger:
+                self.logger.error(f"Error executing command for item '{item}': {e}")
+            else:
+                print(f"Error: {e}")
+
+    def toggle_selection(self, item_or_items):
+        """Toggles the selection state of an item or a list of items, updating all if single_select is True."""
+        if isinstance(item_or_items, list):
+            for item in item_or_items:
+                self._toggle_single_item(item)
+        else:
+            self._toggle_single_item(item_or_items)
+
+    def _toggle_single_item(self, item):
+        """Helper method to toggle the selection state of a single item."""
+        if item not in self.selection_states:
+            if self.single_select:
+                for key in self.selection_states.keys():
+                    self.selection_states[key] = False
+                self.selection_states[item] = True
+            else:
+                self.selection_states[item] = False
+        else:
+            self.selection_states[item] = not self.selection_states[item]
+        if any(widget.cget("text") == item for widget in self.selection_widgets):
+            self.update_widget_state(item)
+        if item in self.selection_states:
+            self.execute_command(item)
+
+    def populate(self, item_list, sort_items=False):
+        """Populates the frame with items from a list."""
+        self.remove_all_items()
+        for item in item_list:
+            self.add_item(item, sort_items)
+
+    def remove_item(self, item, sort_items=False):
+        """Removes a specific item from the frame and optionally sorts items."""
         for widget in self.selection_widgets[:]:
             if item == widget.cget("text"):
                 widget.destroy()
                 self.selection_widgets.remove(widget)
-                if widget == self.selected_item:
-                    self.selected_item = None
+                del self.selection_states[item]
+        if sort_items:
+            self.sort_items()
 
-    def remove_checked_items(self):
-        if self.multi_select:
-            for widget in self.selection_widgets[:]:
-                if widget.get() == 1:
-                    widget.destroy()
-                    self.selection_widgets.remove(widget)
-        else:
-            if self.selected_item:
-                self.selected_item.destroy()
-                self.selection_widgets.remove(self.selected_item)
-                self.selected_item = None
+    def remove_checked_items(self, sort_items=False):
+        """Removes all currently checked items from the frame and optionally sorts items."""
+        checked_items = [item for item, state in self.selection_states.items() if state]
+        for item in checked_items:
+            self.remove_item(item, sort_items=False)
+        if sort_items:
+            self.sort_items()
 
     def remove_all_items(self):
+        """Removes all items from the frame."""
         for widget in reversed(self.selection_widgets):
             widget.destroy()
         self.selection_widgets.clear()
-        self.selected_item = None
-
-    def populate(self, item_list):
-        self.remove_all_items()
-        for item in item_list:
-            self.add_item(item)
-
-    def sort_alphabetically(self):
-        all_items = self.get_all_items()
-        all_items.sort()
-        self.populate(all_items)
+        self.selection_states.clear()
 
     def get_checked_items(self):
-        if self.multi_select:
-            return [widget.cget("text") for widget in self.selection_widgets if widget.get() == 1]
-        else:
-            return [self.selected_item.cget("text")] if self.selected_item else []
-
+        """Returns a list of all currently checked items."""
+        return [item for item, state in self.selection_states.items() if state]
+    
     def get_all_items(self):
-        return [widget.cget("text") for widget in self.selection_widgets]
+        """Returns a list of all items."""
+        return [item for item in self.selection_states.keys()]
+
+    def check_all(self):
+        """Checks all items."""
+        for item in self.selection_states.keys():
+            self.selection_states[item] = True
+            self.update_widget_state(item)
+        self.execute_command(item)
+
+    def uncheck_all(self):
+        """Unchecks all items."""
+        for item in self.selection_states.keys():
+            self.selection_states[item] = False
+            self.update_widget_state(item)
+        self.execute_command(item)
+
+    def sort_items(self):
+        """Sorts all items in the frame based on their text."""
+        sorted_items = sorted(self.selection_states.keys(), key=lambda item: item.lower())
+        self.remove_all_items()
+        for item in sorted_items:
+            self.add_item(item, sort_items=False)

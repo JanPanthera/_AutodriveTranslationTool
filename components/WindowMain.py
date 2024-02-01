@@ -8,6 +8,7 @@ from components.TranslationFrame import TranslationFrame
 from components.LanguagesFrame import LanguagesFrame
 from components.DictionaryFrame import DictionaryFrame
 from components.OptionsFrame import OptionsFrame
+from utilities.logger import CustomLogger
 
 
 class WindowMain(ctk.CTk):
@@ -16,6 +17,7 @@ class WindowMain(ctk.CTk):
         self.translation_tool = translation_tool_instance
 
         self.console_output = None
+        self.logger = CustomLogger(textbox=self.console_output, log_file="translation_tool.log", max_log_size=10*1024*1024, backup_count=5)
         self.supported_languages = config.load_setting("Settings", "supported_languages", default_value="English").split(",")
 
         self.default_font = "Helvetica"
@@ -58,7 +60,9 @@ class WindowMain(ctk.CTk):
         if self.options_frame.save_window_pos.get():
             self.save_window_geometry(self.geometry())
         if self.options_frame.save_selected_language.get():
-            config.save_setting("Settings", "selected_language", self.translation_frame.selected_target_language.get())
+            selected_languages = self.translation_frame.scrollable_selection_frame.get_checked_items()
+            selected_languages_str = ",".join(selected_languages)
+            config.save_setting("Settings", "selected_language", selected_languages_str)
         self.destroy()
 
     def load_window_geometry(self):

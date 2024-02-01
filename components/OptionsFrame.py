@@ -79,4 +79,4 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.window.options_frame.save_window_pos.set(config.load_setting("Settings", "save_window_pos"))
         self.window.options_frame.save_selected_language.set(config.load_setting("Settings", "save_selected_language"))
-        self.window.translation_frame.selected_language.set(config.load_setting("Settings", "selected_language", "Select"))
+        self.window.translation_frame.selected_language = config.load_setting("Settings", "selected_language", "")

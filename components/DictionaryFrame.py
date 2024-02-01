@@ -55,9 +55,11 @@ class DictionaryFrame(ctk.CTkFrame):
         self.frame_dictionary_files_list = ScrollableSelectionFrame(
             self,
             item_list=file_ops.get_all_file_names_in_directory("dictionaries"),
+            widget_type='label',
+            single_select=True,
             command=None,
             custom_font=self.window.font_big_bold,
-            multi_select=False,
+            logger=self.window.logger,
         )
         self.frame_dictionary_files_list.grid(column=1, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
