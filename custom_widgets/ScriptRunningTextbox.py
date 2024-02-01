@@ -1,8 +1,7 @@
-import tkinter as tk
 import subprocess
 import sys
 import customtkinter as ctk
-from custom_widgets.CustomContextMenu import CustomContextMenu
+from custom_widgets.CustomContextMenu import CustomContextMenu  # Ensure correct import path
 
 class ScriptRunningTextbox(ctk.CTkTextbox):
     def __init__(self, parent, autoscroll=True, max_lines=1000, **kwargs):
@@ -11,6 +10,7 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
         self.autoscroll = autoscroll
         self.max_lines = max_lines
         self.configure(state='disabled')
+        self.context_menu = None  # Reference to the open context menu
         self.create_context_menu()
 
     def run_script(self, script, args):
@@ -53,6 +53,8 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
         else:
             self.insert('end', text)
         self.limit_text_length()
+        if self.autoscroll:
+            self.see('end')
         self.configure(state='disabled')
 
     def limit_text_length(self):
@@ -61,31 +63,34 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
             self.delete('1.0', f'{lines - self.max_lines + 1}.0')
 
     def create_context_menu(self):
-        # Define the actions for the menu items
         def clear_action():
             self.clear_text()
 
         def copy_action():
             self.copy_selection()
 
-        # Define the menu items and their corresponding actions
         menu_items = [
             {"text": "Clear", "command": clear_action},
             {"text": "Copy", "command": copy_action}
         ]
 
-        # Bind right-click event to show the custom context menu
         self.bind("<Button-3>", lambda event: self.show_context_menu(event, menu_items))
 
     def show_context_menu(self, event, menu_items):
-        # Create and show the custom context menu at the cursor's position
-        context_menu = CustomContextMenu(self, menu_items)
-        context_menu.show(event.x_root, event.y_root)
+        print("Right-click event detected")  # Debugging print statement
+        if self.context_menu and self.context_menu.winfo_exists():
+            print("Closing existing menu")  # Debugging print statement
+            self.context_menu.destroy()  # Explicitly destroy the existing menu
+    
+        print(f"Showing menu at {event.x_root}, {event.y_root}")  # Debugging print statement
+        self.context_menu = CustomContextMenu(self, menu_items)
+        self.context_menu.show(event.x_root, event.y_root)
+
 
     def copy_selection(self):
         try:
             self.clipboard_clear()
             text = self.get("sel.first", "sel.last")
             self.clipboard_append(text)
-        except tk.TclError:  # In case no text is selected
+        except ctk.TclError:  # In case no text is selected
             pass
