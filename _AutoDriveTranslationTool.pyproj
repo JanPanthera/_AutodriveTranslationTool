@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{9fa26bb4-e835-40d0-a612-5f618deae5e4}</ProjectGuid>
     <ProjectHome />
-    <StartupFile>TranslationTool.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath />
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
@@ -26,15 +26,27 @@
     <Content Include="translationLists\TranslationList_German.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="customCtkWidgets.py" />
-    <Compile Include="TranslationTool.py" />
+    <Compile Include="components\DictionaryFrame.py" />
+    <Compile Include="components\LanguagesFrame.py" />
+    <Compile Include="components\OptionsFrame.py" />
+    <Compile Include="components\TranslationFrame.py" />
+    <Compile Include="components\WindowMain.py" />
+    <Compile Include="custom_widgets\customCtkWidgets.py" />
+    <Compile Include="main.py" />
     <Compile Include="translate.py" />
-    <Compile Include="utilities.py" />
+    <Compile Include="utilities\config.py" />
+    <Compile Include="utilities\file_ops.py" />
+    <Compile Include="utilities\process_mgmt.py" />
+    <Compile Include="utilities\utils.py" />
+    <Compile Include="utilities\window_geometry.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="config\" />
     <Folder Include="input\" />
     <Folder Include="dictionaries\" />
+    <Folder Include="components\" />
+    <Folder Include="custom_widgets\" />
+    <Folder Include="utilities\" />
     <Folder Include="output\" />
     <Folder Include="translationLists" />
   </ItemGroup>
