@@ -1,61 +1,87 @@
 import os
 import argparse
-from TranslationTool import SUPPORTED_LANGUAGES
+import utilities.file_ops as file_ops  # Ensure this import path is correct for your project structure
 
-def perform_translation(input_path, output_path, translation_list_file_name):
+def perform_translation(input_path, output_path, dictionary_file_name, language):
     translation_counts = {}
+    files_processed = 0
+    files_skipped = 0
+    files_with_no_replacements = 0
 
-    for (root, dirs, files) in os.walk(input_path):
-        # Check if there are any files in the current directory
+    print(f"--- {language} Translation ---")
+    print(f"Dictionary: {dictionary_file_name}\nOutput: {output_path}")
+
+    for root, dirs, files in os.walk(input_path):
         if not files:
-            print(f"Error ~ No input files found in directory: {root}\n")
-            continue  # Skip this directory and move on to the next one
-        
+            print(f"No input files found in directory: {root}. Skipping.")
+            continue
+
         for file in files:
             input_file_path = os.path.join(root, file)
-            output_dir_path = root.replace("input", output_path, 1)
-            os.makedirs(output_dir_path, exist_ok=True)
-            output_file_path = os.path.join(output_dir_path, file)
+            output_dir_path = root.replace("_input", output_path, 1)
+            replacements_in_file = False
 
-            with open(input_file_path) as auto_config_read:
-                with open(output_file_path, "w") as auto_config_write:
-                    with open(translation_list_file_name) as f:
-                        file_text = auto_config_read.read()
-                        for line in f:
-                            if line.isspace():
-                                continue
-                            source_text, target_text = line.strip().split(",")[:2]
-                            count = file_text.count(source_text)
-                            if count > 0:
-                                file_text = file_text.replace(source_text, target_text)
-                                translation_counts[source_text] = (count, target_text)
-                        auto_config_write.write(file_text)
+            try:
+                os.makedirs(output_dir_path, exist_ok=True)
+                output_file_path = os.path.join(output_dir_path, file)
 
-    print("Translation Counts:")
-    for source_text, (count, target_text) in translation_counts.items():
-        print(f'"{source_text}" was replaced {count} times with "{target_text}".')
+                file_text = file_ops.load_file(input_file_path)
+                if file_text == "":  # If file couldn't be loaded, skip to the next file
+                    files_skipped += 1
+                    continue
 
-    print("\nTranslation complete!\n\n")
+                dictionary_text = file_ops.load_file(dictionary_file_name)
+                dictionary_list = [line.strip().split(",")[:2] for line in dictionary_text.splitlines() if not line.isspace()]
+
+                for source_text, target_text in dictionary_list:
+                    count = file_text.count(source_text)
+                    if count > 0:
+                        file_text = file_text.replace(source_text, target_text)
+                        translation_counts[source_text] = translation_counts.get(source_text, (0, target_text))[0] + count, target_text
+                        replacements_in_file = True
+
+                if replacements_in_file:
+                    file_ops.save_file(output_file_path, file_text)
+                    files_processed += 1
+                else:
+                    files_with_no_replacements += 1
+
+            except Exception as e:
+                print(f"An error occurred while processing file '{input_file_path}': {e}")
+                files_skipped += 1
+
+    if files_processed > 0:
+        file_word = "file" if files_processed == 1 else "files"
+        print(f"Processed {files_processed} {file_word}. Skipped {files_skipped} files.")
+        print("Translation Counts:")
+        for source_text, (count, target_text) in translation_counts.items():
+            print(f'   {source_text} --> {target_text}: {count} replacements')
+    elif files_with_no_replacements > 0:
+        print(f"No replacements needed in {files_with_no_replacements} files. Skipped {files_skipped} files.")
+    else:
+        print("No translations were performed. All files were skipped.")
+
+    print("\n")  # Add a footer for clarity
 
 def main():
-    parser = argparse.ArgumentParser(description="Process some integers.")
-    parser.add_argument('selected_language', metavar='Selected_Language', type=str, help='The selected language')
+    parser = argparse.ArgumentParser()
+    parser.add_argument("selected_languages", nargs="+", help="The list of languages to translate to.")
     args = parser.parse_args()
 
-    translation_list_file_names = {lang: f"TranslationList_{lang}.txt" for lang in SUPPORTED_LANGUAGES}
-    translation_list_file_name = os.path.join("translationLists", translation_list_file_names.get(args.selected_language, "DefaultTranslationList.txt"))
-    output_path = os.path.join("output", args.selected_language)
+    print(f"Starting translation process for {len(args.selected_languages)} languages: {', '.join(args.selected_languages)}.\n")
 
-    print(f"Translating to {args.selected_language} \nUsing translation list: {translation_list_file_name}\nOutput path: {output_path}\n")
+    for selected_language in args.selected_languages:
+        dictionary_file_name = os.path.join("dictionaries", f"Dictionary_{selected_language}.dic")
+        output_path = os.path.join("_output", selected_language)
 
-    # Check if the translation list file exists before performing translation
-    if os.path.exists(translation_list_file_name):
-        perform_translation("input", output_path, translation_list_file_name)
-    else:
-        print(f"Error ~ Translation list file '{translation_list_file_name}' does not exist. Translation aborted.")
+        if not os.path.isfile(dictionary_file_name):
+            print(f"--- {selected_language} Translation ---")
+            print(f"Dictionary file '{dictionary_file_name}' not found. Skipping translation for {selected_language}.\n")
+            continue
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Main entry point
+        perform_translation("_input", output_path, dictionary_file_name, selected_language)
+
+    print("Translation process completed.")
 
 if __name__ == "__main__":
     main()

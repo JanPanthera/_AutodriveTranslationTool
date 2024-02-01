@@ -58,18 +58,8 @@ class WindowMain(ctk.CTk):
         if self.options_frame.save_window_pos.get():
             self.save_window_geometry(self.geometry())
         if self.options_frame.save_selected_language.get():
-            config.save_setting("Settings", "selected_language", self.translation_frame.selected_language.get())
+            config.save_setting("Settings", "selected_language", self.translation_frame.selected_target_language.get())
         self.destroy()
-
-    def reset_window_geometry(self):
-        config.reset_settings([["WindowGeometry", "width"], ["WindowGeometry", "height"], ["WindowGeometry", "pos_x"], ["WindowGeometry", "pos_y"]])
-        self.geometry(self.load_window_geometry())
-        self.geometry(self.load_window_geometry())
-
-    def save_window_geometry(self, window_geometry):
-        size_part, pos_x, pos_y = window_geometry.split('+')
-        width, height = size_part.split('x')
-        config.save_settings([["WindowGeometry", "width", width], ["WindowGeometry", "height", height], ["WindowGeometry", "pos_x", pos_x], ["WindowGeometry", "pos_y", pos_y]])
 
     def load_window_geometry(self):
         width = config.load_setting("WindowGeometry", "width", default_value="1366")
@@ -77,3 +67,12 @@ class WindowMain(ctk.CTk):
         pos_x = config.load_setting("WindowGeometry", "pos_x", default_value="100")
         pos_y = config.load_setting("WindowGeometry", "pos_y", default_value="100")
         return f"{width}x{height}+{pos_x}+{pos_y}"
+
+    def reset_window_geometry(self):
+        config.reset_settings([["WindowGeometry", "width"], ["WindowGeometry", "height"], ["WindowGeometry", "pos_x"], ["WindowGeometry", "pos_y"]])
+        self.geometry(self.load_window_geometry())
+
+    def save_window_geometry(self, window_geometry):
+        size_part, pos_x, pos_y = window_geometry.split('+')
+        width, height = size_part.split('x')
+        config.save_settings([["WindowGeometry", "width", width], ["WindowGeometry", "height", height], ["WindowGeometry", "pos_x", pos_x], ["WindowGeometry", "pos_y", pos_y]])

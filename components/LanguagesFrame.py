@@ -2,7 +2,7 @@
 import customtkinter as ctk
 
 import utilities.config as config
-from custom_widgets import customCtkWidgets as cCtk
+from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 
 
 class LanguagesFrame(ctk.CTkFrame):
@@ -26,7 +26,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-        self.listbox_languages = cCtk.ScrollableSelectionFrame(
+        self.listbox_languages = ScrollableSelectionFrame(
             self,
             item_list=self.window.supported_languages,
             command=None,

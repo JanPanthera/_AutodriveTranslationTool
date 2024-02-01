@@ -32,6 +32,7 @@
     <Compile Include="components\TranslationFrame.py" />
     <Compile Include="components\WindowMain.py" />
     <Compile Include="custom_widgets\customCtkWidgets.py" />
+    <Compile Include="custom_widgets\ScrollableSelectionFrame.py" />
     <Compile Include="main.py" />
     <Compile Include="translate.py" />
     <Compile Include="utilities\config.py" />
@@ -42,12 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="config\" />
-    <Folder Include="input\" />
+    <Folder Include="_input\" />
     <Folder Include="dictionaries\" />
     <Folder Include="components\" />
     <Folder Include="custom_widgets\" />
     <Folder Include="utilities\" />
-    <Folder Include="output\" />
+    <Folder Include="_output\" />
     <Folder Include="translationLists" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

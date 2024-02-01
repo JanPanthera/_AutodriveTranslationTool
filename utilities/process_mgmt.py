@@ -7,6 +7,7 @@ def run_script(console_output, script, args, after_callback):
         stream = process.stderr if is_stderr else process.stdout
         next_line = stream.readline()
         if next_line:
+            console_output.configure(state='normal')
             console_output.insert('end', next_line)
             console_output.see('end')
             after_callback(1, lambda: read_output(process, is_stderr))
@@ -23,5 +24,6 @@ def run_script(console_output, script, args, after_callback):
         process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         after_callback(1, lambda: read_output(process))
     except Exception as e:
+        console_output.configure(state='normal')
         console_output.insert('end', f"Failed to run the script: {e}\n")
         console_output.configure(state='disabled')

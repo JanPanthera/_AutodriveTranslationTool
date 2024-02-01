@@ -3,6 +3,7 @@ import customtkinter as ctk
 
 import utilities.file_ops as file_ops
 from custom_widgets import customCtkWidgets as cCtk
+from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 
 
 class DictionaryFrame(ctk.CTkFrame):
@@ -51,12 +52,12 @@ class DictionaryFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-        self.frame_dictionary_files_list = cCtk.ScrollableSelectionFrame(
+        self.frame_dictionary_files_list = ScrollableSelectionFrame(
             self,
             item_list=file_ops.get_all_file_names_in_directory("dictionaries"),
             command=None,
-            multi_select=False,
             custom_font=self.window.font_big_bold,
+            multi_select=False,
         )
         self.frame_dictionary_files_list.grid(column=1, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 

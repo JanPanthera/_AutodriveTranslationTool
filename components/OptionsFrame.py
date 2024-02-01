@@ -73,9 +73,10 @@ class OptionsFrame(ctk.CTkFrame):
         self.button_reset_window_geometry.grid(column=0, row=4, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
     def reset_settings(self):
-        # reset config-custom.ini to config-default.ini
-        config.reset_all_settings()
+        config.reset_settings([["Settings", "save_window_pos"],
+                               ["Settings", "save_selected_language"],
+                               ["Settings", "selected_language"]])
 
-        self.window.options_frame.save_window_pos.set(config.load_setting("Settings", "save_window_pos", default_value=False))
-        self.window.options_frame.save_selected_language.set(config.load_setting("Settings", "save_selected_language", default_value=False))
+        self.window.options_frame.save_window_pos.set(config.load_setting("Settings", "save_window_pos"))
+        self.window.options_frame.save_selected_language.set(config.load_setting("Settings", "save_selected_language"))
         self.window.translation_frame.selected_language.set(config.load_setting("Settings", "selected_language", "Select"))
