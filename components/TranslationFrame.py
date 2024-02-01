@@ -4,6 +4,7 @@ import customtkinter as ctk
 import utilities.config as config
 import utilities.process_mgmt as process_mgmt
 from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
+from custom_widgets.ScriptRunningTextbox import ScriptRunningTextbox
 
 class TranslationFrame(ctk.CTkFrame):
     def __init__(self, widget, parent):
@@ -61,11 +62,19 @@ class TranslationFrame(ctk.CTkFrame):
         
         self.frame2.columnconfigure(0, weight=1)
 
-        self.window.console_output = ctk.CTkTextbox(
+        self.window.console_output = ScriptRunningTextbox(
             self.frame2,
-            activate_scrollbars=True,
+            autoscroll=True,
+            max_lines=1000,
             font=self.window.font_big_bold,
         )
+
+        # self.window.console_output = ctk.CTkTextbox(
+        #     self.frame2,
+        #     activate_scrollbars=True,
+        #     font=self.window.font_big_bold,
+        # )
+        
         self.window.console_output.grid(column=0, row=0, columnspan=2, sticky="nsew", padx=(10, 10), pady=(10, 5))
         self.window.console_output.configure(state="disabled")
 
@@ -73,27 +82,14 @@ class TranslationFrame(ctk.CTkFrame):
             self.frame2,
             text="Clear Console",
             font=self.window.font_big_bold,
-            command=self.clear_console_output,
+            command=self.window.console_output.clear_text,
         )
         self.button_clear_console_output.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
 
     def run_translate_script(self):
-        self.clear_console_output()
-        try:
-            process_mgmt.run_script(
-                console_output=self.window.console_output,
-                script="translate.py",
-                args=self.scrollable_selection_frame.get_checked_items(),
-                after_callback=self.window.after,
-            )
-        except Exception as e:
-            self.window.console_output.configure(state=ctk.NORMAL)
-            self.window.console_output.insert(ctk.END, f"Error ~ {e}\n")
-            self.window.console_output.configure(state=ctk.DISABLED)
-
-    def clear_console_output(self):
-        self.window.console_output.configure(state=ctk.NORMAL)
-        self.window.console_output.delete("1.0", ctk.END)
-        self.window.console_output.configure(state=ctk.DISABLED)
+        self.window.console_output.run_script(
+            script="translate.py",
+            args=self.scrollable_selection_frame.get_checked_items(),
+        )

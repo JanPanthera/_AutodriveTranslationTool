@@ -31,12 +31,15 @@
     <Compile Include="components\OptionsFrame.py" />
     <Compile Include="components\TranslationFrame.py" />
     <Compile Include="components\WindowMain.py" />
+    <Compile Include="custom_widgets\CustomContextMenu.py" />
     <Compile Include="custom_widgets\customCtkWidgets.py" />
+    <Compile Include="custom_widgets\ScriptRunningTextbox.py" />
     <Compile Include="custom_widgets\ScrollableSelectionFrame.py" />
     <Compile Include="main.py" />
     <Compile Include="translate.py" />
     <Compile Include="utilities\config.py" />
     <Compile Include="utilities\file_ops.py" />
+    <Compile Include="utilities\logger.py" />
     <Compile Include="utilities\process_mgmt.py" />
     <Compile Include="utilities\utils.py" />
     <Compile Include="utilities\window_geometry.py" />

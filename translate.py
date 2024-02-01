@@ -1,6 +1,6 @@
 import os
 import argparse
-import utilities.file_ops as file_ops  # Ensure this import path is correct for your project structure
+import utilities.file_ops as file_ops
 
 def perform_translation(input_path, output_path, dictionary_file_name, language):
     translation_counts = {}
@@ -26,7 +26,7 @@ def perform_translation(input_path, output_path, dictionary_file_name, language)
                 output_file_path = os.path.join(output_dir_path, file)
 
                 file_text = file_ops.load_file(input_file_path)
-                if file_text == "":  # If file couldn't be loaded, skip to the next file
+                if file_text == "":
                     files_skipped += 1
                     continue
 
@@ -61,7 +61,7 @@ def perform_translation(input_path, output_path, dictionary_file_name, language)
     else:
         print("No translations were performed. All files were skipped.")
 
-    print("\n")  # Add a footer for clarity
+    print("\n")
 
 def main():
     parser = argparse.ArgumentParser()
