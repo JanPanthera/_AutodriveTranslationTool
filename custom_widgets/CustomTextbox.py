@@ -13,6 +13,7 @@ class CustomTextbox(ctk.CTkTextbox):
         menu_items = [
             {"text": "Copy", "command": self.copy_selection},
             {"text": "Paste", "command": self.paste},
+            {"text": "Cut", "command": self.cut},
             {"text": "Clear", "command": self.clear},
             {"text": "Select All", "command": self.select_all},
         ]
@@ -39,6 +40,10 @@ class CustomTextbox(ctk.CTkTextbox):
             self.insert("insert", text_to_paste)
         except Exception as e:
             print(f"Error pasting text: {e}")
+
+    def cut(self):
+        self.copy_selection()
+        self.delete("sel.first", "sel.last")
 
     def clear(self):
         self.delete("1.0", "end")
