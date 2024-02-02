@@ -1,4 +1,5 @@
 import os
+import re
 import argparse
 import utilities.file_ops as file_ops
 
@@ -26,19 +27,34 @@ def perform_translation(input_path, output_path, dictionary_file_name, language)
                 output_file_path = os.path.join(output_dir_path, file)
 
                 file_text = file_ops.load_file(input_file_path)
-                if file_text == "":
+                if file_text.strip() == "":
                     files_skipped += 1
                     continue
 
                 dictionary_text = file_ops.load_file(dictionary_file_name)
-                dictionary_list = [line.strip().split(",")[:2] for line in dictionary_text.splitlines() if not line.isspace()]
+                skipping = False  # State to indicate if we are currently skipping lines
+                for line in dictionary_text.splitlines():
+                    if line.strip().startswith('###*'):
+                        skipping = True
+                        continue
+                    if line.strip().endswith('*###'):
+                        skipping = False
+                        continue
+                    if skipping or not line.strip():
+                        continue  # Skip the line if we're in skipping mode or if the line is empty
 
-                for source_text, target_text in dictionary_list:
-                    count = file_text.count(source_text)
-                    if count > 0:
-                        file_text = file_text.replace(source_text, target_text)
-                        translation_counts[source_text] = translation_counts.get(source_text, (0, target_text))[0] + count, target_text
-                        replacements_in_file = True
+                    parts = line.split(",", maxsplit=1)
+                    if len(parts) == 2:
+                        source_text, target_text = parts
+                        # Use regular expression to replace only whole words
+                        pattern = r'\b' + re.escape(source_text) + r'\b'
+                        new_text, count = re.subn(pattern, target_text, file_text)
+                        if count > 0:
+                            file_text = new_text
+                            translation_counts[source_text] = translation_counts.get(source_text, (0, target_text))[0] + count, target_text
+                            replacements_in_file = True
+                    else:
+                        print(f"Skipping line due to incorrect format: {line}")
 
                 if replacements_in_file:
                     file_ops.save_file(output_file_path, file_text)
