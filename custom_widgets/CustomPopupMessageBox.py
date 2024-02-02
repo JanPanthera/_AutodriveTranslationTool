@@ -28,8 +28,8 @@ class CustomPopupMessageBox(ctk.CTkToplevel):
 
     def position_center_main_window(self):
         self.update_idletasks()
-        x = (self.master.winfo_x() + self.master.winfo_width() // 2) - (300 // 2)
-        y = (self.master.winfo_y() + self.master.winfo_height() // 2) - (150 // 2)
+        x = (self.master.winfo_x() + self.master.winfo_width() // 2) - 300 # (300 // 2)
+        y = (self.master.winfo_y() + self.master.winfo_height() // 2) - 150 # (150 // 2)
         self.geometry(f"+{x}+{y}")
 
     def close_popup(self):

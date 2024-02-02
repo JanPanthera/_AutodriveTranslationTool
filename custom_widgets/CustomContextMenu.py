@@ -4,6 +4,7 @@ from functools import partial
 class CustomContextMenu(ctk.CTkToplevel):
     def __init__(self, parent, menu_items, **kwargs):
         super().__init__(parent, **kwargs)
+
         self.overrideredirect(True)  # Remove window decorations
         self.attributes("-topmost", True)  # Keep the menu on top
 
@@ -23,7 +24,7 @@ class CustomContextMenu(ctk.CTkToplevel):
         except Exception as e:
             print(f"Error executing menu command: {e}")
         finally:
-            self.destroy()
+            self.after(200, self.destroy)
 
     def on_focus_out(self, event):
         # Add a slight delay to prevent immediate dismissal in case of rapid focus changes
@@ -35,3 +36,4 @@ class CustomContextMenu(ctk.CTkToplevel):
         self.geometry(f"+{adjusted_x}+{adjusted_y}")
         self.deiconify()
         self.after(100, self.focus_set)  # Delay focus setting to ensure menu visibility
+        #self.after(100, self.grab_set)  # Set the input focus to the menu window after a slight delay

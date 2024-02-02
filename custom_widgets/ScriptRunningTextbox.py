@@ -61,7 +61,9 @@ class ScriptRunningTextbox(ctk.CTkTextbox):
     def create_context_menu(self):
         menu_items = [
             {"text": "Clear", "command": self.clear_text},
-            {"text": "Copy", "command": self.copy_selection}
+            {"text": "Copy", "command": self.copy_selection},
+            {"text": "Select All", "command": lambda: self.tag_add("sel", "1.0", "end")},
+            {"text": "Paste", "command": lambda: self.event_generate("<<Paste>>")}
         ]
         self.bind("<Button-3>", lambda event: self.show_context_menu(event, menu_items))
 

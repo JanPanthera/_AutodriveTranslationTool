@@ -17,20 +17,31 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-        self.rowconfigure(0, weight=10)
-        self.rowconfigure(1, weight=1)
-        self.rowconfigure(2, weight=2)
-        self.rowconfigure(3, weight=2)
+        # Vertical expansion weights
+        self.rowconfigure(0, weight=1)
 
+        # Horizontal expansion weights
         self.columnconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.columnconfigure(2, weight=1)
 
         # -----------------------------------------------------------------------------------------------
 
+        frame1 = ctk.CTkFrame(self)
+        frame1.grid(column=0, row=0, sticky="nsew", padx=(20, 20), pady=(20, 20))
+
+        # Vertical expansion weights
+        frame1.rowconfigure(0, weight=1)
+        frame1.rowconfigure(1, weight=0)
+        frame1.rowconfigure(2, weight=0)
+        frame1.rowconfigure(3, weight=0)
+
+        # Horizontal expansion weights
+        frame1.columnconfigure(0, weight=1)
+        frame1.columnconfigure(1, weight=1)
+        frame1.columnconfigure(2, weight=1)
+
         # Create ScrollableSelectionFrame for languages
         self.listbox_languages = ScrollableSelectionFrame(
-            self,
+            frame1,
             item_list=self.window.supported_languages,
             widget_type='checkbox',
             single_select=False,
@@ -42,11 +53,10 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Entry for adding new languages
         self.entry_new_language = ctk.CTkEntry(
-            self,
+            frame1,
             height=40,
             placeholder_text="New Language",
             font=self.window.font_big_bold,
-            focus_loss_outside_click=True, # BUG: can't focus on text box
         )
         self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
 
@@ -54,7 +64,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Button to add a new language
         self.button_add_language = ctk.CTkButton(
-            self,
+            frame1,
             text="Add Language",
             font=self.window.font_big_bold,
             command=self.add_language
@@ -63,7 +73,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Button to remove selected languages
         self.button_remove_language = ctk.CTkButton(
-            self,
+            frame1,
             text="Remove Language",
             font=self.window.font_big_bold,
             command=self.remove_language,
@@ -74,7 +84,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Button to save languages
         self.button_save_custom = ctk.CTkButton(
-            self,
+            frame1,
             text="Save Custom",
             font=self.window.font_big_bold,
             command=self.list_box_save_custom
@@ -83,7 +93,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Button to load languages from custom config
         self.button_load_custom = ctk.CTkButton(
-            self,
+            frame1,
             text="Load Custom",
             font=self.window.font_big_bold,
             command=self.list_box_load_custom
@@ -92,7 +102,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # Button to load languages from default config
         self.button_load_default = ctk.CTkButton(
-            self,
+            frame1,
             text="Load Default",
             font=self.window.font_big_bold,
             command=self.list_box_load_default

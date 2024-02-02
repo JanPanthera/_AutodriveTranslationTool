@@ -31,12 +31,18 @@ class WindowMain(ctk.CTk):
         self.font_small = (self.default_font, 10)
 
     def init(self):
-        #ctk.deactivate_automatic_dpi_awareness()
-        #ctk.set_widget_scaling(utils.get_dpi_scaling_factor())
-        #ctk.set_window_scaling(utils.get_dpi_scaling_factor())
+        if config.load_setting("Settings", "use_high_dpi_scaling", default_value="True") == "False":
+            ctk.deactivate_automatic_dpi_awareness()
+
+        use_dark_mode = config.load_setting("Settings", "use_dark_mode", default_value="False")
+        if use_dark_mode == "True":
+            ctk.set_appearance_mode("dark")
+        elif use_dark_mode == "False":
+            ctk.set_appearance_mode("light")
+        else:
+            ctk.set_appearance_mode("system") # depe
 
         self.title("AutoDrive Translation Tool")
-        self.geometry(self.load_window_geometry())
         #self.resizable(False, False)
 
         self.tab_view = ctk.CTkTabview(self, fg_color="transparent", bg_color="transparent")
@@ -53,6 +59,8 @@ class WindowMain(ctk.CTk):
 
         self.options_frame = OptionsFrame(self.tab_view.add("Options"), self)
         self.options_frame.create_widgets()
+
+        self.geometry(self.load_window_geometry())
 
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 

@@ -29,8 +29,8 @@
     <Compile Include="components\TranslationFrame.py" />
     <Compile Include="components\WindowMain.py" />
     <Compile Include="custom_widgets\CustomContextMenu.py" />
-    <Compile Include="custom_widgets\customCtkWidgets.py" />
     <Compile Include="custom_widgets\CustomPopupMessageBox.py" />
+    <Compile Include="custom_widgets\CustomTextbox.py" />
     <Compile Include="custom_widgets\ScriptRunningTextbox.py" />
     <Compile Include="custom_widgets\ScrollableSelectionFrame.py" />
     <Compile Include="main.py" />
