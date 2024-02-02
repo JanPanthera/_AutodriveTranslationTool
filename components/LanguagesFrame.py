@@ -1,8 +1,10 @@
-
+﻿
 import customtkinter as ctk
+import re
 
 import utilities.config as config
 from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
+from custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
 
 
 class LanguagesFrame(ctk.CTkFrame):
@@ -44,9 +46,9 @@ class LanguagesFrame(ctk.CTkFrame):
             height=40,
             placeholder_text="New Language",
             font=self.window.font_big_bold,
+            focus_loss_outside_click=True,
         )
         self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
-        self.entry_new_language.bind("<FocusOut>", self.on_focus_lost)
 
         # -----------------------------------------------------------------------------------------------
 
@@ -64,7 +66,7 @@ class LanguagesFrame(ctk.CTkFrame):
             self,
             text="Remove Language",
             font=self.window.font_big_bold,
-            command=self.remove_language
+            command=self.remove_language,
         )
         self.button_remove_language.grid(column=1, row=2, sticky="nsew", padx=(5, 5), pady=(10, 5))
 
@@ -99,14 +101,25 @@ class LanguagesFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-    def on_focus_lost(self, event):
-        """Event handler for when the CTkEntry widget loses focus."""
-        self.entry_new_language.configure(state="disabled")
-        self.entry_new_language.delete(0, ctk.END)
-
     def add_language(self):
         new_language = self.entry_new_language.get()
-        if new_language:
+    
+        # Define a regex pattern for disallowed characters: anything not a letter, number, German umlaut, '_', or '-'
+        pattern = r'[^a-zA-Z0-9äöüÄÖÜß_\-]'
+    
+        # Find all non-matching characters
+        invalid_chars = re.findall(pattern, new_language)
+    
+        if invalid_chars:
+            # Join the list of invalid characters into a string to display in the popup
+            invalid_chars_str = ', '.join(set(invalid_chars))  # Use set to remove duplicates
+    
+            # Show the popup with the invalid characters
+            popup_message = f"Invalid characters: {invalid_chars_str}"
+            popup = CustomPopupMessageBox(title="Invalid Input", message=popup_message, message_font=self.window.font_big, button_font=self.window.font_big_bold)
+            popup.show()
+        else:
+            # If there are no invalid characters, proceed to add the language
             self.listbox_languages.add_item(new_language, sort_items=True)
             self.entry_new_language.delete(0, ctk.END)
 

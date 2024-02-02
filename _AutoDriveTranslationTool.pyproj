@@ -21,9 +21,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="dictionaries\Dictionary_English.dic" />
-    <Content Include="translationLists\TranslationList_English.txt" />
-    <Content Include="translationLists\TranslationList_French.txt" />
-    <Content Include="translationLists\TranslationList_German.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="components\DictionaryFrame.py" />
@@ -33,6 +30,7 @@
     <Compile Include="components\WindowMain.py" />
     <Compile Include="custom_widgets\CustomContextMenu.py" />
     <Compile Include="custom_widgets\customCtkWidgets.py" />
+    <Compile Include="custom_widgets\CustomPopupMessageBox.py" />
     <Compile Include="custom_widgets\ScriptRunningTextbox.py" />
     <Compile Include="custom_widgets\ScrollableSelectionFrame.py" />
     <Compile Include="main.py" />
@@ -52,7 +50,6 @@
     <Folder Include="custom_widgets\" />
     <Folder Include="utilities\" />
     <Folder Include="_output\" />
-    <Folder Include="translationLists" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
