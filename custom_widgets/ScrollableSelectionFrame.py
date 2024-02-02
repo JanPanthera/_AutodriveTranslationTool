@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 
 class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
@@ -34,11 +35,11 @@ class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
             return ctk.CTkCheckBox(self, text=item, font=self.custom_font, command=command)
         elif self.widget_type == 'radio':
             widget = ctk.CTkRadioButton(self, text=item, font=self.custom_font, command=lambda: None)
-            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item))
+            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item), add=True)
             return widget
         else:
             widget = ctk.CTkLabel(self, text=item, font=self.custom_font)
-            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item))
+            widget.bind("<Button-1>", lambda event, item=item: self.toggle_selection(item), add=True)
             return widget
 
     def update_widget_state(self, item):
@@ -74,20 +75,26 @@ class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
             self._toggle_single_item(item_or_items)
 
     def _toggle_single_item(self, item):
-        """Helper method to toggle the selection state of a single item."""
-        if item not in self.selection_states:
-            if self.single_select:
-                for key in self.selection_states.keys():
-                    self.selection_states[key] = False
-                self.selection_states[item] = True
-            else:
-                self.selection_states[item] = False
+        """Helper method to toggle the selection state of a single item, with respect to single_select mode."""
+        if self.single_select:
+            # In single-select mode, deselect all items first
+            for key in self.selection_states.keys():
+                self.selection_states[key] = False
+            # Then select the clicked item
+            self.selection_states[item] = True
         else:
-            self.selection_states[item] = not self.selection_states[item]
-        if any(widget.cget("text") == item for widget in self.selection_widgets):
-            self.update_widget_state(item)
-        if item in self.selection_states:
-            self.execute_command(item)
+            # For multi-select mode, toggle the state of the clicked item
+            if item in self.selection_states:
+                self.selection_states[item] = not self.selection_states[item]
+            else:
+                self.selection_states[item] = True
+
+        # Update the visual state for all widgets
+        for key in self.selection_states.keys():
+            self.update_widget_state(key)
+
+        # Execute the associated command, if any
+        self.execute_command(item)
 
     def populate(self, item_list, sort_items=False):
         """Populates the frame with items from a list."""

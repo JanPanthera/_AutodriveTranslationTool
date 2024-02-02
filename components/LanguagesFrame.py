@@ -46,7 +46,7 @@ class LanguagesFrame(ctk.CTkFrame):
             height=40,
             placeholder_text="New Language",
             font=self.window.font_big_bold,
-            focus_loss_outside_click=True,
+            focus_loss_outside_click=True, # BUG: can't focus on text box
         )
         self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
 
@@ -116,8 +116,12 @@ class LanguagesFrame(ctk.CTkFrame):
     
             # Show the popup with the invalid characters
             popup_message = f"Invalid characters: {invalid_chars_str}"
-            popup = CustomPopupMessageBox(title="Invalid Input", message=popup_message, message_font=self.window.font_big, button_font=self.window.font_big_bold)
-            popup.show()
+            popup = CustomPopupMessageBox(
+                title="Invalid Input",
+                message=popup_message,
+                message_font=self.window.font_big,
+                button_font=self.window.font_big_bold,
+                main_window=self.window)
         else:
             # If there are no invalid characters, proceed to add the language
             self.listbox_languages.add_item(new_language, sort_items=True)

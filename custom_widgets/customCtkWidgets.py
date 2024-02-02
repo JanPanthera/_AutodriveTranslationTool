@@ -54,7 +54,7 @@ class ScrollableLabelFrame(ctk.CTkScrollableFrame):
 
     def add_item(self, item):
         label = ctk.CTkLabel(self, text=item)
-        label.bind("<Button-1>", self.on_label_click)  # Bind click event
+        label.bind("<Button-1>", self.on_label_click, add=True)  # Bind click event
         label.grid(row=len(self.label_list), column=0, pady=(0, 5), sticky='nw')
         self.label_list.append(label)
 

@@ -27,12 +27,12 @@ class DictionaryFrame(ctk.CTkFrame):
 
         # -----------------------------------------------------------------------------------------------
 
-        self.frame_file_edit = ctk.CTkTextbox(
+        self.textbox_file_edit = ctk.CTkTextbox(
             self,
             activate_scrollbars=True,
             font=self.window.font_big_bold,
         )
-        self.frame_file_edit.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        self.textbox_file_edit.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
         self.button_load_file = ctk.CTkButton(
             self,
@@ -104,12 +104,12 @@ class DictionaryFrame(ctk.CTkFrame):
     def save_file(self):
         if self.frame_dictionary_files_list.get_checked_items():
             file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
-            file_ops.save_file_from_textbox(self.frame_file_edit, file_path)
+            file_ops.save_file_from_textbox(self.textbox_file_edit, file_path)
 
     def load_file(self):
         if self.frame_dictionary_files_list.get_checked_items():
             file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
-            file_ops.load_file_to_textbox(self.frame_file_edit, file_path)
+            file_ops.load_file_to_textbox(self.textbox_file_edit, file_path)
 
     def update_dropdown_dictionary_languages_select(self):
         self.dropdown_dictionary_languages_select.configure(values=self.window.supported_languages)
