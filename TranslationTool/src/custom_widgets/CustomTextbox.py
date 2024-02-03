@@ -11,11 +11,11 @@ class CustomTextbox(ctk.CTkTextbox):
 
     def create_context_menu(self):
         menu_items = [
-            {"text": "Copy", "command": self.copy_selection},
-            {"text": "Paste", "command": self.paste},
-            {"text": "Cut", "command": self.cut},
-            {"text": "Clear", "command": self.clear},
-            {"text": "Select All", "command": self.select_all},
+            {"text": _("Copy"), "command": self.copy_selection},
+            {"text": _("Paste"), "command": self.paste},
+            {"text": _("Cut"), "command": self.cut},
+            {"text": _("Clear"), "command": self.clear},
+            {"text": _("Select All"), "command": self.select_all},
         ]
         self.bind("<Button-3>", lambda event: self.show_context_menu(event, menu_items))
 

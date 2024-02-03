@@ -59,7 +59,7 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.button_check_all = ctk.CTkButton(
             self.frame1,
-            text="Check All",
+            text=_("Check All"),
             font=self.window.font_big_bold,
             command=self.scrollable_selection_frame.check_all,
         )
@@ -67,7 +67,7 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.button_uncheck_all = ctk.CTkButton(
             self.frame1,
-            text="Uncheck All",
+            text=_("Uncheck All"),
             font=self.window.font_big_bold,
             command=self.scrollable_selection_frame.uncheck_all,
         )
@@ -75,7 +75,7 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.button_translate = ctk.CTkButton(
             self.frame1,
-            text="Translate",
+            text=_("Translate"),
             font=self.window.font_big_bold,
             command=self.run_translate_script,
         )
@@ -83,7 +83,7 @@ class TranslationFrame(ctk.CTkFrame):
         
         self.button_validate_output_files = ctk.CTkButton(
             self.frame1,
-            text="Validate Output Files",
+            text=_("Validate Output Files"),
             font=self.window.font_big_bold,
             command=self.validate_output_files,
         )
@@ -110,7 +110,7 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.button_clear_console_output = ctk.CTkButton(
             self.frame2,
-            text="Clear Console",
+            text=_("Clear Console"),
             font=self.window.font_big_bold,
             command=self.window.console_output.clear_text,
         )

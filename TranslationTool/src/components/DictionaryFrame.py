@@ -53,7 +53,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
         self.button_save_file = ctk.CTkButton(
             frame1,
-            text="Save to selected File",
+            text=_("Save to selected File"),
             font=self.window.font_big_bold,
             command=self.save_file
         )
@@ -61,7 +61,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
         self.button_load_file = ctk.CTkButton(
             frame1,
-            text="Load from selected File",
+            text=_("Load from selected File"),
             font=self.window.font_big_bold,
             command=self.load_file
         )
@@ -101,7 +101,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
         self.button_create_file = ctk.CTkButton(
             frame2,
-            text="Create Dictionary File",
+            text=_("Create Dictionary File"),
             font=self.window.font_big_bold,
             command=self.create_file,
         )
@@ -109,7 +109,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
         self.button_delete_file = ctk.CTkButton(
             frame2,
-            text="Delete selected Dictionary File",
+            text=_("Delete selected Dictionary File"),
             font=self.window.font_big_bold,
             command=self.delete_file,
         )

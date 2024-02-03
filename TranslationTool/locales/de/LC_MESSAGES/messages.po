@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-03 16:19+0100\n"
-"PO-Revision-Date: 2024-02-03 16:05+0100\n"
+"POT-Creation-Date: 2024-02-03 17:11+0100\n"
+"PO-Revision-Date: 2024-02-03 16:58+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
@@ -18,22 +18,156 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: src/components/WindowMain.py:63
+#: src/components/DictionaryFrame.py:56
+msgid "Save to selected File"
+msgstr "In ausgewählte Datei speichern"
+
+#: src/components/DictionaryFrame.py:64
+msgid "Load from selected File"
+msgstr "Aus ausgewählter Datei laden"
+
+#: src/components/DictionaryFrame.py:104
+msgid "Create Dictionary File"
+msgstr "Wörterbuchdatei erstellen"
+
+#: src/components/DictionaryFrame.py:112
+msgid "Delete selected Dictionary File"
+msgstr "Ausgewählte Wörterbuchdatei löschen"
+
+#: src/components/LanguagesFrame.py:58
+msgid "New Language"
+msgstr "Neue Sprache"
+
+#: src/components/LanguagesFrame.py:68
+msgid "Add Language"
+msgstr "Sprache hinzufügen"
+
+#: src/components/LanguagesFrame.py:77
+msgid "Remove Language"
+msgstr "Sprache entfernen"
+
+#: src/components/LanguagesFrame.py:88
+msgid "Save Custom"
+msgstr "Benutzerdefiniert speichern"
+
+#: src/components/LanguagesFrame.py:97
+msgid "Load Custom"
+msgstr "Benutzerdefiniert laden"
+
+#: src/components/LanguagesFrame.py:106
+msgid "Load Default"
+msgstr "Standard laden"
+
+#: src/components/LanguagesFrame.py:128
+msgid "Invalid characters: "
+msgstr "Ungültige Zeichen: "
+
+#: src/components/LanguagesFrame.py:131
+msgid "Invalid Input"
+msgstr "Ungültige Eingabe"
+
+#: src/components/OptionsFrame.py:46
+msgid "Save on Window Close"
+msgstr "Beim Schließen des Fensters speichern"
+
+#: src/components/OptionsFrame.py:53
+msgid "Window Size/Pos"
+msgstr "Fenstergröße/-position"
+
+#: src/components/OptionsFrame.py:64
+msgid "Selected Language"
+msgstr "Ausgewählte Sprache"
+
+#: src/components/OptionsFrame.py:75 src/components/OptionsFrame.py:123
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: src/components/OptionsFrame.py:96
+msgid "Appearance Mode"
+msgstr "Erscheinungsbildmodus"
+
+#: src/components/OptionsFrame.py:103
+msgid "Use High DPI Scaling"
+msgstr "High-DPI-Skalierung verwenden"
+
+#: src/components/OptionsFrame.py:144
+msgid "Reset Settings"
+msgstr "Einstellungen zurücksetzen"
+
+#: src/components/OptionsFrame.py:151
+msgid "Reset Window Size"
+msgstr "Fenstergröße zurücksetzen"
+
+#: src/components/OptionsFrame.py:159
+msgid "Reset Window Position"
+msgstr "Fensterposition zurücksetzen"
+
+#: src/components/TranslationFrame.py:62
+msgid "Check All"
+msgstr "Alle auswählen"
+
+#: src/components/TranslationFrame.py:70
+msgid "Uncheck All"
+msgstr "Alle abwählen"
+
+#: src/components/TranslationFrame.py:78
+msgid "Translate"
+msgstr "Übersetzen"
+
+#: src/components/TranslationFrame.py:86
+msgid "Validate Output Files"
+msgstr "Ausgabedateien überprüfen"
+
+#: src/components/TranslationFrame.py:113
+msgid "Clear Console"
+msgstr "Konsole leeren"
+
+#: src/components/WindowMain.py:62
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: src/components/WindowMain.py:64
+#: src/components/WindowMain.py:63
 msgid "Languages"
 msgstr "Sprachen"
 
-#: src/components/WindowMain.py:65
+#: src/components/WindowMain.py:64
 msgid "Dictionary"
 msgstr "Wörterbuch"
 
-#: src/components/WindowMain.py:66
+#: src/components/WindowMain.py:65
 msgid "Options"
 msgstr "Optionen"
 
-#~ msgid "Hello World!"
-#~ msgstr "Hallo Welt!"
+#: src/custom_widgets/CustomTextbox.py:14
+#: src/custom_widgets/ScriptRunningTextbox.py:64
+msgid "Copy"
+msgstr "Kopieren"
+
+#: src/custom_widgets/CustomTextbox.py:15
+#: src/custom_widgets/ScriptRunningTextbox.py:66
+msgid "Paste"
+msgstr "Einfügen"
+
+#: src/custom_widgets/CustomTextbox.py:16
+msgid "Cut"
+msgstr "Ausschneiden"
+
+#: src/custom_widgets/CustomTextbox.py:17
+#: src/custom_widgets/ScriptRunningTextbox.py:63
+msgid "Clear"
+msgstr "Leeren"
+
+#: src/custom_widgets/CustomTextbox.py:18
+#: src/custom_widgets/ScriptRunningTextbox.py:65
+msgid "Select All"
+msgstr "Alles auswählen"
+
+#~ msgid "Light"
+#~ msgstr "Hell"
+
+#~ msgid "Dark"
+#~ msgstr "Dunkel"
+
+#~ msgid "System"
+#~ msgstr "System"
 

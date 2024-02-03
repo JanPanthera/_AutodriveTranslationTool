@@ -1,7 +1,12 @@
+import os
+
 from src.utilities.localization import setup_localization
 
 # Setup localization before importing WindowMain, which may use _() for translations
-setup_localization(locale_dir='TranslationTool/locales', language='de')
+if 'VSAPPIDDIR' in os.environ:
+    setup_localization(locale_dir='TranslationTool/locales', language='de')
+else:
+    setup_localization(locale_dir='locales', language='de')
 
 # Now, import WindowMain after localization setup is complete
 from src.utilities.logger import CustomLogger

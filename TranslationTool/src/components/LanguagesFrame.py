@@ -55,7 +55,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.entry_new_language = ctk.CTkEntry(
             frame1,
             height=40,
-            placeholder_text="New Language",
+            placeholder_text=_("New Language"),
             font=self.window.font_big_bold,
         )
         self.entry_new_language.grid(column=0, row=1, columnspan=3, sticky="nsew", padx=(10, 10), pady=(0, 0))
@@ -65,7 +65,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Button to add a new language
         self.button_add_language = ctk.CTkButton(
             frame1,
-            text="Add Language",
+            text=_("Add Language"),
             font=self.window.font_big_bold,
             command=self.add_language
         )
@@ -74,7 +74,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Button to remove selected languages
         self.button_remove_language = ctk.CTkButton(
             frame1,
-            text="Remove Language",
+            text=_("Remove Language"),
             font=self.window.font_big_bold,
             command=self.remove_language,
         )
@@ -85,7 +85,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Button to save languages
         self.button_save_custom = ctk.CTkButton(
             frame1,
-            text="Save Custom",
+            text=_("Save Custom"),
             font=self.window.font_big_bold,
             command=self.list_box_save_custom
         )
@@ -94,7 +94,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Button to load languages from custom config
         self.button_load_custom = ctk.CTkButton(
             frame1,
-            text="Load Custom",
+            text=_("Load Custom"),
             font=self.window.font_big_bold,
             command=self.list_box_load_custom
         )
@@ -103,7 +103,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Button to load languages from default config
         self.button_load_default = ctk.CTkButton(
             frame1,
-            text="Load Default",
+            text=_("Load Default"),
             font=self.window.font_big_bold,
             command=self.list_box_load_default
         )
@@ -125,9 +125,10 @@ class LanguagesFrame(ctk.CTkFrame):
             invalid_chars_str = ', '.join(set(invalid_chars))  # Use set to remove duplicates
     
             # Show the popup with the invalid characters
-            popup_message = f"Invalid characters: {invalid_chars_str}"
+            popup_message = _("Invalid characters: ")
+            popup_message += f"{invalid_chars_str}"
             popup = CustomPopupMessageBox(
-                title="Invalid Input",
+                title=_("Invalid Input"),
                 message=popup_message,
                 message_font=self.window.font_big,
                 button_font=self.window.font_big_bold,

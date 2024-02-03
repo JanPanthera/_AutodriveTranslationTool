@@ -43,14 +43,14 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.label_save_on_close = ctk.CTkLabel(
             frame1,
-            text="Save on Window Close",
+            text=_("Save on Window Close"),
             font=self.window.font_bigger_bold,
         )
         self.label_save_on_close.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
         self.checkbox_save_window_pos = ctk.CTkCheckBox(
             frame1,
-            text="Window Size/Pos",
+            text=_("Window Size/Pos"),
             font=self.window.font_big_bold,
             variable=self.save_window_pos,
             onvalue=True,
@@ -61,7 +61,7 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.checkbox_save_selected_language = ctk.CTkCheckBox(
             frame1,
-            text="Selected Language",
+            text=_("Selected Language"),
             font=self.window.font_big_bold,
             variable=self.save_selected_language,
             onvalue=True,
@@ -72,7 +72,7 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.button_reset_save_on_window_close_settings = ctk.CTkButton(
             frame1,
-            text="Reset",
+            text=_("Reset"),
             font=self.window.font_big_bold,
             command=self.reset_save_on_window_close_settings,
         )
@@ -93,14 +93,14 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.label_appearance_mode = ctk.CTkLabel(
             frame2,
-            text="Appearance Mode",
+            text=_("Appearance Mode"),
             font=self.window.font_bigger_bold,
         )
         self.label_appearance_mode.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
         self.checkbox_use_high_dpi_scaling = ctk.CTkCheckBox(
             frame2,
-            text="Use High DPI Scaling",
+            text=_("Use High DPI Scaling"),
             font=self.window.font_big_bold,
             variable=self.window.use_high_dpi_scaling,
             onvalue=True,
@@ -120,7 +120,7 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.button_reset_appearance_mode_settings = ctk.CTkButton(
             frame2,
-            text="Reset",
+            text=_("Reset"),
             font=self.window.font_big_bold,
             command=self.reset_appearance_mode_settings,
         )
@@ -141,14 +141,14 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.label_reset_settings = ctk.CTkLabel(
             frame3,
-            text="Reset Settings",
+            text=_("Reset Settings"),
             font=self.window.font_bigger_bold,
         )
         self.label_reset_settings.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
         self.button_reset_window_geometry = ctk.CTkButton(
             frame3,
-            text="Reset Window Size",
+            text=_("Reset Window Size"),
             font=self.window.font_big_bold,
             command=self.reset_window_size,
         )
@@ -156,7 +156,7 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.button_reset_window_pos = ctk.CTkButton(
             frame3,
-            text="Reset Window Position",
+            text=_("Reset Window Position"),
             font=self.window.font_big_bold,
             command=self.reset_window_pos,
         )
