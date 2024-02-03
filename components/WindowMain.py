@@ -1,5 +1,6 @@
 # Third-party library imports
 import customtkinter as ctk
+from customtkinter.windows.widgets import appearance_mode
 
 # Local application/library specific import
 import utilities.config as config
@@ -19,6 +20,7 @@ class WindowMain(ctk.CTk):
         self.console_output = None
         self.logger = CustomLogger(textbox=self.console_output, log_file="translation_tool.log", max_log_size=10*1024*1024, backup_count=5)
         self.supported_languages = config.load_setting("Settings", "supported_languages", default_value="English").split(",")
+        self.appearance_mode_str = ctk.StringVar(self, config.load_setting("Settings", "appearance_mode", default_value="System"))
 
         self.default_font = "Helvetica"
         self.font_bigger_bold = (self.default_font, 24, "bold")
@@ -30,17 +32,18 @@ class WindowMain(ctk.CTk):
         self.font_small_bold = (self.default_font, 10, "bold")
         self.font_small = (self.default_font, 10)
 
-    def init(self):
-        if config.load_setting("Settings", "use_high_dpi_scaling", default_value="True") == "False":
+        self.use_high_dpi_scaling = ctk.BooleanVar(self, config.load_setting("Settings", "use_high_dpi_scaling", default_value="True"))
+        if not self.use_high_dpi_scaling.get():
             ctk.deactivate_automatic_dpi_awareness()
 
-        use_dark_mode = config.load_setting("Settings", "use_dark_mode", default_value="False")
-        if use_dark_mode == "True":
+        if self.appearance_mode_str.get() == "Dark":
             ctk.set_appearance_mode("dark")
-        elif use_dark_mode == "False":
+        elif self.appearance_mode_str.get() == "Light":
             ctk.set_appearance_mode("light")
         else:
-            ctk.set_appearance_mode("system") # depe
+            ctk.set_appearance_mode("system")
+
+    def init(self):
 
         self.title("AutoDrive Translation Tool")
         #self.resizable(False, False)
