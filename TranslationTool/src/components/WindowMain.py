@@ -1,6 +1,7 @@
 # Third-party library imports
 import customtkinter as ctk
 from customtkinter.windows.widgets import appearance_mode
+import os
 
 # Local application/library specific import
 import src.utilities.config as config
@@ -10,7 +11,6 @@ from src.components.LanguagesFrame import LanguagesFrame
 from src.components.DictionaryFrame import DictionaryFrame
 from src.components.OptionsFrame import OptionsFrame
 from src.utilities.logger import CustomLogger
-
 
 class WindowMain(ctk.CTk):
     def __init__(self, translation_tool_instance=None):
@@ -32,9 +32,13 @@ class WindowMain(ctk.CTk):
         self.font_small_bold = (self.default_font, 10, "bold")
         self.font_small = (self.default_font, 10)
 
-        self.input_path = config.load_setting("Settings", "input_path", default_value="TranslationTool/_input")
-        self.output_path = config.load_setting("Settings", "output_path", default_value="TranslationTool/_output")
-        self.dictionaries_path = config.load_setting("Settings", "dictionaries_path", default_value="TranslationTool/_dictionaries")
+        self.input_path = config.load_setting("Settings", "input_path", default_value="_input")
+        self.output_path = config.load_setting("Settings", "output_path", default_value="_output")
+        self.dictionaries_path = config.load_setting("Settings", "dictionaries_path", default_value="_dictionaries")
+        if 'VSAPPIDDIR' in os.environ:
+            self.input_path = os.path.join("TranslationTool/", self.input_path)
+            self.output_path = os.path.join("TranslationTool/", self.output_path)
+            self.dictionaries_path = os.path.join("TranslationTool/", self.dictionaries_path)
 
         self.use_high_dpi_scaling = ctk.BooleanVar(self, config.load_setting("Settings", "use_high_dpi_scaling", default_value="True"))
         if not self.use_high_dpi_scaling.get():

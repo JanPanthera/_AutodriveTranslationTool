@@ -2,69 +2,91 @@
 import configparser
 import os
 
-DEFAULT_CONFIG_FILE_PATH = "TranslationTool/config/config-default.ini"
-USER_CONFIG_FILE_PATH = "TranslationTool/config/config-custom.ini"
+DEFAULT_CONFIG_FILE_PATH = "config/config-default.ini"
+USER_CONFIG_FILE_PATH = "config/config-custom.ini"
+
+if 'VSAPPIDDIR' in os.environ:
+    DEFAULT_CONFIG_FILE_PATH = os.path.join("TranslationTool/", DEFAULT_CONFIG_FILE_PATH)
+    USER_CONFIG_FILE_PATH = os.path.join("TranslationTool/", USER_CONFIG_FILE_PATH)
 
 def load_setting(section, setting, default_value=None, use_default_config=False):
-    """
-    Loads a setting from the configuration files. Attempts to load from the user configuration
-    unless use_default_config is True. If the setting is not found, falls back to the default
-    configuration file. Returns a default value if the setting is not found in either.
-
-    :param section: The section in the configuration file.
-    :param setting: The setting to be loaded.
-    :param default_value: The default value to return if the setting is not found.
-    :param use_default_config: Flag to indicate whether to use the default configuration file.
-    :return: The value of the setting if found, otherwise the default value.
-    """
     config = configparser.ConfigParser()
 
+    if not isinstance(section, str) or not isinstance(setting, str) or not section or not setting:
+        print("Invalid section or setting name. Both must be non-empty strings.")
+        return default_value
+
     def get_setting_value(file_path):
-        if os.path.exists(file_path):
+        try:
+            if not os.path.exists(file_path):
+                print(f"Configuration file {file_path} not found.")
+                return None
             config.read(file_path)
-            if config.has_section(section) and config.has_option(section, setting):
-                return config.get(section, setting)
-        return None
+            return config.get(section, setting) if config.has_section(section) and config.has_option(section, setting) else None
+        except configparser.Error as e:
+            print(f"Error parsing the configuration file {file_path}: {e}")
+            return None
+
+    value = get_setting_value(USER_CONFIG_FILE_PATH if not use_default_config else DEFAULT_CONFIG_FILE_PATH)
+    if value is not None:
+        return value
 
     if not use_default_config:
-        value = get_setting_value(USER_CONFIG_FILE_PATH)
-        if value is not None:
-            return value
+        # If not found in user config, try default config
+        value = get_setting_value(DEFAULT_CONFIG_FILE_PATH)
 
-    # Attempt to load from the default configuration file
-    value = get_setting_value(DEFAULT_CONFIG_FILE_PATH)
     return value if value is not None else default_value
 
-
 def save_setting(section, setting, value):
-    """
-    Saves a single setting to the user configuration file. If the section does not exist,
-    it is created. If the setting already exists, its value is updated.
+    if not isinstance(section, str) or not isinstance(setting, str) or not section or not setting:
+        print("Invalid section or setting name. Both must be non-empty strings.")
+        return
 
-    :param section: The section under which the setting should be saved.
-    :param setting: The name of the setting to save.
-    :param value: The value to assign to the setting.
-    """
+    config = configparser.ConfigParser()
     try:
-        if isinstance(section, str) and isinstance(setting, str) and section and setting:
-            config = configparser.ConfigParser()
-            config.read(USER_CONFIG_FILE_PATH)
+        config.read(USER_CONFIG_FILE_PATH)
+    except configparser.Error as e:
+        print(f"Error parsing the user configuration file: {e}")
+        return
 
-            if not config.has_section(section):
-                config.add_section(section)
+    if not config.has_section(section):
+        config.add_section(section)
 
-            config.set(section, setting, str(value))  # Ensure value is in a proper format
+    config.set(section, setting, str(value))
 
+    try:
+        with open(USER_CONFIG_FILE_PATH, "w") as config_file:
+            config.write(config_file)
+    except (IOError, OSError) as e:
+        print(f"Error writing to the user configuration file: {e}")
+
+def reset_setting(section, setting):
+
+    config_default = configparser.ConfigParser()
+    config_user = configparser.ConfigParser()
+
+    try:
+        config_default.read(DEFAULT_CONFIG_FILE_PATH)
+        config_user.read(USER_CONFIG_FILE_PATH)
+    except configparser.Error as e:
+        print(f"Error parsing configuration files: {e}")
+        return
+
+    if config_default.has_section(section) and config_default.has_option(section, setting):
+        default_value = config_default.get(section, setting)
+        if not config_user.has_section(section):
+            config_user.add_section(section)
+        config_user.set(section, setting, default_value)
+        try:
             with open(USER_CONFIG_FILE_PATH, "w") as config_file:
-                config.write(config_file)
-        else:
-            raise ValueError("Invalid section or setting. Both must be non-empty strings.")
-    except (IOError, OSError, configparser.Error) as e:
-        error_message = f"Configuration error while saving setting: {e}"
-        print(error_message)
-    except Exception as e:
-        error_message = f"Unexpected error while saving setting: {e}"
-        print(error_message)
+                config_user.write(config_file)
+        except (IOError, OSError) as e:
+            print(f"Error writing to the user configuration file: {e}")
+    else:
+        print(f"Default setting '{setting}' not found in section '{section}'.")
+
+
+
 
 
 def save_settings(save_list):
@@ -85,41 +107,6 @@ def save_settings(save_list):
         except Exception as e:
             error_message = f"Error while saving {setting} in {section}: {e}"
             print(error_message)
-
-
-def reset_setting(section, setting):
-    """
-    Resets a specific setting to its default value within a user's configuration file.
-    If the section or setting does not exist, logs an error.
-
-    :param section: The section in the configuration file where the setting is located.
-    :param setting: The setting within the section to reset to its default value.
-    """
-    try:
-        config_default = configparser.ConfigParser()
-        config_default.read(DEFAULT_CONFIG_FILE_PATH)
-        
-        config_user = configparser.ConfigParser()
-        config_user.read(USER_CONFIG_FILE_PATH)
-
-        if config_default.has_section(section) and config_default.has_option(section, setting):
-            default_value = config_default.get(section, setting)
-            config_user.set(section, setting, default_value)
-            with open(USER_CONFIG_FILE_PATH, "w") as config_file:
-                config_user.write(config_file)
-        else:
-            error_message = f"Default setting {setting} not found in section {section} of the default configuration."
-            print(error_message)
-
-    except configparser.Error as e:
-        error_message = f"Configuration parsing error while resetting setting: {e}"
-        print(error_message)
-    except IOError as e:
-        error_message = f"I/O error while resetting setting: {e}"
-        print(error_message)
-    except Exception as e:
-        error_message = f"Unexpected error while resetting setting: {e}"
-        print(error_message)
 
 
 def reset_settings(reset_list):

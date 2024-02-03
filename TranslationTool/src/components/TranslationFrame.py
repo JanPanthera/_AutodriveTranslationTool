@@ -117,6 +117,7 @@ class TranslationFrame(ctk.CTkFrame):
         translate.translate_files(
             input_path=self.window.input_path,
             output_path=self.window.output_path,
+            dictionaries_path=self.window.dictionaries_path,
             languages=self.scrollable_selection_frame.get_checked_items(),
             output_widget=self.window.console_output,
         )
