@@ -154,4 +154,5 @@ cython_debug/
 # Visual Studio
 .vs
 *.pyproj
-_AutoDriveTranslationTool.pyproj
+*.sln
+*.suo
