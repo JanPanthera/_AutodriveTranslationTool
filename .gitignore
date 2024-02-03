@@ -156,3 +156,4 @@ cython_debug/
 *.pyproj
 *.sln
 *.suo
+*.user
