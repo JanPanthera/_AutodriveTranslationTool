@@ -1,3 +1,4 @@
+from config import save_setting, load_setting
 
 def save_window_geometry(window_geometry):
     size_part, pos_x, pos_y = window_geometry.split('+')
