@@ -1,0 +1,1 @@
+git+https://github.com/janpanthera/customtkinter.git@main#egg=customtkinter # Custom widget enhancements
