@@ -59,16 +59,14 @@ class WindowMain(ctk.CTk):
         self.tab_view = ctk.CTkTabview(self, fg_color="transparent", bg_color="transparent")
         self.tab_view.pack(fill="both", expand=True)
 
-        self.translation_frame = TranslationFrame(self.tab_view.add("Translation"), self)
+        self.translation_frame = TranslationFrame(self.tab_view.add(_("Translation")), self)
+        self.languages_frame = LanguagesFrame(self.tab_view.add(_("Languages")), self)
+        self.dictionary_frame = DictionaryFrame(self.tab_view.add(_("Dictionary")), self)
+        self.options_frame = OptionsFrame(self.tab_view.add(_("Options")), self)
+
         self.translation_frame.create_widgets()
-
-        self.languages_frame = LanguagesFrame(self.tab_view.add("Languages"), self)
         self.languages_frame.create_widgets()
-
-        self.dictionary_frame = DictionaryFrame(self.tab_view.add("Dictionary"), self)
         self.dictionary_frame.create_widgets()
-
-        self.options_frame = OptionsFrame(self.tab_view.add("Options"), self)
         self.options_frame.create_widgets()
 
         self.geometry(self.load_window_geometry())

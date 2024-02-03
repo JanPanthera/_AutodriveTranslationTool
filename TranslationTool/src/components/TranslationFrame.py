@@ -5,7 +5,7 @@ import src.utilities.config as config
 import src.utilities.process_mgmt as process_mgmt
 from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 from src.custom_widgets.ScriptRunningTextbox import ScriptRunningTextbox
-from src.functions import translate
+from src.functions import translate, validate_output_files
 
 class TranslationFrame(ctk.CTkFrame):
     def __init__(self, widget, parent):
@@ -39,6 +39,7 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.frame1.rowconfigure(0, weight=0)
         self.frame1.rowconfigure(1, weight=1)
+        self.frame1.rowconfigure(2, weight=0)
         self.frame1.rowconfigure(3, weight=0)
 
         self.scrollable_selection_frame = ScrollableSelectionFrame(
@@ -78,7 +79,15 @@ class TranslationFrame(ctk.CTkFrame):
             font=self.window.font_big_bold,
             command=self.run_translate_script,
         )
-        self.button_translate.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_translate.grid(column=0, row=2, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        
+        self.button_validate_output_files = ctk.CTkButton(
+            self.frame1,
+            text="Validate Output Files",
+            font=self.window.font_big_bold,
+            command=self.validate_output_files,
+        )
+        self.button_validate_output_files.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
 
@@ -108,6 +117,13 @@ class TranslationFrame(ctk.CTkFrame):
         self.button_clear_console_output.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
         # -----------------------------------------------------------------------------------------------
+
+    def validate_output_files(self):
+        validate_output_files.validate_output_files(
+            input_path=self.window.output_path,
+            languages=self.scrollable_selection_frame.get_checked_items(),
+            output_widget=self.window.console_output,
+        )
 
     def update_scrollable_selection_frame(self):
         self.scrollable_selection_frame.remove_all_items()

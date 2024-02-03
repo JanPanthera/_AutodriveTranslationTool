@@ -6,7 +6,7 @@ def output(message, output_widget=None):
     if output_widget:
         output_widget.configure(state='normal')
         output_widget.insert('end', message + "\n")
-        output_widget.configure(state='disable') # normal ? readonly
+        output_widget.configure(state='disable')
         output_widget.see('end')
     else:
         print(message)
