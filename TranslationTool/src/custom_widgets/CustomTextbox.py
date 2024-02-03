@@ -1,6 +1,6 @@
 import customtkinter as ctk
 
-from custom_widgets.CustomContextMenu import CustomContextMenu
+from src.custom_widgets.CustomContextMenu import CustomContextMenu
 
 class CustomTextbox(ctk.CTkTextbox):
     def __init__(self, parent, *args, **kwargs):

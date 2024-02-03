@@ -1,7 +1,7 @@
 
 import customtkinter as ctk
 
-import utilities.config as config
+import src.utilities.config as config
 
 
 class OptionsFrame(ctk.CTkFrame):
@@ -135,7 +135,6 @@ class OptionsFrame(ctk.CTkFrame):
         frame3.rowconfigure(0, weight=0)
         frame3.rowconfigure(1, weight=0)
         frame3.rowconfigure(2, weight=0)
-        frame3.rowconfigure(3, weight=0)
 
         # Horizontal expansion weights
         frame3.columnconfigure(0, weight=0)
@@ -147,21 +146,13 @@ class OptionsFrame(ctk.CTkFrame):
         )
         self.label_reset_settings.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
-        self.button_reset_on_window_close = ctk.CTkButton(
-            frame3,
-            text="Reset Save on Window Close",
-            font=self.window.font_big_bold,
-            command=self.reset_save_on_window_close_settings,
-        )
-        self.button_reset_on_window_close.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
-
         self.button_reset_window_geometry = ctk.CTkButton(
             frame3,
             text="Reset Window Size",
             font=self.window.font_big_bold,
             command=self.reset_window_size,
         )
-        self.button_reset_window_geometry.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        self.button_reset_window_geometry.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
         self.button_reset_window_pos = ctk.CTkButton(
             frame3,
@@ -169,15 +160,15 @@ class OptionsFrame(ctk.CTkFrame):
             font=self.window.font_big_bold,
             command=self.reset_window_pos,
         )
-        self.button_reset_window_pos.grid(column=0, row=3, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_reset_window_pos.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
     # -----------------------------------------------------------------------------------------------
 
     def reset_save_on_window_close_settings(self):
         config.reset_settings([["Settings", "save_window_pos"],
                                ["Settings", "save_selected_language"]])
-        self.window.options_frame.save_window_pos.set(config.load_setting("Settings", "save_window_pos"))
-        self.window.options_frame.save_selected_language.set(config.load_setting("Settings", "save_selected_language"))
+        self.window.options_frame.save_window_pos.set(config.load_setting("Settings", "save_window_pos", default_value="True"))
+        self.window.options_frame.save_selected_language.set(config.load_setting("Settings", "save_selected_language", default_value="True"))
 
     def reset_appearance_mode_settings(self):
         config.reset_settings([["Settings", "use_high_dpi_scaling"], ["Settings", "appearance_mode"]])

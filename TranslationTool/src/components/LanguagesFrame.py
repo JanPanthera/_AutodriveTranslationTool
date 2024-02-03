@@ -2,9 +2,9 @@
 import customtkinter as ctk
 import re
 
-import utilities.config as config
-from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
-from custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
+import src.utilities.config as config
+from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
+from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
 
 
 class LanguagesFrame(ctk.CTkFrame):

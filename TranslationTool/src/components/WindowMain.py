@@ -3,13 +3,13 @@ import customtkinter as ctk
 from customtkinter.windows.widgets import appearance_mode
 
 # Local application/library specific import
-import utilities.config as config
+import src.utilities.config as config
 
-from components.TranslationFrame import TranslationFrame
-from components.LanguagesFrame import LanguagesFrame
-from components.DictionaryFrame import DictionaryFrame
-from components.OptionsFrame import OptionsFrame
-from utilities.logger import CustomLogger
+from src.components.TranslationFrame import TranslationFrame
+from src.components.LanguagesFrame import LanguagesFrame
+from src.components.DictionaryFrame import DictionaryFrame
+from src.components.OptionsFrame import OptionsFrame
+from src.utilities.logger import CustomLogger
 
 
 class WindowMain(ctk.CTk):
@@ -31,6 +31,10 @@ class WindowMain(ctk.CTk):
         self.font_medium = (self.default_font, 14)
         self.font_small_bold = (self.default_font, 10, "bold")
         self.font_small = (self.default_font, 10)
+
+        self.input_path = config.load_setting("Settings", "input_path", default_value="TranslationTool/_input")
+        self.output_path = config.load_setting("Settings", "output_path", default_value="TranslationTool/_output")
+        self.dictionaries_path = config.load_setting("Settings", "dictionaries_path", default_value="TranslationTool/_dictionaries")
 
         self.use_high_dpi_scaling = ctk.BooleanVar(self, config.load_setting("Settings", "use_high_dpi_scaling", default_value="True"))
         if not self.use_high_dpi_scaling.get():

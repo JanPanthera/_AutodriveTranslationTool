@@ -1,7 +1,7 @@
 import subprocess
 import sys
 import customtkinter as ctk
-from custom_widgets.CustomContextMenu import CustomContextMenu  # Ensure the correct import path
+from src.custom_widgets.CustomContextMenu import CustomContextMenu  # Ensure the correct import path
 
 class ScriptRunningTextbox(ctk.CTkTextbox):
     def __init__(self, parent, autoscroll=True, max_lines=1000, **kwargs):

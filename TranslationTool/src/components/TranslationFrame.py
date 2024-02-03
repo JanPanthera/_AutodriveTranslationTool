@@ -1,10 +1,11 @@
 
 import customtkinter as ctk
 
-import utilities.config as config
-import utilities.process_mgmt as process_mgmt
-from custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
-from custom_widgets.ScriptRunningTextbox import ScriptRunningTextbox
+import src.utilities.config as config
+import src.utilities.process_mgmt as process_mgmt
+from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
+from src.custom_widgets.ScriptRunningTextbox import ScriptRunningTextbox
+from src.functions import translate
 
 class TranslationFrame(ctk.CTkFrame):
     def __init__(self, widget, parent):
@@ -113,7 +114,9 @@ class TranslationFrame(ctk.CTkFrame):
         self.scrollable_selection_frame.populate(self.window.supported_languages, sort_items=True)
 
     def run_translate_script(self):
-        self.window.console_output.run_script(
-            script="translate.py",
-            args=self.scrollable_selection_frame.get_checked_items(),
+        translate.translate_files(
+            input_path=self.window.input_path,
+            output_path=self.window.output_path,
+            languages=self.scrollable_selection_frame.get_checked_items(),
+            output_widget=self.window.console_output,
         )
