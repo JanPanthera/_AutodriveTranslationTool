@@ -87,7 +87,7 @@ def main():
     print(f"Starting translation process for {len(args.selected_languages)} languages: {', '.join(args.selected_languages)}.\n")
 
     for selected_language in args.selected_languages:
-        dictionary_file_name = os.path.join("dictionaries", f"Dictionary_{selected_language}.dic")
+        dictionary_file_name = os.path.join("_dictionaries", f"Dictionary_{selected_language}.dic")
         output_path = os.path.join("_output", selected_language)
 
         if not os.path.isfile(dictionary_file_name):
