@@ -83,7 +83,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
         self.frame_dictionary_files_list = ScrollableSelectionFrame(
             frame2,
-            item_list=file_ops.get_all_file_names_in_directory("dictionaries"),
+            item_list=file_ops.get_all_file_names_in_directory("_dictionaries"),
             widget_type='label',
             single_select=True,
             command=None,
@@ -120,24 +120,24 @@ class DictionaryFrame(ctk.CTkFrame):
     def create_file(self):
         file_name = "Dictionary_" + self.dropdown_dictionary_languages_select.get() + ".dic"
         if file_name not in self.frame_dictionary_files_list.get_all_items():
-            file_path = "dictionaries/" + file_name
+            file_path = "_dictionaries/" + file_name
             file_ops.create_file(file_path)
             self.frame_dictionary_files_list.add_item(file_name)
 
     def delete_file(self):
         if self.frame_dictionary_files_list.get_checked_items():
-            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            file_path = "_dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
             file_ops.delete_file(file_path)
             self.frame_dictionary_files_list.remove_checked_items()
 
     def save_file(self):
         if self.frame_dictionary_files_list.get_checked_items():
-            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            file_path = "_dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
             file_ops.save_file_from_textbox(self.textbox_file_edit, file_path)
 
     def load_file(self):
         if self.frame_dictionary_files_list.get_checked_items():
-            file_path = "dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
+            file_path = "_dictionaries/" + self.frame_dictionary_files_list.get_checked_items()[0]
             file_ops.load_file_to_textbox(self.textbox_file_edit, file_path)
 
     def update_dropdown_dictionary_languages_select(self):
