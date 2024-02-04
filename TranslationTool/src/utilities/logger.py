@@ -54,9 +54,21 @@ class CustomLogger:
         self.logger = logging.getLogger(name)
         self.logger.setLevel(log_level)
 
+        # Extract directory from log_file
+        log_file_dir = os.path.dirname(log_file)
+        log_file_path = None
+
         # Check if log_file contains a directory path
-        if os.path.dirname(log_file):
-            log_file_path = log_file  # Use the provided full path
+        if log_file_dir:
+            # Ensure the directory exists
+            if not os.path.exists(log_file_dir):
+                try:
+                    os.makedirs(log_file_dir)
+                except OSError as e:
+                    print(f"Failed to create directory {log_file_dir}: {e}")
+                    sys.exit(1)
+            # Set log_file_path to the log file's name within the specified directory
+            log_file_path = log_file  # Use only the name of the log file
         else:
             log_dir = "logs"  # Default directory for logs
             if not os.path.exists(log_dir):
@@ -65,7 +77,7 @@ class CustomLogger:
                 except OSError as e:
                     print(f"Failed to create logs directory: {e}")
                     sys.exit(1)
-            log_file_path = os.path.join(log_dir, log_file)  # Use the "logs" directory
+            log_file_path = os.path.join(log_dir, log_file)  # Use the "logs" directory and log file name
 
         log_formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
