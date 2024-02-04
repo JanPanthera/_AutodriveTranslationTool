@@ -115,7 +115,12 @@ class DictionaryFrame(ctk.CTkFrame):
         )
         self.button_delete_file.grid(column=0, row=3, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
-        # -----------------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------------------------------
+
+    def refresh_ui(self):
+        pass
+
+    # -----------------------------------------------------------------------------------------------
 
     def create_file(self):
         file_name = "Dictionary_" + self.dropdown_dictionary_languages_select.get() + ".dic"

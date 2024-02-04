@@ -116,7 +116,12 @@ class TranslationFrame(ctk.CTkFrame):
         )
         self.button_clear_console_output.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
-        # -----------------------------------------------------------------------------------------------
+    # -----------------------------------------------------------------------------------------------
+
+    def refresh_ui(self):
+        pass
+
+    # -----------------------------------------------------------------------------------------------
 
     def validate_output_files(self):
         validate_output_files.validate_output_files(

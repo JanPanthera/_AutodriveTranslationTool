@@ -8,6 +8,7 @@ def output(message, output_widget=None):
         output_widget.insert('end', message + "\n")
         output_widget.configure(state='disable')
         output_widget.see('end')
+        output_widget.update_idletasks()
     else:
         print(message)
 

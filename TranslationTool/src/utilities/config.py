@@ -1,4 +1,4 @@
-
+#TODO: Switch to ConfigManager class
 import configparser
 import os
 

@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-03 17:11+0100\n"
-"PO-Revision-Date: 2024-02-03 16:58+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-02-04 03:54+0100\n"
+"PO-Revision-Date: 2024-02-03 17:47+0100\n"
+"Last-Translator: \n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -58,47 +58,74 @@ msgstr "Benutzerdefiniert laden"
 msgid "Load Default"
 msgstr "Standard laden"
 
-#: src/components/LanguagesFrame.py:128
+#: src/components/LanguagesFrame.py:133
 msgid "Invalid characters: "
 msgstr "Ungültige Zeichen: "
 
-#: src/components/LanguagesFrame.py:131
+#: src/components/LanguagesFrame.py:136
 msgid "Invalid Input"
 msgstr "Ungültige Eingabe"
 
-#: src/components/OptionsFrame.py:46
+#: src/components/OptionsFrame.py:45 src/components/OptionsFrame.py:231
 msgid "Save on Window Close"
 msgstr "Beim Schließen des Fensters speichern"
 
-#: src/components/OptionsFrame.py:53
+#: src/components/OptionsFrame.py:52 src/components/OptionsFrame.py:235
 msgid "Window Size/Pos"
 msgstr "Fenstergröße/-position"
 
-#: src/components/OptionsFrame.py:64
+#: src/components/OptionsFrame.py:63 src/components/OptionsFrame.py:236
 msgid "Selected Language"
 msgstr "Ausgewählte Sprache"
 
-#: src/components/OptionsFrame.py:75 src/components/OptionsFrame.py:123
+#: src/components/OptionsFrame.py:74 src/components/OptionsFrame.py:133
+#: src/components/OptionsFrame.py:243 src/components/OptionsFrame.py:244
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: src/components/OptionsFrame.py:96
+#: src/components/OptionsFrame.py:97 src/components/OptionsFrame.py:232
 msgid "Appearance Mode"
 msgstr "Erscheinungsbildmodus"
 
-#: src/components/OptionsFrame.py:103
+#: src/components/OptionsFrame.py:104 src/components/OptionsFrame.py:238
 msgid "Use High DPI Scaling"
 msgstr "High-DPI-Skalierung verwenden"
 
-#: src/components/OptionsFrame.py:144
+#: src/components/OptionsFrame.py:117 src/components/OptionsFrame.py:240
+#: src/components/OptionsFrame.py:248 src/components/WindowMain.py:55
+msgid "Light"
+msgstr "Hell"
+
+#: src/components/OptionsFrame.py:117 src/components/OptionsFrame.py:240
+#: src/components/OptionsFrame.py:248 src/components/WindowMain.py:55
+msgid "Dark"
+msgstr "Dunkel"
+
+#: src/components/OptionsFrame.py:117 src/components/OptionsFrame.py:190
+#: src/components/OptionsFrame.py:240 src/components/OptionsFrame.py:248
+#: src/components/WindowMain.py:55
+msgid "System"
+msgstr "System"
+
+#: src/components/OptionsFrame.py:126 src/components/OptionsFrame.py:241
+#: src/components/OptionsFrame.py:252 src/components/WindowMain.py:50
+msgid "English"
+msgstr "Englisch"
+
+#: src/components/OptionsFrame.py:126 src/components/OptionsFrame.py:241
+#: src/components/OptionsFrame.py:252 src/components/WindowMain.py:50
+msgid "German"
+msgstr "Deutsch"
+
+#: src/components/OptionsFrame.py:154 src/components/OptionsFrame.py:233
 msgid "Reset Settings"
 msgstr "Einstellungen zurücksetzen"
 
-#: src/components/OptionsFrame.py:151
+#: src/components/OptionsFrame.py:161 src/components/OptionsFrame.py:245
 msgid "Reset Window Size"
 msgstr "Fenstergröße zurücksetzen"
 
-#: src/components/OptionsFrame.py:159
+#: src/components/OptionsFrame.py:169 src/components/OptionsFrame.py:246
 msgid "Reset Window Position"
 msgstr "Fensterposition zurücksetzen"
 
@@ -122,21 +149,25 @@ msgstr "Ausgabedateien überprüfen"
 msgid "Clear Console"
 msgstr "Konsole leeren"
 
-#: src/components/WindowMain.py:62
+#: src/components/WindowMain.py:110
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: src/components/WindowMain.py:63
+#: src/components/WindowMain.py:113
 msgid "Languages"
 msgstr "Sprachen"
 
-#: src/components/WindowMain.py:64
+#: src/components/WindowMain.py:116
 msgid "Dictionary"
 msgstr "Wörterbuch"
 
-#: src/components/WindowMain.py:65
+#: src/components/WindowMain.py:119
 msgid "Options"
 msgstr "Optionen"
+
+#: src/custom_widgets/CustomPopupMessageBox.py:4
+msgid "Close"
+msgstr "Schliesen"
 
 #: src/custom_widgets/CustomTextbox.py:14
 #: src/custom_widgets/ScriptRunningTextbox.py:64
@@ -160,14 +191,17 @@ msgstr "Leeren"
 #: src/custom_widgets/CustomTextbox.py:18
 #: src/custom_widgets/ScriptRunningTextbox.py:65
 msgid "Select All"
-msgstr "Alles auswählen"
+msgstr "Alle auswählen"
 
-#~ msgid "Light"
-#~ msgstr "Hell"
+#~ msgid "Restart Required"
+#~ msgstr "Neustart erforderlich"
 
-#~ msgid "Dark"
-#~ msgstr "Dunkel"
-
-#~ msgid "System"
-#~ msgstr "System"
+#~ msgid ""
+#~ "The application needs to be restarted"
+#~ " for the language change to take "
+#~ "effect."
+#~ msgstr ""
+#~ "Die Anwendung muss neu gestartet werden,"
+#~ " damit die Änderung der Sprache "
+#~ "wirksam wird."
 
