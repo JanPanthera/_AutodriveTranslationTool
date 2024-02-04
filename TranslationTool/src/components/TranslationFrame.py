@@ -14,9 +14,9 @@ class TranslationFrame(ctk.CTkFrame):
 
         self.selected_languages = ""
 
-        is_save_lang = config.load_setting("Settings", "save_selected_language", default_value="false").lower() in ["true", "1", "t", "y", "yes"]
+        is_save_lang = config.load_setting("Settings", "save_selected_languages", default_value="false").lower() in ["true", "1", "t", "y", "yes"]
         if is_save_lang:
-            saved_language_setting = config.load_setting("Settings", "selected_language", "")
+            saved_language_setting = config.load_setting("Settings", "selected_languages", "")
             self.selected_languages = saved_language_setting.split(',')
 
     def create_widgets(self):
