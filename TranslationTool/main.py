@@ -17,7 +17,7 @@ from src.components.WindowMain import WindowMain
 
 if __name__ == "__main__":
     # Initialize the custom logger
-    custom_logger = CustomLogger(log_file="translation_tool.log", max_log_size=10*1024*1024, backup_count=5)
+    custom_logger = CustomLogger(log_file="translation_tool.log", max_log_size=10*1024*1024, backup_count=5, rotate_on_start=True)
 
     # Create the main window instance
     window_main = WindowMain()
