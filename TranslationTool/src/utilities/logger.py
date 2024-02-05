@@ -1,12 +1,13 @@
 import logging
-from logging import Handler
-from logging.handlers import RotatingFileHandler
-from datetime import datetime
-import sys
 import os
+import traceback
+from datetime import datetime
+from logging.handlers import RotatingFileHandler
 
-# Custom handler that writes log records to a textbox widget
-class TextboxHandler(Handler):
+from src.utilities.utils import trigger_debug_break
+
+
+class TextboxHandler(logging.Handler):
     def __init__(self, textbox):
         super().__init__()
         self.textbox = textbox
@@ -16,16 +17,17 @@ class TextboxHandler(Handler):
         self.textbox.configure(state='normal')
         self.textbox.insert('end', msg + '\n')
         self.textbox.configure(state='disabled')
-        self.textbox.yview('end')  # Auto-scroll to the bottom
+        self.textbox.yview('end')
 
-# Custom handler that rotates log files, appending a timestamp to the filename
-class TimedRotatingFileHandler(RotatingFileHandler):
-    # Additional parameter 'append_time' to control timestamp appending
-    def __init__(self, filename, date_format, append_time=False, **kwargs):
+
+class CustomRotatingFileHandler(RotatingFileHandler):
+    def __init__(self, filename, date_format, backup_count,
+                 append_datetime_to_rolled_files, **kwargs):
+        self.base_filename = filename
+        self.original_filename = filename
         self.date_format = date_format
-        self.append_time = append_time
-        if append_time:
-            filename = self._append_date_to_filename(filename)
+        self.backup_count = backup_count
+        self.append_datetime_to_rolled_files = append_datetime_to_rolled_files
         super().__init__(filename, **kwargs)
 
     def _append_date_to_filename(self, filename):
@@ -34,66 +36,95 @@ class TimedRotatingFileHandler(RotatingFileHandler):
         return f"{base}_{current_time}{ext}"
 
     def doRollover(self):
-        # Only do a rollover if the file is non-empty
-        if self.stream:
-            self.stream.close()
-            self.stream = None
-        if os.path.exists(self.baseFilename) and os.stat(self.baseFilename).st_size > 0:
-            new_filename = self._append_date_to_filename(self.baseFilename)
-            self.rotate(self.baseFilename, new_filename)
-        if not self.delay:
-            self.stream = self._open()
+        try:
+            if self.stream:
+                self.stream.close()
+                self.stream = None
 
-# Custom logger that supports logging to both files and textbox widgets
+            if os.path.exists(self.original_filename) and \
+                    os.path.getsize(self.original_filename) > 0:
+                next_backup_number = self._get_next_backup_number()
+
+                if self.append_datetime_to_rolled_files:
+                    backup_filename = self._append_date_to_filename(
+                        self.base_filename)
+                else:
+                    backup_filename = f"{self.base_filename}.backup_{next_backup_number:02d}"
+                os.makedirs(os.path.dirname(backup_filename), exist_ok=True)
+                os.rename(self.original_filename, backup_filename)
+                self._manage_backups()
+
+            self.baseFilename = self.original_filename
+            self.stream = self._open()
+        except Exception as e:
+            print(f"Error occurred during log file rollover: {str(e)}")
+            print(traceback.format_exc())
+            trigger_debug_break()
+
+    def _get_next_backup_number(self):
+        backups = [f for f in os.listdir(os.path.dirname(self.base_filename))
+                   if f.startswith(os.path.basename(self.base_filename) + ".backup_")]
+        backup_numbers = [int(f.split("_")[-1]) for f in backups if f.split("_")[-1].isdigit()]
+
+        return max(backup_numbers) + 1 if backup_numbers else 1
+
+    def _manage_backups(self):
+        backups = os.listdir(os.path.dirname(self.base_filename))
+        backups.sort(key=lambda f: os.path.getctime(
+            os.path.join(os.path.dirname(self.base_filename), f)))
+
+        while len(backups) > self.backup_count:
+            oldest_backup = backups.pop(0)
+            os.remove(os.path.join(os.path.dirname(self.base_filename), oldest_backup))
+
+        if not self.append_datetime_to_rolled_files:
+            for i, backup in enumerate(backups, start=1):
+                new_name_parts = backup.rsplit('_', 1)[0] + f'_{i:02d}'
+
+                old_path = os.path.join(os.path.dirname(self.base_filename), backup)
+                new_path = os.path.join(os.path.dirname(self.base_filename), new_name_parts)
+
+                if old_path != new_path:
+                    os.rename(old_path, new_path)
+
+    def should_rollover(self):
+        if self.stream is None:
+            return False
+        if self.maxBytes > 0:
+            return self.stream.tell() >= self.maxBytes
+        return False
+
+
 class CustomLogger:
     def __init__(self, name='application', textbox=None, log_level=logging.INFO,
                  log_file='application.log', max_log_size=10*1024*1024,
-                 backup_count=5, rotate_on_start=False, append_datetime_to_mainlog=False,
+                 backup_count=5, rotate_on_start=False, append_datetime_to_rolled_files=False,
                  rotation_datetime_format="%Y-%m-%d_%H-%M-%S", datetime_format='%H:%M:%S'):
-
         self.logger = logging.getLogger(name)
         self.logger.setLevel(log_level)
 
-        # Extract directory from log_file
         log_file_dir = os.path.dirname(log_file)
-        log_file_path = None
+        log_file_path = log_file if log_file_dir else os.path.join("logs", log_file)
 
-        # Check if log_file contains a directory path
         if log_file_dir:
-            # Ensure the directory exists
-            if not os.path.exists(log_file_dir):
-                try:
-                    os.makedirs(log_file_dir)
-                except OSError as e:
-                    print(f"Failed to create directory {log_file_dir}: {e}")
-                    sys.exit(1)
-            # Set log_file_path to the log file's name within the specified directory
-            log_file_path = log_file  # Use only the name of the log file
-        else:
-            log_dir = "logs"  # Default directory for logs
-            if not os.path.exists(log_dir):
-                try:
-                    os.makedirs(log_dir)
-                except OSError as e:
-                    print(f"Failed to create logs directory: {e}")
-                    sys.exit(1)
-            log_file_path = os.path.join(log_dir, log_file)  # Use the "logs" directory and log file name
+            os.makedirs(log_file_dir, exist_ok=True)
 
         log_formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             datefmt=datetime_format
         )
 
-        file_handler = TimedRotatingFileHandler(
-            log_file_path, rotation_datetime_format, append_time=append_datetime_to_mainlog,
-            maxBytes=max_log_size, backupCount=backup_count
+        self.file_handler = CustomRotatingFileHandler(
+            log_file_path, rotation_datetime_format, backup_count,
+            append_datetime_to_rolled_files=append_datetime_to_rolled_files,
+            maxBytes=max_log_size
         )
-        file_handler.setLevel(log_level)
-        file_handler.setFormatter(log_formatter)
-        self.logger.addHandler(file_handler)
+        self.file_handler.setLevel(log_level)
+        self.file_handler.setFormatter(log_formatter)
+        self.logger.addHandler(self.file_handler)
 
         if rotate_on_start:
-            file_handler.doRollover()
+            self.file_handler.doRollover()
 
         if textbox:
             textbox_handler = TextboxHandler(textbox)
@@ -105,10 +136,16 @@ class CustomLogger:
             textbox_handler.setFormatter(textbox_formatter)
             self.logger.addHandler(textbox_handler)
 
-    # Logging methods that delegate to the underlying logger
     def log(self, level, msg, *args, **kwargs):
-        if self.logger.isEnabledFor(level):
-            self.logger._log(level, msg, args, **kwargs)
+        try:
+            if self.logger.isEnabledFor(level):
+                if self.file_handler.should_rollover():
+                    self.file_handler.doRollover()
+                self.logger._log(level, msg, args, **kwargs)
+        except Exception as e:
+            print(f"Error occurred during logging: {str(e)}")
+            print(traceback.format_exc())
+            trigger_debug_break()
 
     def debug(self, msg, *args, **kwargs):
         self.log(logging.DEBUG, msg, *args, **kwargs)
