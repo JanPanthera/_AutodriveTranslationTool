@@ -47,7 +47,7 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to load configuration: {e}")
             trigger_debug_break()
 
-    def get(self, section, option, default_value=None):
+    def load_setting(self, section, option, default_value=None):
         """
         Retrieve a configuration value from the specified section and option.
         Returns a default value if the specified section or option is not found.
@@ -67,7 +67,7 @@ class ConfigManager():
             self.custom_logger.warning(f"Section '{section}' or option '{option}' not found in configuration. Using default value.")
             return default_value
 
-    def save(self, section, option, value):
+    def save_setting(self, section, option, value):
         """
         Save a configuration value to the specified section and option in the custom configuration file.
 
@@ -116,6 +116,28 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to save multiple settings: {e}")
             trigger_debug_break()
 
+    def reset_setting(self, section, option):
+        """
+        Reset a specific configuration setting to its default value by removing it from the custom configuration file.
+
+        Args:
+            section (str): The section in the configuration file to reset.
+            option (str): The option within the section to reset.
+        """
+        try:
+            # Remove the specified option from the section if it exists
+            if self.config.has_section(section) and self.config.has_option(section, option):
+                self.config.remove_option(section, option)
+            # Write the updated configuration to reflect the removal
+            with open(self.custom_config_path, 'w', encoding='utf-8') as f:
+                self.config.write(f)
+            # Log the successful reset of the specified setting
+            self.custom_logger.info(f"Successfully reset '{option}' in section '{section}' to default value.")
+        except Exception as e:
+            # Log failure and trigger a debug break if in a debug environment
+            self.custom_logger.error(f"Failed to reset '{option}' in section '{section}': {e}")
+            trigger_debug_break()
+
     def reset_settings(self, settings):
         """
         Reset specific configuration settings to their default values by removing them from the custom configuration file.
@@ -155,7 +177,7 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to reset all settings: {e}")
             trigger_debug_break()
 
-    def add_variable(self, name, value):
+    def add_var(self, name, value):
         """
         Add a runtime variable to the dynamic store.
 
@@ -173,7 +195,7 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to add variable '{name}' to dynamic store: {e}")
             trigger_debug_break()
 
-    def add_variables(self, variables):
+    def add_vars(self, variables):
         """
         Add multiple runtime variables to the dynamic store.
 
@@ -190,7 +212,7 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to add multiple variables to dynamic store: {e}")
             trigger_debug_break()
 
-    def remove_variable(self, name):
+    def remove_var(self, name):
         """
         Remove a runtime variable from the dynamic store.
 
@@ -207,7 +229,7 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to remove variable '{name}' from dynamic store: {e}")
             trigger_debug_break()
 
-    def remove_variables(self, names):
+    def remove_vars(self, names):
         """
         Remove multiple runtime variables from the dynamic store.
 
