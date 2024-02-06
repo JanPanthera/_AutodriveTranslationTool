@@ -1,286 +1,213 @@
-# config_manager.py
-
 import configparser
+import logging
 import os
 
-from TranslationTool.src.utilities.utils import trigger_debug_break
 
 class ConfigManager():
-    def __init__(self, custom_logger, default_config_path='config/config-default.ini', custom_config_path='config/config-custom.ini'):
+    def __init__(self, custom_logger=None, default_config_path='config/config-default.ini', custom_config_path='config/config-custom.ini'):
         """
-        Initialize the ConfigManager with paths to the default and custom configuration files.
-        Also sets up a custom logger for logging messages and a dynamic store for runtime variables.
+        Initialize the ConfigManager class.
 
         Args:
-            custom_logger: Logger object for logging messages.
-            default_config_path (str): Path to the default configuration file.
-            custom_config_path (str): Path to the custom configuration file, which overrides the default.
+            custom_logger: The custom logger object.
+            default_config_path (str): The path to the default configuration file.
+            custom_config_path (str): The path to the custom configuration file.
         """
+        if custom_logger is None:
+            custom_logger = logging.getLogger(__name__)
         self.custom_logger = custom_logger
         self.default_config_path = default_config_path
         self.custom_config_path = custom_config_path
-        self.config = configparser.ConfigParser()
-        self.dynamic_store = {}  # Store for additional runtime variables
-        self.load_config()  # Load configurations immediately upon initialization
+        self.default_config = configparser.ConfigParser()
+        self.custom_config = configparser.ConfigParser()
+        self.dynamic_store = {}
+        self.load_config()
 
     def load_config(self):
         """
-        Load configuration files into memory, using the custom configuration to override the default.
-        Adjusts file paths if running in a Visual Studio environment and copies the default configuration
-        to the custom path if the custom file does not exist but the default does.
+        Load the configuration from the default and custom configuration files in to memory.
+
+        Raises:
+            FileNotFoundError: If the configuration file is not found.
+            configparser.Error: If there is an error while loading the configuration.
         """
         try:
-            # Adjust configuration paths if running within Visual Studio to accommodate different working directories
             if 'VSAPPIDDIR' in os.environ:
                 self.default_config_path = os.path.join("TranslationTool/", self.default_config_path)
                 self.custom_config_path = os.path.join("TranslationTool/", self.custom_config_path)
 
-            # Copy default configuration to custom configuration path if only the default exists
             if not os.path.exists(self.custom_config_path) and os.path.exists(self.default_config_path):
-                with open(self.default_config_path, 'r', encoding='utf-8') as default_file, open(self.custom_config_path, 'w', encoding='utf-8') as custom_file:
-                    custom_file.write(default_file.read())
+                with open(self.default_config_path, 'r', encoding='utf-8') as default_file:
+                    default_content = default_file.read()
+                with open(self.custom_config_path, 'w', encoding='utf-8') as custom_file:
+                    custom_file.write(default_content)
 
-            # Read the configuration files, allowing the custom configuration to override the default settings
-            self.config.read([self.default_config_path, self.custom_config_path], encoding='utf-8')
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
+            self.default_config.read(self.default_config_path, encoding='utf-8')
+            self.custom_config.read([self.default_config_path, self.custom_config_path], encoding='utf-8')
+        except FileNotFoundError as e:
+            self.custom_logger.error(f"Configuration file not found: {e}")
+        except configparser.Error as e:
             self.custom_logger.error(f"Failed to load configuration: {e}")
-            trigger_debug_break()
-
-    def load_setting(self, section, option, default_value=None):
-        """
-        Retrieve a configuration value from the specified section and option.
-        Returns a default value if the specified section or option is not found.
-
-        Args:
-            section (str): The section in the configuration file.
-            option (str): The option within the section to retrieve.
-            default_value: The default value to return if the section or option is not found.
-
-        Returns:
-            The configuration value if found; otherwise, the specified default value.
-        """
-        try:
-            return self.config.get(section, option)
-        except (configparser.NoSectionError, configparser.NoOptionError):
-            # Log a warning and return the default value if the section or option is missing
-            self.custom_logger.warning(f"Section '{section}' or option '{option}' not found in configuration. Using default value.")
-            return default_value
 
     def save_setting(self, section, option, value):
         """
-        Save a configuration value to the specified section and option in the custom configuration file.
+        Save a setting in the custom configuration file.
 
         Args:
-            section (str): The section in the configuration file to save the value under.
-            option (str): The option within the section where the value will be saved.
+            section (str): The section name.
+            option (str): The option name.
             value: The value to be saved.
         """
         try:
-            # Add the section if it doesn't already exist
-            if not self.config.has_section(section):
-                self.config.add_section(section)
-            # Set the option value within the section
-            self.config.set(section, option, str(value))
-            # Write the updated configuration to the custom configuration file
+            if not self.custom_config.has_section(section):
+                self.custom_config.add_section(section)
+            self.custom_config.set(section, option, str(value))
             with open(self.custom_config_path, 'w', encoding='utf-8') as f:
-                self.config.write(f)
-            # Log the successful save operation
-            self.custom_logger.info(f"Saved '{option}' in section '{section}' to configuration.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
+                self.custom_config.write(f)
+        except configparser.Error as e:
             self.custom_logger.error(f"Failed to save '{option}' in section '{section}': {e}")
-            trigger_debug_break()
 
     def save_settings(self, settings):
         """
-        Save multiple configuration settings to the custom configuration file.
+        Save multiple settings in the custom configuration file.
 
         Args:
-            settings (list of tuples): A list where each tuple contains (section, option, value) to be saved.
+            settings (list): A list of tuples containing the section, option, and value for each setting.
         """
         try:
             for section, option, value in settings:
-                # Add the section if it doesn't already exist
-                if not self.config.has_section(section):
-                    self.config.add_section(section)
-                # Set the option value within the section
-                self.config.set(section, option, value)
-            # Write the updated configuration to the custom configuration file
-            with open(self.custom_config_path, 'w', encoding='utf-8') as f:
-                self.config.write(f)
-            # Log the successful save of multiple settings
-            self.custom_logger.info("Successfully saved multiple settings to configuration.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
+                self.save_setting(section, option, value)
+        except configparser.Error as e:
             self.custom_logger.error(f"Failed to save multiple settings: {e}")
-            trigger_debug_break()
+
+    def load_setting(self, section, option, default_value=None, force_default=False):
+        """
+        Load a setting from the custom configuration file.
+
+        Args:
+            section (str): The section name.
+            option (str): The option name.
+            default_value: The default value to return if the setting is not found.
+            force_default (bool): Whether to force using the default configuration file.
+
+        Returns:
+            The value of the setting, or the default value if the setting is not found.
+        """
+        try:
+            if force_default:
+                return self.default_config.get(section, option)
+            else:
+                return self.custom_config.get(section, option, fallback=default_value)
+        except configparser.NoSectionError:
+            self.custom_logger.warning(f"Section '{section}' not found in configuration. Using default value.")
+            return default_value
+        except configparser.Error as e:
+            self.custom_logger.error(f"Failed to load setting '{option}' in section '{section}': {e}")
+            return default_value
 
     def reset_setting(self, section, option):
         """
-        Reset a specific configuration setting to its default value by removing it from the custom configuration file.
+        Reset a setting to its default value in the custom configuration file.
 
         Args:
-            section (str): The section in the configuration file to reset.
-            option (str): The option within the section to reset.
+            section (str): The section name.
+            option (str): The option name.
         """
         try:
-            # Remove the specified option from the section if it exists
-            if self.config.has_section(section) and self.config.has_option(section, option):
-                self.config.remove_option(section, option)
-            # Write the updated configuration to reflect the removal
-            with open(self.custom_config_path, 'w', encoding='utf-8') as f:
-                self.config.write(f)
-            # Log the successful reset of the specified setting
-            self.custom_logger.info(f"Successfully reset '{option}' in section '{section}' to default value.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
+            default_value = self.load_setting(section, option, force_default=True)
+            self.save_setting(section, option, default_value)
+        except configparser.Error as e:
             self.custom_logger.error(f"Failed to reset '{option}' in section '{section}': {e}")
-            trigger_debug_break()
 
     def reset_settings(self, settings):
         """
-        Reset specific configuration settings to their default values by removing them from the custom configuration file.
+        Reset multiple settings to their default values in the custom configuration file.
 
         Args:
-            settings (list of tuples): A list where each tuple contains (section, option) to be reset.
+            settings (list): A list of tuples containing the section and option for each setting.
         """
         try:
             for section, option in settings:
-                # Remove the specified option from the section if it exists
-                if self.config.has_section(section) and self.config.has_option(section, option):
-                    self.config.remove_option(section, option)
-            # Write the updated configuration to reflect the removals
-            with open(self.custom_config_path, 'w', encoding='utf-8') as f:
-                self.config.write(f)
-            # Log the successful reset of specified settings
-            self.custom_logger.info("Successfully reset specified settings to default values.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to reset specified settings: {e}")
-            trigger_debug_break()
+                self.reset_setting(section, option)
+        except configparser.Error as e:
+            self.custom_logger.error(f"Failed to reset multiple settings: {e}")
 
     def reset_all_settings(self):
         """
-        Reset all configuration settings to their default values by removing the custom configuration file.
+        Reset all settings to their default values in the custom configuration file.
         """
         try:
-            # Remove the custom configuration file if it exists
-            if os.path.exists(self.custom_config_path):
-                os.remove(self.custom_config_path)
-            # Reload configuration to revert to default settings
-            self.load_config()
-            # Log the successful reset of all settings
-            self.custom_logger.info("Successfully reset all settings to default values.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
+            default_settings = [(section, option) for section in self.custom_config.sections() for option in self.custom_config.options(section)]
+            self.reset_settings(default_settings)
+        except configparser.Error as e:
             self.custom_logger.error(f"Failed to reset all settings: {e}")
-            trigger_debug_break()
 
     def add_var(self, name, value):
         """
-        Add a runtime variable to the dynamic store.
+        Add a variable to the dynamic store.
 
         Args:
-            name (str): The name of the variable to add.
+            name (str): The name of the variable.
             value: The value of the variable.
         """
-        try:
-            # Add the variable to the dynamic store
-            self.dynamic_store[name] = value
-            # Log the successful addition of the variable
-            self.custom_logger.info(f"Added variable '{name}' to dynamic store.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to add variable '{name}' to dynamic store: {e}")
-            trigger_debug_break()
+        self.dynamic_store[name] = value
 
     def add_vars(self, variables):
         """
-        Add multiple runtime variables to the dynamic store.
+        Add multiple variables to the dynamic store.
 
         Args:
-            variables (dict): A dictionary of variable names and their corresponding values.
+            variables (dict): A dictionary containing the variables to be added.
         """
-        try:
-            # Add the variables to the dynamic store
-            self.dynamic_store.update(variables)
-            # Log the successful addition of the variables
-            self.custom_logger.info("Added multiple variables to dynamic store.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to add multiple variables to dynamic store: {e}")
-            trigger_debug_break()
+        self.dynamic_store.update(variables)
 
     def remove_var(self, name):
         """
-        Remove a runtime variable from the dynamic store.
+        Remove a variable from the dynamic store.
 
         Args:
-            name (str): The name of the variable to remove.
+            name (str): The name of the variable to be removed.
         """
-        try:
-            # Remove the variable from the dynamic store
-            del self.dynamic_store[name]
-            # Log the successful removal of the variable
-            self.custom_logger.info(f"Removed variable '{name}' from dynamic store.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to remove variable '{name}' from dynamic store: {e}")
-            trigger_debug_break()
+        self.dynamic_store.pop(name, None)
 
     def remove_vars(self, names):
         """
-        Remove multiple runtime variables from the dynamic store.
+        Remove multiple variables from the dynamic store.
 
         Args:
-            names (list): A list of variable names to remove.
+            names (list): A list of variable names to be removed.
         """
-        try:
-            # Remove the variables from the dynamic store
-            for name in names:
-                del self.dynamic_store[name]
-            # Log the successful removal of the variables
-            self.custom_logger.info("Removed multiple variables from dynamic store.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to remove multiple variables from dynamic store: {e}")
-            trigger_debug_break()
-
-    def get_var(self, name, default_value=None):
-        """
-        Get a runtime variable from the dynamic store, returning a default value if the variable is not found.
-
-        Args:
-            name (str): The name of the variable to retrieve.
-            default_value: The default value to return if the variable is not found.
-
-        Returns:
-            The value of the variable if found; otherwise, the specified default value.
-        """
-        try:
-            # Retrieve the variable from the dynamic store, or return the default value if not found
-            return self.dynamic_store.get(name, default_value)
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to get variable '{name}' from dynamic store: {e}")
-            trigger_debug_break()
-            return default_value
+        for name in names:
+            self.dynamic_store.pop(name, None)
 
     def set_var(self, name, value):
         """
-        Set the value of a runtime variable in the dynamic store.
+        Set the value of a variable in the dynamic store.
 
         Args:
-            name (str): The name of the variable to set.
-            value: The new value for the variable.
+            name (str): The name of the variable.
+            value: The new value of the variable.
         """
-        try:
-            # Set the variable in the dynamic store
-            self.dynamic_store[name] = value
-            # Log the successful update of the variable
-            self.custom_logger.info(f"Set variable '{name}' in dynamic store.")
-        except Exception as e:
-            # Log failure and trigger a debug break if in a debug environment
-            self.custom_logger.error(f"Failed to set variable '{name}' in dynamic store: {e}")
-            trigger_debug_break()
+        self.dynamic_store[name] = value
+
+    def set_vars(self, variables):
+        """
+        Set the values of multiple variables in the dynamic store.
+
+        Args:
+            variables (dict): A dictionary containing the variable names and their new values.
+        """
+        self.dynamic_store.update(variables)
+
+    def get_var(self, name, default_value=None):
+        """
+        Get the value of a variable from the dynamic store.
+
+        Args:
+            name (str): The name of the variable.
+            default_value: The default value to return if the variable is not found.
+
+        Returns:
+            The value of the variable, or the default value if the variable is not found.
+        """
+        return self.dynamic_store.get(name, default_value)
