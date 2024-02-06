@@ -1,12 +1,15 @@
 import customtkinter as ctk
 
 class CustomPopupMessageBox(ctk.CTkToplevel):
-    def __init__(self, main_window, title="Popup", message="Your message here", button_text=_("Close"), message_font=("Helvetica", 18), button_font=("Helvetica", 18, "bold"), *args, **kwargs):
+    def __init__(self, main_window, title="Popup", message="Your message here", button_text=None, message_font=("Helvetica", 18), button_font=("Helvetica", 18, "bold"), *args, **kwargs):
         super().__init__(master=main_window, *args, **kwargs)
 
         self.title(title)
         #self.geometry("300x150")  # Set initial size
         self.overrideredirect(True)  # Removes the window decorations
+
+        if button_text is None:
+            self.button_text = _("Close")
 
         # Create frame inside the CTkToplevel window
         self.frame = ctk.CTkFrame(self)
@@ -18,7 +21,7 @@ class CustomPopupMessageBox(ctk.CTkToplevel):
         self.label_message.pack(pady=10, padx=10)
 
         # Close button
-        self.button_close = ctk.CTkButton(self.frame, text=button_text, command=self.close_popup)
+        self.button_close = ctk.CTkButton(self.frame, text=self.button_text, command=self.close_popup)
         self.button_close.configure(font=button_font)
         self.button_close.pack(pady=10)
 

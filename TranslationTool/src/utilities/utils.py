@@ -46,3 +46,18 @@ def trigger_debug_break():
         logging.warning(f"Debug break not available: {type(e).__name__}: {e}")
     except Exception as e:
         logging.error(f"Failed to trigger debug break: {type(e).__name__}: {e}")
+
+def handle_exception(self, operation, error_message, exception_return_value=None, logger=None):
+    try:
+        # Attempt to execute the operation and return its result
+        return operation()
+    except Exception as e:
+        # Log the error or print it if no logger is provided
+        if logger:
+            logger.error(f"{error_message}:\n   {e}")
+        else:
+            print(f"{error_message}:\n   {e}")
+        trigger_debug_break()
+
+        # Return the specified exception return value if an exception occurs
+        return exception_return_value

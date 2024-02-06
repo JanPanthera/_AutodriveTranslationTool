@@ -11,6 +11,7 @@ class LanguagesFrame(ctk.CTkFrame):
     def __init__(self, widget, parent):
         super().__init__(widget)
         self.window = parent
+        self.config = self.window.config_manager
 
     def create_widgets(self):
         self.pack(fill="both", expand=True, padx=20, pady=20)
@@ -42,7 +43,7 @@ class LanguagesFrame(ctk.CTkFrame):
         # Create ScrollableSelectionFrame for languages
         self.listbox_languages = ScrollableSelectionFrame(
             frame1,
-            item_list=self.window.supported_languages,
+            entries=self.config.get_var("supported_languages"),
             widget_type='checkbox',
             single_select=False,
             command=None,
@@ -148,15 +149,15 @@ class LanguagesFrame(ctk.CTkFrame):
 
     def list_box_save_custom(self):
         config.save_setting("Settings", "supported_languages", ",".join(self.listbox_languages.get_all_items()))
-        self.window.supported_languages = self.listbox_languages.get_all_items()
+        self.config.set_var("supported_languages", self.listbox_languages.get_all_items())
         self.entry_new_language.delete(0, ctk.END)
         self.window.translation_frame.update_scrollable_selection_frame()
         self.window.dictionary_frame.update_dropdown_dictionary_languages_select()
 
     def list_box_load_custom(self):
         self.listbox_languages.remove_all_items()
-        self.listbox_languages.populate(self.window.supported_languages, sort_items=True)
+        self.listbox_languages._populate(self.config.get_var("supported_languages"), sort_items=True)
 
     def list_box_load_default(self):
         self.listbox_languages.remove_all_items()
-        self.listbox_languages.populate(config.load_setting("Settings", "supported_languages", default_value="English", use_default_config=True).split(","), sort_items=True)
+        self.listbox_languages._populate(config.load_setting("Settings", "supported_languages", default_value="English", use_default_config=True).split(","), sort_items=True)

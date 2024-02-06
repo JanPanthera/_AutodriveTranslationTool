@@ -173,6 +173,23 @@ class ConfigManager():
             self.custom_logger.error(f"Failed to add variable '{name}' to dynamic store: {e}")
             trigger_debug_break()
 
+    def add_variables(self, variables):
+        """
+        Add multiple runtime variables to the dynamic store.
+
+        Args:
+            variables (dict): A dictionary of variable names and their corresponding values.
+        """
+        try:
+            # Add the variables to the dynamic store
+            self.dynamic_store.update(variables)
+            # Log the successful addition of the variables
+            self.custom_logger.info("Added multiple variables to dynamic store.")
+        except Exception as e:
+            # Log failure and trigger a debug break if in a debug environment
+            self.custom_logger.error(f"Failed to add multiple variables to dynamic store: {e}")
+            trigger_debug_break()
+
     def remove_variable(self, name):
         """
         Remove a runtime variable from the dynamic store.
@@ -188,6 +205,24 @@ class ConfigManager():
         except Exception as e:
             # Log failure and trigger a debug break if in a debug environment
             self.custom_logger.error(f"Failed to remove variable '{name}' from dynamic store: {e}")
+            trigger_debug_break()
+
+    def remove_variables(self, names):
+        """
+        Remove multiple runtime variables from the dynamic store.
+
+        Args:
+            names (list): A list of variable names to remove.
+        """
+        try:
+            # Remove the variables from the dynamic store
+            for name in names:
+                del self.dynamic_store[name]
+            # Log the successful removal of the variables
+            self.custom_logger.info("Removed multiple variables from dynamic store.")
+        except Exception as e:
+            # Log failure and trigger a debug break if in a debug environment
+            self.custom_logger.error(f"Failed to remove multiple variables from dynamic store: {e}")
             trigger_debug_break()
 
     def get_var(self, name, default_value=None):

@@ -172,24 +172,22 @@ class OptionsFrame(ctk.CTkFrame):
 
     def on_use_high_dpi_scaling_checkbox_toggle(self):
         self.config.save("Settings", "use_high_dpi_scaling", str(self.config.get_var("use_high_dpi_scaling").get()))
-        self.config.set_var("use_high_dpi_scaling", ctk.BooleanVar(self, self.config.get("Settings", "use_high_dpi_scaling", "True")))
         self.window.refresh_appearance(refresh_dpi_scaling=True)
 
-    def on_ui_theme_dropdown_select(self, mode_value=None):
-        self.config.save("Settings", "ui_theme", mode_value)
-        self.config.set_var("ui_theme_code", ctk.StringVar(self, self.config.get("Settings", "ui_theme", _("System"))))
-        self.config.set_var("ui_theme_text", ctk.StringVar(self, mode_value))
+    def on_ui_theme_dropdown_select(self, selected_theme=None):
+        if selected_theme is None:
+            self.logger.error("dropdown_ui_theme: on_ui_theme_dropdown_select called with selected_theme=None")
+
+        self.config.save("Settings", "ui_theme", selected_theme)
+        self.config.set_var("ui_theme_code", ctk.StringVar(self, selected_theme))
         self.window.refresh_appearance(refresh_gui_theme=True)
 
-    def on_ui_language_dropdown_select(self, selected_languages=None):
-        if selected_languages is None:
-            self.window.logger.error("switch_ui_language: selected_languages is None")
-            return
+    def on_ui_language_dropdown_select(self, selected_language=None):
+        if selected_language is None:
+            self.logger.error("dropdown_ui_language: on_ui_language_dropdown_select called with selected_language=None")
 
-        language_code = {"English": "en", "German": "de"}.get(selected_languages, "en")
-        self.config.save("Settings", "ui_language_code", language_code)
-        self.config.set_var("ui_language_code", language_code)
-        self.config.set_var("ui_language_text", selected_languages)
+        self.config.save("Settings", "ui_language", selected_language)
+        self.config.set_var("ui_language_code", ctk.StringVar(self, selected_language))
         self.window.refresh_appearance(refresh_ui_localization=True)
 
     def on_reset_ui_appearance_settings_button_pressed(self):
@@ -246,11 +244,16 @@ class OptionsFrame(ctk.CTkFrame):
 
     # Called by the main window to refresh the UI with the current language
     def refresh_ui_localization(self):
+        mode_dict = {"Light": _("Light"), "Dark": _("Dark"), "System": _("System")}
+        language_dict = {"en": _("English"), "de": _("German")}
+        
         self.label_save_on_close.configure(text=_("Save on Window Close"))
         self.label_appearance_mode.configure(text=_("Appearance Mode"))
         self.label_reset_settings.configure(text=_("Reset Settings"))
 
-        self.checkbox_save_window_pos.configure(text=_("Window Size/Pos"))
+        self.checkbox_save_window_size.configure(text=_("Window Size"))
+        self.checkbox_save_window_pos.configure(text=_("Window Position"))
+
         self.checkbox_save_selected_languages.configure(text=_("Selected Languages"))
 
         self.checkbox_use_high_dpi_scaling.configure(text=_("Use High DPI Scaling"))
@@ -263,10 +266,10 @@ class OptionsFrame(ctk.CTkFrame):
         self.button_reset_window_size.configure(text=_("Reset Window Size"))
         self.button_reset_window_pos.configure(text=_("Reset Window Position"))
 
-        mode = {"Light": _("Light"), "Dark": _("Dark"), "System": _("System")}.get(self.config.get_var("ui_theme_code").get())
+        mode = mode_dict.get(self.config.get_var("ui_theme_code").get())
         self.config.set_var("ui_theme_text", ctk.StringVar(self, mode))
         self.dropdown_ui_theme["textvariable"] = self.config.get_var("ui_theme_text")
 
-        language = {"en": _("English"), "de": _("German")}.get(self.config.get_var("ui_language_code").get())
+        language = language_dict.get(self.config.get_var("ui_language_code").get())
         self.config.set_var("ui_language_text", ctk.StringVar(self, language))
         self.dropdown_ui_language["textvariable"] = self.config.get_var("ui_language_text")
