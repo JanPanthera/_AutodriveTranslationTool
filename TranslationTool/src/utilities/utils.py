@@ -3,61 +3,62 @@
 import ctypes
 import logging
 
-def get_dpi_scaling_factor():
-    """
-    Queries the system's DPI settings to calculate the DPI scaling factor on Windows platforms.
-    This function is specifically designed for use on Windows 10 and above, where DPI awareness
-    and system DPI settings are available through the Windows API.
 
-    Returns:
-        float: The system's DPI scaling factor, with 1.0 indicating no scaling (default DPI).
+def get_dpi_scaling_factor(logger=None):
     """
-    scaling_factor = 1.0  # Default scaling factor for systems with standard DPI settings (96 DPI)
+    Function to get the DPI scaling factor for the current system.
+    Designed to run on Windows. If not on Windows, returns 1.0.
+    """
+    logger = logger or logging.getLogger(__name__)
+    scaling_factor = 1.0
 
-    # Ensure this function is run on a Windows platform
     if not hasattr(ctypes, 'windll'):
-        logging.warning("get_dpi_scaling_factor is designed to run on Windows.")
+        logger.warning("get_dpi_scaling_factor is designed to run on Windows.")
         return scaling_factor
 
     try:
-        # Query the process's DPI awareness setting. This function is available in Windows 8.1 and later.
         awareness = ctypes.c_int()
         error_code = ctypes.windll.shcore.GetProcessDpiAwareness(0, ctypes.byref(awareness))
 
-        # Check if the function call was successful (S_OK == 0)
         if error_code == 0:
-            # Retrieve the system DPI. This function is available in Windows 10 and later.
             dpi = ctypes.windll.user32.GetDpiForSystem()
-            # Calculate the scaling factor based on the default DPI (96)
             scaling_factor = dpi / 96.0
     except (AttributeError, OSError) as e:
-        # Log the error if the function is not available or fails (e.g., on non-Windows or older Windows versions)
-        logging.error(f"Failed to query DPI settings: {type(e).__name__}: {e}. Using default scaling factor.")
+        logger.error(f"Failed to query DPI settings: {type(e).__name__}: {e}. Using default scaling factor.")
 
     return scaling_factor
 
-def trigger_debug_break():
-    """Trigger a debug break in Visual Studio if running under a debugger."""
-    try:
-        if hasattr(ctypes, 'windll') and ctypes.windll.user32.IsDebuggerPresent():
-            logging.debug("Triggering Visual Studio debug break...")
-            ctypes.windll.kernel32.DebugBreak()
-    except AttributeError as e:
-        logging.warning(f"Debug break not available: {type(e).__name__}: {e}")
-    except Exception as e:
-        logging.error(f"Failed to trigger debug break: {type(e).__name__}: {e}")
 
-def handle_exception(self, operation, error_message, exception_return_value=None, logger=None):
+def trigger_debug_break(logger=None):
+    """
+    Function to trigger a debug break in Visual Studio if running under a debugger.
+    Designed to run on Windows. If not on Windows, logs a warning.
+    """
+    logger = logger or logging.getLogger(__name__)
     try:
-        # Attempt to execute the operation and return its result
+        if hasattr(ctypes, 'windll') and hasattr(ctypes.windll.kernel32, 'IsDebuggerPresent') and ctypes.windll.kernel32.IsDebuggerPresent():
+            logger.debug("Triggering Visual Studio debug break...")
+            if hasattr(ctypes.windll.kernel32, 'DebugBreak'):
+                ctypes.windll.kernel32.DebugBreak()
+            else:
+                logger.warning("DebugBreak function not available.")
+        else:
+            logger.warning("IsDebuggerPresent function not available.")
+    except Exception as e:
+        logger.error(f"Failed to trigger debug break: {type(e).__name__}: {e}")
+
+
+def handle_exception(operation, error_message, exception_return_value=None, logger=None):
+    """
+    Function to handle exceptions for a given operation.
+    If an exception occurs during the operation, logs the error message and triggers a debug break.
+    Returns the exception_return_value if an exception occurs.
+    """
+    logger = logger or logging.getLogger(__name__)
+    try:
         return operation()
     except Exception as e:
-        # Log the error or print it if no logger is provided
-        if logger:
-            logger.error(f"{error_message}:\n   {e}")
-        else:
-            print(f"{error_message}:\n   {e}")
-        trigger_debug_break()
+        logger.error(f"{error_message}:\n   {e}")
+        trigger_debug_break(logger)
 
-        # Return the specified exception return value if an exception occurs
         return exception_return_value
