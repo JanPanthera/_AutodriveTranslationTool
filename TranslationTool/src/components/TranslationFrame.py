@@ -1,10 +1,12 @@
 # TranslationFrame.py
 
+import os
 import customtkinter as ctk
 
 from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 from src.custom_widgets.CustomConsoleTextbox import CustomConsoleTextbox
-from src.functions import translate, validate_output_files
+from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
+from src.functions import translate, validate_output_files, find_missing_translations
 
 
 class TranslationFrame(ctk.CTkFrame):
@@ -67,7 +69,7 @@ class TranslationFrame(ctk.CTkFrame):
         # Button for selecting all languages
         self.button_select_all_languages = ctk.CTkButton(
             frame,
-            text=_("Check All"),
+            text=_("Select All"),
             font=self.window.font_big_bold,
             command=lambda: self.scroll_list_language_selection.set_all_entries_state(True),
         )
@@ -76,7 +78,7 @@ class TranslationFrame(ctk.CTkFrame):
         # Button for unselecting all languages
         self.button_unselect_all_languages = ctk.CTkButton(
             frame,
-            text=_("Uncheck All"),
+            text=_("Unselect All"),
             font=self.window.font_big_bold,
             command=lambda: self.scroll_list_language_selection.set_all_entries_state(False),
         )
@@ -100,14 +102,45 @@ class TranslationFrame(ctk.CTkFrame):
         )
         self.validate_output_files_button.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
-    def _on_translate_button_press(self):
-        translate.translate_files(
-            input_path=self.get_var("input_path"),
-            output_path=self.get_var("output_path"),
-            dictionaries_path=self.get_var("dictionaries_path"),
-            languages=self.scroll_list_language_selection.get_checked_entries(),
-            output_widget=self.textbox_output_console,
+        # Test button
+        self.button_test2 = ctk.CTkButton(
+            frame,
+            text=_("Find missing translations"),
+            font=self.window.font_big_bold,
+            command=self._on_test2_button_press,
         )
+        self.button_test2.grid(column=0, row=5, sticky="nsew", padx=(10, 10), pady=(5, 10))
+
+    def _on_test2_button_press(self):
+        if not self.scroll_list_language_selection.get_checked_entries():
+            return
+        input_path = self.get_var("input_path")
+        output_path = "missing_translations.txt"
+        output_path = output_path if 'VSAPPIDDIR' not in os.environ else f"TranslationTool\\{output_path}"
+        dictionary_path = self.get_var("dictionaries_path")
+
+        find_missing_translations.find_missing_translations(input_path=input_path, output_path=output_path, dictionary_path=dictionary_path, languages=self.scroll_list_language_selection.get_checked_entries(), output_widget=self.textbox_output_console)
+
+    def _on_translate_button_press(self):
+        def on_yes(is_yes):
+            if is_yes:
+                translate.translate_files(
+                    input_path=self.get_var("input_path"),
+                    output_path=self.get_var("output_path"),
+                    dictionaries_path=self.get_var("dictionaries_path"),
+                    languages=self.scroll_list_language_selection.get_checked_entries(),
+                    output_widget=self.textbox_output_console,
+                )
+        CustomPopupMessageBox(
+            self,
+            title=_("Translation Process"),
+            message=_("The translation process will take a while. Please be patient."),
+            interactive=True,
+            yes_button_text=_("Start Translation"),
+            no_button_text=_("Cancel"),
+            on_yes=on_yes
+        )
+        self.update_idletasks()
 
     def _on_validate_output_files_button_press(self):
         validate_output_files.validate_output_files(
@@ -150,8 +183,8 @@ class TranslationFrame(ctk.CTkFrame):
     # -----------------------------------------------------------------------------------------------
 
     def refresh_user_interface(self):
-        self.button_select_all_languages.configure(text=_("Check All"))
-        self.button_unselect_all_languages.configure(text=_("Uncheck All"))
+        self.button_select_all_languages.configure(text=_("Select All"))
+        self.button_unselect_all_languages.configure(text=_("Unselect All"))
         self.button_translate_files.configure(text=_("Translate"))
         self.validate_output_files_button.configure(text=_("Validate Output Files"))
         self.button_clear_output_console.configure(text=_("Clear Console"))
