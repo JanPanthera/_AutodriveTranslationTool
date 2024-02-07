@@ -58,18 +58,22 @@ def validate_output_files(input_path="_output", languages=None, output_widget=No
         return
 
     languages_list = [lang.strip() for lang in languages.split(',')] if isinstance(languages, str) else languages
-    _output(f"Starting validation for languages: {', '.join(languages_list)}\n", output_widget, is_error=False)
+    _output(f"Starting validation for languages: {', '.join(languages_list)}", output_widget, is_error=False)
 
     errors = {lang: {} for lang in languages_list}
+    languages_with_files = set()
+    missing_paths = []  # List to keep track of languages with missing output paths
 
     for language in languages_list:
         language_path = os.path.join(input_path, language)
         if not os.path.exists(language_path):
-            _output(f"No output path for {language}. Skipping.", output_widget, is_error=False)
+            missing_paths.append(language)  # Add missing path languages to the list
             continue
 
         for root, dirs, files in os.walk(language_path):
-            relative_root = os.path.relpath(root, language_path)  # Get the relative path from language directory
+            if files:
+                languages_with_files.add(language)
+            relative_root = os.path.relpath(root, language_path)
             for file in files:
                 file_path = os.path.join(root, file)
                 if relative_root not in errors[language]:
@@ -78,26 +82,30 @@ def validate_output_files(input_path="_output", languages=None, output_widget=No
                     errors[language][relative_root][file_path] = []
                 _validate_output_file(file_path, errors[language][relative_root])
 
-    for language, subfolders in errors.items():
-        _output(f"\nValidation results for {language}:", output_widget, is_error=False)
-        for subfolder, file_errors in subfolders.items():
-            if any(file_errors.values()):
-                _output(f"- {subfolder}:", output_widget, is_error=False)
-                for file_path, error_list in file_errors.items():
-                    if error_list:
-                        _output(f"  - {os.path.basename(file_path)}:", output_widget, is_error=False)
-                        _output(f"    - Total errors: {len(error_list)}", output_widget, is_error=False)
-                        error_summary = {}
-                        for error in error_list:
-                            line_no, error_message = error  # Assuming error is a tuple (line_no, error_message)
-                            if error_message in error_summary:
-                                error_summary[error_message].append(line_no)
-                            else:
-                                error_summary[error_message] = [line_no]
-                        for error_message, lines in error_summary.items():
-                            lines_str = ', '.join(map(str, lines))
-                            _output(f"    - {error_message}: Lines {lines_str}", output_widget, is_error=False)
-            else:
-                _output(f"- {subfolder}: No validation errors.", output_widget, is_error=False)
+    # Output missing paths message if there are any missing paths
+    if missing_paths:
+        _output("No output paths found:", output_widget, is_error=False)
+        for language in missing_paths:
+            _output(f"   - {language}.", output_widget, is_error=False)
 
-    _output("\nValidation complete. Review the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.", output_widget, is_error=False)
+    for language in languages_list:
+        if language in languages_with_files or any(errors[language].values()):
+            _output(f"\nValidation results for {language}:", output_widget, is_error=False)
+            subfolders = errors.get(language, {})
+            for subfolder, file_errors in subfolders.items():
+                if any(file_errors.values()):
+                    _output(f"- {subfolder}:", output_widget, is_error=False)
+                    for file_path, error_list in file_errors.items():
+                        if error_list:
+                            _output(f"  - {os.path.basename(file_path)}:", output_widget, is_error=False)
+                            _output(f"    - Total errors: {len(error_list)}", output_widget, is_error=False)
+                            for error in error_list:
+                                error_message, line_no = error
+                                formatted_error_message = f"        - {error_message}"
+                                _output(formatted_error_message, output_widget, is_error=False)
+                else:
+                    _output(f"- {subfolder}: No validation errors.", output_widget, is_error=False)
+
+    _output("\nValidation complete.\nReview the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.", output_widget, is_error=False)
+
+
