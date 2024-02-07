@@ -15,6 +15,13 @@ class WindowMain(ctk.CTk):
         super().__init__()
         self.logger = logger
         self.translation_tool = parent
+    
+        self.tab_name_map = {
+            "Translation": _("Translation"),
+            "Languages": _("Languages"),
+            "Dictionary": _("Dictionary"),
+            "Options": _("Options")
+        }
 
         self.cfg_manager = ConfigManager(self.logger)
 
@@ -24,14 +31,8 @@ class WindowMain(ctk.CTk):
         self.init_fonts()
         self.init_ui_components()
 
-        self.original_tab_names = [
-            "Translation",
-            "Languages",
-            "Dictionary",
-            "Options"
-        ]
-        self.main_tab_names = self.original_tab_names.copy()
-
+        # Setup localization and refresh appearance
+        self.translation_tool.setup_localization(language=self.cfg_manager.get_var("ui_language_code").get())
         self.refresh_appearance(
             refresh_gui_theme=True,
             refresh_dpi_scaling=True,
@@ -39,7 +40,7 @@ class WindowMain(ctk.CTk):
             refresh_window_size=True,
             refresh_window_position=True
         )
-
+    
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def load_settings(self):
@@ -137,12 +138,19 @@ class WindowMain(ctk.CTk):
 
     def _refresh_ui_localization(self):
         self.translation_tool.setup_localization(language=self.cfg_manager.get_var("ui_language_code").get())
+        
+        updated_tab_name_map = {}
     
-        for i, original_name in enumerate(self.original_tab_names):
-            translated_name = _(original_name)
-            if translated_name != self.main_tab_names[i] and translated_name not in self.main_tab_names:
-                self.tab_view.rename(self.main_tab_names[i], translated_name)
-                self.main_tab_names[i] = translated_name
+        for original_name, localized_name in self.tab_name_map.items():
+            translated_name = _(original_name)  # Fetch the translated name using the _() function
+            if localized_name != translated_name:
+                self.tab_view.rename(localized_name, translated_name)  # Update the tab name
+            
+            # Instead of updating the dictionary directly, store the changes in a temporary dictionary
+            updated_tab_name_map[original_name] = translated_name
+    
+        # After iteration, update the original map
+        self.tab_name_map = updated_tab_name_map
 
     def get_window_position(self):
         return handle_exception(
