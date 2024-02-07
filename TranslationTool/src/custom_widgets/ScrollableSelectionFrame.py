@@ -213,6 +213,9 @@ class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
         Sort the entries in the selection frame alphabetically.
         """
         sorted_entries = sorted(self.states, key=str.lower)
+        for index, entry in enumerate(sorted_entries):
+            widget = self.widgets[entry]
+            widget.grid(row=index, column=0, pady=(0, 5), sticky='nw')
         self.widgets = {entry: self.widgets[entry] for entry in sorted_entries}
 
     def _create_widget(self, entry, command):
