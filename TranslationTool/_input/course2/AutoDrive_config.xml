@@ -69,52 +69,52 @@
     <mm2>
       <id>5636</id>
       <name>Raiffeisen</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm2>
     <mm3>
       <id>5856</id>
       <name>BGA Ackerbau</name>
-      <group>Farm Ackerbau</group>
+      <group>Hof Ackerbau</group>
     </mm3>
     <mm4>
       <id>6313</id>
-      <name>Farm Entrup</name>
-      <group>Farm Entrup</group>
+      <name>Hof Entrup</name>
+      <group>Hof Entrup</group>
     </mm4>
     <mm5>
       <id>6339</id>
-      <name>Farm Wessels</name>
-      <group>Farm Wessels</group>
+      <name>Hof Wessels</name>
+      <group>Hof Wessels</group>
     </mm5>
     <mm6>
       <id>6570</id>
-      <name>Shop</name>
+      <name>Fahrzeughändler</name>
       <group>Kaufstellen</group>
     </mm6>
     <mm7>
       <id>6656</id>
-      <name>Contractor</name>
-      <group>Contractor</group>
+      <name>LU</name>
+      <group>Lohnunternehmen</group>
     </mm7>
     <mm8>
       <id>6810</id>
-      <name>Farm Moellering</name>
-      <group>Farm Moellering</group>
+      <name>Hof Moellering</name>
+      <group>Hof Moellering</group>
     </mm8>
     <mm9>
       <id>6944</id>
-      <name>Farm Bielefeld</name>
-      <group>Farm Bielefeld</group>
+      <name>Hof Bielefeld</name>
+      <group>Hof Bielefeld</group>
     </mm9>
     <mm10>
       <id>6963</id>
-      <name>Farm Bertels</name>
-      <group>Farm Bertels</group>
+      <name>Hof Bertels</name>
+      <group>Hof Bertels</group>
     </mm10>
     <mm11>
       <id>6991</id>
-      <name>Sawmill</name>
-      <group>Sellingstations</group>
+      <name>Sägewerk</name>
+      <group>Verkaufstellen</group>
     </mm11>
     <mm12>
       <id>7017</id>
@@ -128,13 +128,13 @@
     </mm13>
     <mm14>
       <id>7050</id>
-      <name>Farm Werning</name>
-      <group>Farm Werning</group>
+      <name>Hof Werning</name>
+      <group>Hof Werning</group>
     </mm14>
     <mm15>
       <id>7104</id>
-      <name>Farm Hessling</name>
-      <group>Farm Hessling</group>
+      <name>Hof Hessling</name>
+      <group>Hof Hessling</group>
     </mm15>
     <mm16>
       <id>7241</id>
@@ -144,32 +144,32 @@
     <mm17>
       <id>7344</id>
       <name>Landhandel</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm17>
     <mm18>
       <id>7381</id>
       <name>F226</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm18>
     <mm19>
       <id>7399</id>
       <name>F225</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm19>
     <mm20>
       <id>7412</id>
       <name>F224</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm20>
     <mm21>
       <id>7427</id>
       <name>F223</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm21>
     <mm22>
       <id>7445</id>
       <name>F222</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm22>
     <mm23>
       <id>7460</id>
@@ -179,22 +179,22 @@
     <mm24>
       <id>7473</id>
       <name>F221</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm24>
     <mm25>
       <id>7487</id>
       <name>F211</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm25>
     <mm26>
       <id>7504</id>
       <name>F212</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm26>
     <mm27>
       <id>7515</id>
       <name>F227</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm27>
     <mm28>
       <id>7525</id>
@@ -204,67 +204,67 @@
     <mm29>
       <id>7538</id>
       <name>F217</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm29>
     <mm30>
       <id>7552</id>
       <name>F210</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm30>
     <mm31>
       <id>7567</id>
       <name>F220</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm31>
     <mm32>
       <id>7581</id>
       <name>F209</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm32>
     <mm33>
       <id>7597</id>
       <name>F219</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm33>
     <mm34>
       <id>7610</id>
       <name>F208</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm34>
     <mm35>
       <id>7623</id>
       <name>F218</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm35>
     <mm36>
       <id>7636</id>
       <name>F207</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm36>
     <mm37>
       <id>7651</id>
       <name>F205</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm37>
     <mm38>
       <id>7666</id>
       <name>F204</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm38>
     <mm39>
       <id>7680</id>
       <name>F202</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm39>
     <mm40>
       <id>7692</id>
       <name>F203</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm40>
     <mm41>
       <id>7709</id>
       <name>F200</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm41>
     <mm42>
       <id>7720</id>
@@ -274,17 +274,17 @@
     <mm43>
       <id>7736</id>
       <name>F201</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm43>
     <mm44>
       <id>7746</id>
       <name>F206</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm44>
     <mm45>
       <id>7763</id>
       <name>Hoftankstelle</name>
-      <group>Farm Entrup</group>
+      <group>Hof Entrup</group>
     </mm45>
     <mm46>
       <id>7804</id>
@@ -293,98 +293,98 @@
     </mm46>
     <mm47>
       <id>7807</id>
-      <name>Slurry / Digstate Ankauf</name>
+      <name>Gülle / Gärreste Ankauf</name>
       <group>Kaufstellen</group>
     </mm47>
     <mm48>
       <id>7826</id>
       <name>F216</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm48>
     <mm49>
       <id>7834</id>
       <name>F215</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm49>
     <mm50>
       <id>7840</id>
       <name>F214</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm50>
     <mm51>
       <id>7842</id>
       <name>F213</name>
-      <group>Fields 200-219</group>
+      <group>Felder 200-219</group>
     </mm51>
     <mm52>
       <id>7895</id>
-      <name>Farm Meyer</name>
-      <group>Farm Meyer</group>
+      <name>Hof Meyer</name>
+      <group>Hof Meyer</group>
     </mm52>
     <mm53>
       <id>7905</id>
-      <name>Farm Brinker</name>
-      <group>Farm Brinker</group>
+      <name>Hof Brinker</name>
+      <group>Hof Brinker</group>
     </mm53>
     <mm54>
       <id>7963</id>
-      <name>Farm Leifker</name>
-      <group>Farm Leifker</group>
+      <name>Hof Leifker</name>
+      <group>Hof Leifker</group>
     </mm54>
     <mm55>
       <id>7978</id>
       <name>Werkstatt</name>
-      <group>Farm Leifker</group>
+      <group>Hof Leifker</group>
     </mm55>
     <mm56>
       <id>8007</id>
       <name>F234</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm56>
     <mm57>
       <id>8015</id>
       <name>F233</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm57>
     <mm58>
       <id>8025</id>
       <name>F230</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm58>
     <mm59>
       <id>8036</id>
       <name>F231</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm59>
     <mm60>
       <id>8056</id>
       <name>F237</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm60>
     <mm61>
       <id>8078</id>
       <name>F232</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm61>
     <mm62>
       <id>8113</id>
       <name>F238</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm62>
     <mm63>
       <id>8131</id>
       <name>F236</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm63>
     <mm64>
       <id>8145</id>
       <name>F228</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm64>
     <mm65>
       <id>8152</id>
       <name>F229</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm65>
     <mm66>
       <id>8171</id>
@@ -613,8 +613,8 @@
     </mm110>
     <mm111>
       <id>8825</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Moellering</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Moellering</group>
     </mm111>
     <mm112>
       <id>8893</id>
@@ -784,17 +784,17 @@
     <mm145>
       <id>9245</id>
       <name>Hoftankstelle</name>
-      <group>Farm Leifker</group>
+      <group>Hof Leifker</group>
     </mm145>
     <mm146>
       <id>9264</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Leifker</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Leifker</group>
     </mm146>
     <mm147>
       <id>9285</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Leifker</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Leifker</group>
     </mm147>
     <mm148>
       <id>9300</id>
@@ -828,18 +828,18 @@
     </mm153>
     <mm154>
       <id>11545</id>
-      <name>Farm Ackerbau</name>
-      <group>Farm Ackerbau</group>
+      <name>Hof Ackerbau</name>
+      <group>Hof Ackerbau</group>
     </mm154>
     <mm155>
       <id>11623</id>
       <name>Werkstatt</name>
-      <group>Farm Ackerbau</group>
+      <group>Hof Ackerbau</group>
     </mm155>
     <mm156>
       <id>11872</id>
       <name>Hoftankstelle</name>
-      <group>Farm Ackerbau</group>
+      <group>Hof Ackerbau</group>
     </mm156>
     <mm157>
       <id>13564</id>
@@ -869,7 +869,7 @@
     <mm162>
       <id>14411</id>
       <name>Großhandel</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm162>
     <mm163>
       <id>14467</id>
@@ -1144,12 +1144,12 @@
     <mm217>
       <id>18847</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Wessels</group>
+      <group>Hof Wessels</group>
     </mm217>
     <mm218>
       <id>18874</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Wessels</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Wessels</group>
     </mm218>
     <mm219>
       <id>18885</id>
@@ -1173,18 +1173,18 @@
     </mm222>
     <mm223>
       <id>19486</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Wessels</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Wessels</group>
     </mm223>
     <mm224>
       <id>19996</id>
       <name>Ballenverkauf Viehandel</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm224>
     <mm225>
       <id>19999</id>
-      <name>woodchips Verkauf</name>
-      <group>Sellingstations</group>
+      <name>Hackschnitzel Verkauf</name>
+      <group>Verkaufstellen</group>
     </mm225>
     <mm226>
       <id>20299</id>
@@ -1208,18 +1208,18 @@
     </mm229>
     <mm230>
       <id>21025</id>
-      <name>Cowstable Slurry</name>
-      <group>Farm Hessling</group>
+      <name>Kuhstall Gülle</name>
+      <group>Hof Hessling</group>
     </mm230>
     <mm231>
       <id>21098</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Hessling</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Hessling</group>
     </mm231>
     <mm232>
       <id>21114</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Hessling</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Hessling</group>
     </mm232>
     <mm233>
       <id>21267</id>
@@ -1263,13 +1263,13 @@
     </mm240>
     <mm241>
       <id>22183</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Werning</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Werning</group>
     </mm241>
     <mm242>
       <id>22220</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Werning</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Werning</group>
     </mm242>
     <mm243>
       <id>22667</id>
@@ -1284,47 +1284,47 @@
     <mm245>
       <id>22940</id>
       <name>Ballenverkauf Landhandel</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm245>
     <mm246>
       <id>22963</id>
       <name>Landhandel Knollenverkauf</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm246>
     <mm247>
       <id>31771</id>
       <name>Hoftankstelle</name>
-      <group>Farm Bertels</group>
+      <group>Hof Bertels</group>
     </mm247>
     <mm248>
       <id>31827</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Bertels</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Bertels</group>
     </mm248>
     <mm249>
       <id>31862</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Bertels</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Bertels</group>
     </mm249>
     <mm250>
       <id>33431</id>
       <name>F235</name>
-      <group>Fields 220-238</group>
+      <group>Felder 220-238</group>
     </mm250>
     <mm251>
       <id>34577</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Bielefeld</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Bielefeld</group>
     </mm251>
     <mm252>
       <id>34600</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Bielefeld</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Bielefeld</group>
     </mm252>
     <mm253>
       <id>34625</id>
       <name>Viehhandel Verkaufstrigger</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm253>
     <mm254>
       <id>38748</id>
@@ -1458,13 +1458,13 @@
     </mm279>
     <mm280>
       <id>43741</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Meyer</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Meyer</group>
     </mm280>
     <mm281>
       <id>43789</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Meyer</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Meyer</group>
     </mm281>
     <mm282>
       <id>43838</id>
@@ -1508,98 +1508,98 @@
     </mm289>
     <mm290>
       <id>46393</id>
-      <name>Farmsilo IN</name>
-      <group>Farm Entrup</group>
+      <name>Hofsilo IN</name>
+      <group>Hof Entrup</group>
     </mm290>
     <mm291>
       <id>46413</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Entrup</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Entrup</group>
     </mm291>
     <mm292>
       <id>46435</id>
       <name>Hoftankstelle</name>
-      <group>Farm Moellering</group>
+      <group>Hof Moellering</group>
     </mm292>
     <mm293>
       <id>46459</id>
-      <name>Farmsilo OUT</name>
-      <group>Farm Moellering</group>
+      <name>Hofsilo OUT</name>
+      <group>Hof Moellering</group>
     </mm293>
     <mm294>
       <id>46470</id>
       <name>Hoftankstelle</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm294>
     <mm295>
       <id>46504</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Leifker</group>
+      <group>Hof Leifker</group>
     </mm295>
     <mm296>
       <id>46525</id>
       <name>Hoftankstelle</name>
-      <group>Farm Wessels</group>
+      <group>Hof Wessels</group>
     </mm296>
     <mm297>
       <id>46595</id>
       <name>KaliRo</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm297>
     <mm298>
       <id>46613</id>
       <name>Hackschnizel Verkauf KaliRo</name>
-      <group>Sellingstations</group>
+      <group>Verkaufstellen</group>
     </mm298>
     <mm299>
       <id>46625</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm299>
     <mm300>
       <id>46633</id>
       <name>Kuhstall02 Milch</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm300>
     <mm301>
       <id>46635</id>
-      <name>Kuhstall02 Slurry</name>
-      <group>Farm Bielefeld</group>
+      <name>Kuhstall02 Gülle</name>
+      <group>Hof Bielefeld</group>
     </mm301>
     <mm302>
       <id>46637</id>
       <name>Kuhstall02 Tiere</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm302>
     <mm303>
       <id>46643</id>
       <name>Kuhstall01 Milch</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm303>
     <mm304>
       <id>46644</id>
-      <name>Kuhstall01 Slurry</name>
-      <group>Farm Bielefeld</group>
+      <name>Kuhstall01 Gülle</name>
+      <group>Hof Bielefeld</group>
     </mm304>
     <mm305>
       <id>46647</id>
       <name>Kuhstall01 Tiere</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm305>
     <mm306>
       <id>46668</id>
       <name>Kuhstall03 Tiere</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm306>
     <mm307>
       <id>46669</id>
-      <name>Kuhstall03 Slurry</name>
-      <group>Farm Bielefeld</group>
+      <name>Kuhstall03 Gülle</name>
+      <group>Hof Bielefeld</group>
     </mm307>
     <mm308>
       <id>46670</id>
       <name>Kuhstall03 Milch</name>
-      <group>Farm Bielefeld</group>
+      <group>Hof Bielefeld</group>
     </mm308>
     <mm309>
       <id>46708</id>
@@ -1613,153 +1613,153 @@
     </mm310>
     <mm311>
       <id>46760</id>
-      <name>BGA Slurry IN</name>
+      <name>BGA Gülle IN</name>
       <group>Landersum BGA</group>
     </mm311>
     <mm312>
       <id>46763</id>
-      <name>BGA Digstate OUT</name>
+      <name>BGA Gärreste OUT</name>
       <group>Landersum BGA</group>
     </mm312>
     <mm313>
       <id>46782</id>
-      <name>BGA Digstate OUT</name>
+      <name>BGA Gärreste OUT</name>
       <group>Landersum BGA</group>
     </mm313>
     <mm314>
       <id>46812</id>
-      <name>Schweinestall03 Slurry</name>
-      <group>Farm Bertels</group>
+      <name>Schweinestall03 Gülle</name>
+      <group>Hof Bertels</group>
     </mm314>
     <mm315>
       <id>46837</id>
-      <name>Schweinestall01 Slurry</name>
-      <group>Farm Bertels</group>
+      <name>Schweinestall01 Gülle</name>
+      <group>Hof Bertels</group>
     </mm315>
     <mm316>
       <id>46850</id>
       <name>Güllebecken</name>
-      <group>Farm Bertels</group>
+      <group>Hof Bertels</group>
     </mm316>
     <mm317>
       <id>46888</id>
-      <name>Schweinestall04 Slurry</name>
-      <group>Farm Bertels</group>
+      <name>Schweinestall04 Gülle</name>
+      <group>Hof Bertels</group>
     </mm317>
     <mm318>
       <id>46904</id>
-      <name>Schweinestall02 Slurry</name>
-      <group>Farm Bertels</group>
+      <name>Schweinestall02 Gülle</name>
+      <group>Hof Bertels</group>
     </mm318>
     <mm319>
       <id>46937</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Bertels</group>
+      <group>Hof Bertels</group>
     </mm319>
     <mm320>
       <id>46952</id>
       <name>Werkstatt</name>
-      <group>Farm Bertels</group>
+      <group>Hof Bertels</group>
     </mm320>
     <mm321>
       <id>46985</id>
       <name>Werkstatt</name>
-      <group>Farm Entrup</group>
+      <group>Hof Entrup</group>
     </mm321>
     <mm322>
       <id>47050</id>
-      <name>BGA Slurry/Digstate</name>
-      <group>Farm Entrup</group>
+      <name>BGA Gülle/Gärreste</name>
+      <group>Hof Entrup</group>
     </mm322>
     <mm323>
       <id>47084</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Entrup</group>
+      <group>Hof Entrup</group>
     </mm323>
     <mm324>
       <id>47114</id>
-      <name>Kuhstall01 Slurry</name>
-      <group>Farm Wessels</group>
+      <name>Kuhstall01 Gülle</name>
+      <group>Hof Wessels</group>
     </mm324>
     <mm325>
       <id>47125</id>
       <name>Kuhstall02 Milch</name>
-      <group>Farm Wessels</group>
+      <group>Hof Wessels</group>
     </mm325>
     <mm326>
       <id>47127</id>
-      <name>Kuhstall02 Slurry</name>
-      <group>Farm Wessels</group>
+      <name>Kuhstall02 Gülle</name>
+      <group>Hof Wessels</group>
     </mm326>
     <mm327>
       <id>47129</id>
       <name>Kuhstall02 Tiere</name>
-      <group>Farm Wessels</group>
+      <group>Hof Wessels</group>
     </mm327>
     <mm328>
       <id>47140</id>
       <name>Kuhstall01 Tiere</name>
-      <group>Farm Wessels</group>
+      <group>Hof Wessels</group>
     </mm328>
     <mm329>
       <id>47187</id>
       <name>BGA IN</name>
-      <group>Farm Moellering</group>
+      <group>Hof Moellering</group>
     </mm329>
     <mm330>
       <id>47190</id>
       <name>BGA Gäreste OUT</name>
-      <group>Farm Moellering</group>
+      <group>Hof Moellering</group>
     </mm330>
     <mm331>
       <id>47196</id>
-      <name>Schweinesallt01 Slurry</name>
-      <group>Farm Moellering</group>
+      <name>Schweinesallt01 Gülle</name>
+      <group>Hof Moellering</group>
     </mm331>
     <mm332>
       <id>47230</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Moellering</group>
+      <group>Hof Moellering</group>
     </mm332>
     <mm333>
       <id>47263</id>
       <name>Flüssigdüngertank</name>
-      <group>Farm Werning</group>
+      <group>Hof Werning</group>
     </mm333>
     <mm334>
       <id>47287</id>
       <name>Güllebecken</name>
-      <group>Farm Werning</group>
+      <group>Hof Werning</group>
     </mm334>
     <mm335>
       <id>47305</id>
       <name>Kuhstall01 Milch</name>
-      <group>Farm Werning</group>
+      <group>Hof Werning</group>
     </mm335>
     <mm336>
       <id>47339</id>
-      <name>Kuhstall01 Slurry</name>
-      <group>Farm Werning</group>
+      <name>Kuhstall01 Gülle</name>
+      <group>Hof Werning</group>
     </mm336>
     <mm337>
       <id>47355</id>
-      <name>Schweinestall01 Slurry</name>
-      <group>Farm Werning</group>
+      <name>Schweinestall01 Gülle</name>
+      <group>Hof Werning</group>
     </mm337>
     <mm338>
       <id>47360</id>
-      <name>Schweinestall02 Slurry</name>
-      <group>Farm Werning</group>
+      <name>Schweinestall02 Gülle</name>
+      <group>Hof Werning</group>
     </mm338>
     <mm339>
       <id>47408</id>
-      <name>Cowstable Milch</name>
-      <group>Farm Hessling</group>
+      <name>Kuhstall Milch</name>
+      <group>Hof Hessling</group>
     </mm339>
     <mm340>
       <id>47411</id>
-      <name>Cowstable Tiere</name>
-      <group>Farm Hessling</group>
+      <name>Kuhstall Tiere</name>
+      <group>Hof Hessling</group>
     </mm340>
   </mapmarker>
 </AutoDrive>

@@ -1,29 +1,39 @@
 import customtkinter as ctk
 
-from custom_widgets.CustomContextMenu import CustomContextMenu
+from src.custom_widgets.CustomContextMenu import CustomContextMenu
 
 class CustomTextbox(ctk.CTkTextbox):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.context_menu = None  # Reference to the open context menu
+        self.menu_items = []  # Will hold the menu items with their labels and commands
         self.create_context_menu()
 
     def create_context_menu(self):
-        menu_items = [
-            {"text": "Copy", "command": self.copy_selection},
-            {"text": "Paste", "command": self.paste},
-            {"text": "Cut", "command": self.cut},
-            {"text": "Clear", "command": self.clear},
-            {"text": "Select All", "command": self.select_all},
+        self.menu_items = [
+            {"text": _("Copy"), "command": self.copy_selection},
+            {"text": _("Paste"), "command": self.paste},
+            {"text": _("Cut"), "command": self.cut},
+            {"text": _("Clear"), "command": self.clear_text},
+            {"text": _("Select All"), "command": self.select_all},
         ]
-        self.bind("<Button-3>", lambda event: self.show_context_menu(event, menu_items))
+        self.bind("<Button-3>", self.show_context_menu)
 
-    def show_context_menu(self, event, menu_items):
+    def show_context_menu(self, event):
         if self.context_menu and self.context_menu.winfo_exists():
             self.context_menu.destroy()  # Explicitly destroy the existing menu
-        self.context_menu = CustomContextMenu(self, menu_items)
+        self.context_menu = CustomContextMenu(self, self.menu_items)
         self.context_menu.show(event.x_root, event.y_root)
+
+    def refresh_context_menu_translations(self):
+        self.menu_items = [
+            {"text": _("Copy"), "command": self.copy_selection},
+            {"text": _("Paste"), "command": self.paste},
+            {"text": _("Cut"), "command": self.cut},
+            {"text": _("Clear"), "command": self.clear_text},
+            {"text": _("Select All"), "command": self.select_all},
+        ]
 
     def copy_selection(self):
         try:
@@ -45,7 +55,7 @@ class CustomTextbox(ctk.CTkTextbox):
         self.copy_selection()
         self.delete("sel.first", "sel.last")
 
-    def clear(self):
+    def clear_text(self):
         self.delete("1.0", "end")
 
     def select_all(self):
@@ -54,3 +64,6 @@ class CustomTextbox(ctk.CTkTextbox):
     def selection_present(self):
         """Check if there is any text selected."""
         return bool(self._textbox.tag_ranges("sel"))
+
+    def is_empty(self):
+        return not bool(self.get("1.0", "end-1c"))
