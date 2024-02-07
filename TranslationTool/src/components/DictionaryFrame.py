@@ -5,6 +5,7 @@ import customtkinter as ctk
 import src.utilities.file_ops as file_ops
 from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 from src.custom_widgets.CustomTextbox import CustomTextbox
+from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
 
 
 class DictionaryFrame(ctk.CTkFrame):
@@ -14,7 +15,9 @@ class DictionaryFrame(ctk.CTkFrame):
         self.cfg_manager = self.window.cfg_manager
         self.get_var = self.cfg_manager.get_var
 
-    def create_widgets(self):
+        self._create_widgets()
+
+    def _create_widgets(self):
         self.pack(fill="both", expand=True, padx=20, pady=20)
 
         # Vertical expansion weights
@@ -25,20 +28,19 @@ class DictionaryFrame(ctk.CTkFrame):
         self.columnconfigure(0, weight=5)
         self.columnconfigure(1, weight=1)
 
-        frame1 = ctk.CTkFrame(self)
-        frame1.grid(column=0, row=0, sticky="nsew",
-                    padx=(20, 5), pady=(20, 20))
+        frame_dictionary_edit = ctk.CTkFrame(self)
+        frame_dictionary_edit.grid(column=0, row=0, sticky="nsew", padx=(20, 5), pady=(20, 20))
 
-        frame2 = ctk.CTkFrame(self)
-        frame2.grid(column=1, row=0, sticky="nsew",
-                    padx=(5, 20), pady=(20, 20))
+        frame_dictionary_files = ctk.CTkFrame(self)
+        frame_dictionary_files.grid(column=1, row=0, sticky="nsew", padx=(5, 20), pady=(20, 20))
 
-        self.create_frame_file_edit(frame1)
-        self.create_frame_dictionary_files_list(frame2)
+        self._create_dictionary_edit_box_frame(frame_dictionary_edit)
+        self._create_dictionary_files_frame(frame_dictionary_files)
 
     # -----------------------------------------------------------------------------------------------
 
-    def create_frame_file_edit(self, frame):
+    # Dictionary edit box frame
+    def _create_dictionary_edit_box_frame(self, frame):
         # Vertical expansion weights
         frame.rowconfigure(0, weight=1)
         frame.rowconfigure(1, weight=0)
@@ -46,48 +48,89 @@ class DictionaryFrame(ctk.CTkFrame):
         # Horizontal expansion weights
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
+        frame.columnconfigure(2, weight=1)
 
-        self.textbox_file_edit = CustomTextbox(
+        # CustomTextbox for editing content loaded from a dictionary file
+        self.textbox_dictionary_edit_box = CustomTextbox(
             frame,
             activate_scrollbars=True,
             font=self.window.font_big_bold,
         )
-        self.textbox_file_edit.grid(
-            column=0, row=0, columnspan=2, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        self.textbox_dictionary_edit_box.grid(column=0, row=0, columnspan=3, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
-        self.button_save_file = ctk.CTkButton(
+        # Button for saving to a dictionary file
+        self.button_save_dictionary_file = ctk.CTkButton(
             frame,
-            text=_("Save to selected File"),
+            text=_("Save to selected Dictionary"),
             font=self.window.font_big_bold,
-            command=self.on_save_file_button_pressed
+            command=self._on_save_dictionary_file_button_press
         )
-        self.button_save_file.grid(
-            column=0, row=1, sticky="nsew", padx=(10, 5), pady=(5, 10))
+        self.button_save_dictionary_file.grid(column=0, row=1, sticky="nsew", padx=(10, 5), pady=(5, 10))
 
-        self.button_load_file = ctk.CTkButton(
+        # Button for loading from a dictionary file
+        self.button_load_dictionary_file = ctk.CTkButton(
             frame,
-            text=_("Load from selected File"),
+            text=_("Load from selected Dictionary"),
             font=self.window.font_big_bold,
-            command=self.on_load_file_button_pressed
+            command=self._on_load_dictionary_file_button_press
         )
-        self.button_load_file.grid(
-            column=1, row=1, sticky="nsew", padx=(5, 10), pady=(5, 10))
+        self.button_load_dictionary_file.grid(column=1, row=1, sticky="nsew", padx=(5, 5), pady=(5, 10))
 
-    def on_save_file_button_pressed(self):
-        if self.frame_dictionary_files_list.get_checked_entries():
-            file_path = self.cfg_manager.get_var(
-                "dictionaries_path") + "/" + self.frame_dictionary_files_list.get_checked_entries()[0]
-            file_ops.save_file_from_textbox(self.textbox_file_edit, file_path)
+        # Button for clearing the edit box
+        self.button_clear_edit_textbox = ctk.CTkButton(
+            frame,
+            text=_("Clear text edit box"),
+            font=self.window.font_big_bold,
+            command=self._on_clear_edit_textbox_button_press
+        )
+        self.button_clear_edit_textbox.grid(column=2, row=1, sticky="nsew", padx=(5, 10), pady=(5, 10))
 
-    def on_load_file_button_pressed(self):
-        if self.frame_dictionary_files_list.get_checked_entries():
-            file_path = self.cfg_manager.get_var(
-                "dictionaries_path") + "/" + self.frame_dictionary_files_list.get_checked_entries()[0]
-            file_ops.load_file_to_textbox(self.textbox_file_edit, file_path)
+    def _on_save_dictionary_file_button_press(self):
+        checked_entries = self.scroll_list_dictionaries.get_checked_entries()
+        if checked_entries:
+            file_path = self.cfg_manager.get_var("dictionaries_path") + "/" + checked_entries[0]
+            CustomPopupMessageBox(
+                self,
+                title=_("Confirm Save"),
+                message=_("Do you want to save changes to this file? Existing content will be overwritten."),
+                interactive=True,
+                yes_button_text=_("Yes"),
+                no_button_text=_("No"),
+                on_yes=lambda is_yes: file_ops.save_file_from_textbox(self.textbox_dictionary_edit_box, file_path) if is_yes else None
+            )
+
+    def _on_load_dictionary_file_button_press(self):
+        checked_entries = self.scroll_list_dictionaries.get_checked_entries()
+        if checked_entries:
+            file_path = self.cfg_manager.get_var("dictionaries_path") + "/" + checked_entries[0]
+            if not self.textbox_dictionary_edit_box.is_empty():
+                CustomPopupMessageBox(
+                    self,
+                    title=_("Confirm Action"),
+                    message=_("Do you want to load the file and discard the current content?"),
+                    interactive=True,
+                    yes_button_text=_("Yes"),
+                    no_button_text=_("No"),
+                    on_yes=lambda is_yes: file_ops.load_file_to_textbox(self.textbox_dictionary_edit_box, file_path) if is_yes else None
+                )
+            else:
+                file_ops.load_file_to_textbox(self.textbox_dictionary_edit_box, file_path)
+
+    def _on_clear_edit_textbox_button_press(self):
+        CustomPopupMessageBox(
+            self,
+            title=_("Confirm Action"),
+            message=_("Do you want to clear the current content?"),
+            interactive=True,
+            yes_button_text=_("Yes"),
+            no_button_text=_("No"),
+            on_yes=lambda is_yes: self.textbox_dictionary_edit_box.clear_text() if is_yes else None
+            )
 
     # -----------------------------------------------------------------------------------------------
 
-    def create_frame_dictionary_files_list(self, frame):
+    # Dictionary files frame
+    def _create_dictionary_files_frame(self, frame):
 
         # Vertical expansion weights
         frame.rowconfigure(0, weight=1)
@@ -98,63 +141,82 @@ class DictionaryFrame(ctk.CTkFrame):
         # Horizontal expansion weights
         frame.columnconfigure(0, weight=1)
 
-        self.frame_dictionary_files_list = ScrollableSelectionFrame(
+        # ScrollableSelectionFrame for selecting dictionary files
+        self.scroll_list_dictionaries = ScrollableSelectionFrame(
             frame,
-            entries=file_ops.get_all_file_names_in_directory(
-                self.cfg_manager.get_var("dictionaries_path")),
+            entries=file_ops.get_all_file_names_in_directory(self.cfg_manager.get_var("dictionaries_path")),
             widget_type='label',
             single_select=True,
             command=None,
             custom_font=self.window.font_big_bold,
             logger=self.window.logger,
         )
-        self.frame_dictionary_files_list.grid(
-            column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        self.scroll_list_dictionaries.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
-        test = self.cfg_manager.get_var("supported_languages")
-        self.dropdown_dictionary_languages_select = ctk.CTkOptionMenu(
+        # Dropdown for selecting a language
+        self.dropdown_language_select = ctk.CTkOptionMenu(
             frame,
             font=self.window.font_big_bold,
+            variable=ctk.StringVar(self, value=_("Select Language")),
             values=self.cfg_manager.get_var("supported_languages"),
         )
-        self.dropdown_dictionary_languages_select.grid(
-            column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        self.dropdown_language_select.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
-        self.button_create_file = ctk.CTkButton(
+        # Button to create a new dictionary file
+        self.button_create_dictionary_file = ctk.CTkButton(
             frame,
             text=_("Create Dictionary File"),
             font=self.window.font_big_bold,
-            command=self.on_create_file_button_pressed,
+            command=self._on_create_dictionary_file_button_press,
         )
-        self.button_create_file.grid(
-            column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        self.button_create_dictionary_file.grid(column=0, row=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
-        self.button_delete_file = ctk.CTkButton(
+        # Button to delete a dictionary file
+        self.button_delete_dictionary_file = ctk.CTkButton(
             frame,
             text=_("Delete selected Dictionary File"),
             font=self.window.font_big_bold,
-            command=self.on_delete_file_button_pressed,
+            command=self._on_delete_dictionary_file_button_press,
         )
-        self.button_delete_file.grid(
-            column=0, row=3, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_delete_dictionary_file.grid(column=0, row=3, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
-    def on_create_file_button_pressed(self):
-        file_name = "Dictionary_" + self.dropdown_dictionary_languages_select.get() + \
-            ".dic"
-        if file_name not in self.frame_dictionary_files_list.get_all_entries():
-            file_path = self.cfg_manager.get_var(
-                "dictionaries_path") + "/" + file_name
-            file_ops.create_file(file_path)
-            self.frame_dictionary_files_list.add_entry(file_name)
+    def _on_create_dictionary_file_button_press(self):
+            selected_language = self.dropdown_language_select.get()
+            if selected_language != _("Select Language"):
+                file_name = f"Dictionary_{selected_language}.dic"
+                if file_name not in self.scroll_list_dictionaries.get_all_entries():
+                    file_path = f"{self.cfg_manager.get_var('dictionaries_path')}/{file_name}"
+                    file_ops.create_file(file_path)
+                    self.scroll_list_dictionaries.add_entry(file_name)
 
-    def on_delete_file_button_pressed(self):
-        if self.frame_dictionary_files_list.get_checked_entries():
-            file_path = self.cfg_manager.get_var(
-                "dictionaries_path") + "/" + self.frame_dictionary_files_list.get_checked_entries()[0]
-            file_ops.delete_file(file_path)
-            self.frame_dictionary_files_list.remove_checked_entries()
+    def _on_delete_dictionary_file_button_press(self):
+        checked_entries = self.scroll_list_dictionaries.get_checked_entries()
+        if checked_entries:
+            def on_yes(is_yes):
+                if is_yes:
+                    file_path = f"{self.cfg_manager.get_var('dictionaries_path')}/{checked_entries[0]}"
+                    file_ops.delete_file(file_path)
+                    self.scroll_list_dictionaries.remove_checked_entries()
+            CustomPopupMessageBox(
+                self,
+                title=_("Confirm Deletion"),
+                message=_("Do you want to delete the selected Dictionary File?"),
+                interactive=True,
+                yes_button_text=_("Yes"),
+                no_button_text=_("No"),
+                on_yes=on_yes
+            )
 
     # -----------------------------------------------------------------------------------------------
 
+    # Called by main window when language is changed
     def refresh_user_interface(self):
-        pass
+        self.button_save_dictionary_file.configure(text=_("Save to selected Dictionary"))
+        self.button_load_dictionary_file.configure(text=_("Load from selected Dictionary"))
+        self.button_clear_edit_textbox.configure(text=_("Clear text edit box"))
+        self.button_create_dictionary_file.configure(text=_("Create Dictionary File"))
+        self.button_delete_dictionary_file.configure(text=_("Delete selected Dictionary File"))
+        
+        self.textbox_dictionary_edit_box.refresh_context_menu_translations()
+
+        self.dropdown_language_select.configure(variable=ctk.StringVar(self, _("Select Language")))

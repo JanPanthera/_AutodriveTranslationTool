@@ -14,7 +14,9 @@ class TranslationFrame(ctk.CTkFrame):
         self.cfg_manager = self.window.cfg_manager
         self.get_var = self.cfg_manager.get_var
 
-    def create_widgets(self):
+        self._create_widgets()
+
+    def _create_widgets(self):
         self.pack(fill="both", expand=True, padx=20, pady=20)
 
         # Vertical expansion weights
@@ -25,17 +27,18 @@ class TranslationFrame(ctk.CTkFrame):
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=1)
 
-        language_selection_frame = ctk.CTkFrame(self)
-        language_selection_frame.grid(column=0, row=0, sticky="nsew", padx=(20, 5), pady=(20, 20))
+        frame_language_selection = ctk.CTkFrame(self)
+        frame_language_selection.grid(column=0, row=0, sticky="nsew", padx=(20, 5), pady=(20, 20))
 
-        console_output_frame = ctk.CTkFrame(self)
-        console_output_frame.grid(column=1, row=0, sticky="nsew", padx=(5, 20), pady=(20, 20))
+        frame_console_output = ctk.CTkFrame(self)
+        frame_console_output.grid(column=1, row=0, sticky="nsew", padx=(5, 20), pady=(20, 20))
 
-        self._create_language_selection_frame(language_selection_frame)
-        self._create_console_output_frame(console_output_frame)
+        self._create_language_selection_frame(frame_language_selection)
+        self._create_console_output_frame(frame_console_output)
 
     # -----------------------------------------------------------------------------------------------
 
+    # Language Selection Frame
     def _create_language_selection_frame(self, frame):
 
         # Vertical expansion weights
@@ -48,7 +51,8 @@ class TranslationFrame(ctk.CTkFrame):
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=1)
 
-        self.language_selection_frame = ScrollableSelectionFrame(
+        # Scroll list for selecting languages
+        self.scroll_list_language_selection = ScrollableSelectionFrame(
             frame,
             entries=self.get_var("supported_languages"),
             values=self.get_var("selected_languages"),
@@ -58,32 +62,36 @@ class TranslationFrame(ctk.CTkFrame):
             custom_font=self.window.font_big_bold,
             logger=self.window.logger,
         )
-        self.language_selection_frame.grid(column=0, row=1, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        self.scroll_list_language_selection.grid(column=0, row=1, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
-        self.check_all_languages_button = ctk.CTkButton(
+        # Button for selecting all languages
+        self.button_select_all_languages = ctk.CTkButton(
             frame,
             text=_("Check All"),
             font=self.window.font_big_bold,
-            command=lambda: self.language_selection_frame.set_all_entries_state(True),
+            command=lambda: self.scroll_list_language_selection.set_all_entries_state(True),
         )
-        self.check_all_languages_button.grid(column=0, row=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
+        self.button_select_all_languages.grid(column=0, row=0, sticky="nsew", padx=(10, 5), pady=(10, 5))
 
-        self.uncheck_all_languages_button = ctk.CTkButton(
+        # Button for unselecting all languages
+        self.button_unselect_all_languages = ctk.CTkButton(
             frame,
             text=_("Uncheck All"),
             font=self.window.font_big_bold,
-            command=lambda: self.language_selection_frame.set_all_entries_state(False),
+            command=lambda: self.scroll_list_language_selection.set_all_entries_state(False),
         )
-        self.uncheck_all_languages_button.grid(column=1, row=0, sticky="nsew", padx=(5, 10), pady=(10, 5))
+        self.button_unselect_all_languages.grid(column=1, row=0, sticky="nsew", padx=(5, 10), pady=(10, 5))
 
-        self.translate_files_button = ctk.CTkButton(
+        # Button for starting the translation process
+        self.button_translate_files = ctk.CTkButton(
             frame,
             text=_("Translate"),
             font=self.window.font_big_bold,
             command=self._on_translate_button_press,
         )
-        self.translate_files_button.grid(column=0, row=2, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
+        self.button_translate_files.grid(column=0, row=2, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
+        # Button for starting the validation of the output files
         self.validate_output_files_button = ctk.CTkButton(
             frame,
             text=_("Validate Output Files"),
@@ -97,19 +105,20 @@ class TranslationFrame(ctk.CTkFrame):
             input_path=self.get_var("input_path"),
             output_path=self.get_var("output_path"),
             dictionaries_path=self.get_var("dictionaries_path"),
-            languages=self.language_selection_frame.get_checked_entries(),
-            output_widget=self.output_console_textbox,
+            languages=self.scroll_list_language_selection.get_checked_entries(),
+            output_widget=self.textbox_output_console,
         )
 
     def _on_validate_output_files_button_press(self):
         validate_output_files.validate_output_files(
             input_path=self.get_var("output_path"),
-            languages=self.language_selection_frame.get_checked_entries(),
-            output_widget=self.output_console_textbox,
+            languages=self.scroll_list_language_selection.get_checked_entries(),
+            output_widget=self.textbox_output_console,
         )
 
     # -----------------------------------------------------------------------------------------------
 
+    # Console Output Frame
     def _create_console_output_frame(self, frame):
 
         # Vertical expansion weights
@@ -120,27 +129,29 @@ class TranslationFrame(ctk.CTkFrame):
         frame.columnconfigure(0, weight=1)
         frame.columnconfigure(1, weight=0)
 
-        self.output_console_textbox = CustomConsoleTextbox(
+        # Console output textbox
+        self.textbox_output_console = CustomConsoleTextbox(
             frame,
             autoscroll=True,
             max_lines=1000,
             font=self.window.font_big_bold,
         )
-        self.output_console_textbox.grid(column=0, row=0, columnspan=2, sticky="nsew", padx=(10, 10), pady=(10, 5))
+        self.textbox_output_console.grid(column=0, row=0, columnspan=2, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
-        self.clear_output_console_button = ctk.CTkButton(
+        # Button for clearing the console output
+        self.button_clear_output_console = ctk.CTkButton(
             frame,
             text=_("Clear Console"),
             font=self.window.font_big_bold,
-            command=self.output_console_textbox.clear_console,
+            command=self.textbox_output_console.clear_console,
         )
-        self.clear_output_console_button.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_clear_output_console.grid(column=1, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
     # -----------------------------------------------------------------------------------------------
 
     def refresh_user_interface(self):
-        self.check_all_languages_button.configure(text=_("Check All"))
-        self.uncheck_all_languages_button.configure(text=_("Uncheck All"))
-        self.translate_files_button.configure(text=_("Translate"))
+        self.button_select_all_languages.configure(text=_("Check All"))
+        self.button_unselect_all_languages.configure(text=_("Uncheck All"))
+        self.button_translate_files.configure(text=_("Translate"))
         self.validate_output_files_button.configure(text=_("Validate Output Files"))
-        self.clear_output_console_button.configure(text=_("Clear Console"))
+        self.button_clear_output_console.configure(text=_("Clear Console"))

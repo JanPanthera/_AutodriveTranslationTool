@@ -7,210 +7,278 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-06 15:06+0100\n"
-"PO-Revision-Date: 2024-02-05 17:59+0100\n"
+"POT-Creation-Date: 2024-02-07 20:54+0100\n"
+"PO-Revision-Date: 2024-02-07 20:56+0100\n"
 "Last-Translator: \n"
-"Language: de\n"
 "Language-Team: de <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Generated-By: Babel 2.14.0\n"
+"X-Generator: Poedit 3.4.2\n"
 
-#: src/components/DictionaryFrame.py:54
-msgid "Save to selected File"
-msgstr "In ausgewählte Datei speichern"
+#: src/components/DictionaryFrame.py:64 src/components/DictionaryFrame.py:214
+msgid "Save to selected Dictionary"
+msgstr "In ausgewähltem Wörterbuch speichern"
 
-#: src/components/DictionaryFrame.py:62
-msgid "Load from selected File"
-msgstr "Aus ausgewählter Datei laden"
+#: src/components/DictionaryFrame.py:73 src/components/DictionaryFrame.py:215
+msgid "Load from selected Dictionary"
+msgstr "Laden aus ausgewähltem Wörterbuch"
 
-#: src/components/DictionaryFrame.py:112
+#: src/components/DictionaryFrame.py:82 src/components/DictionaryFrame.py:216
+msgid "Clear text edit box"
+msgstr "Textbearbeitungsfeld leeren"
+
+#: src/components/DictionaryFrame.py:94
+msgid "Confirm Save"
+msgstr "Speichern bestätigen"
+
+#: src/components/DictionaryFrame.py:95
+msgid ""
+"Do you want to save changes to this file? Existing content will be "
+"overwritten."
+msgstr ""
+"Möchten Sie die Änderungen in diese Datei speichern? Bestehende Inhalte "
+"werden überschrieben."
+
+#: src/components/DictionaryFrame.py:97 src/components/DictionaryFrame.py:112
+#: src/components/DictionaryFrame.py:125 src/components/DictionaryFrame.py:205
+#: src/components/LanguagesFrame.py:151 src/components/LanguagesFrame.py:168
+#: src/components/LanguagesFrame.py:185
+msgid "Yes"
+msgstr "Ja"
+
+#: src/components/DictionaryFrame.py:98 src/components/DictionaryFrame.py:113
+#: src/components/DictionaryFrame.py:126 src/components/DictionaryFrame.py:206
+#: src/components/LanguagesFrame.py:152 src/components/LanguagesFrame.py:169
+#: src/components/LanguagesFrame.py:186
+msgid "No"
+msgstr "Nein"
+
+#: src/components/DictionaryFrame.py:109 src/components/DictionaryFrame.py:122
+msgid "Confirm Action"
+msgstr "Aktion bestätigen"
+
+#: src/components/DictionaryFrame.py:110
+msgid "Do you want to load the file and discard the current content?"
+msgstr "Möchten Sie die Datei laden und den aktuellen Inhalt verwerfen?"
+
+#: src/components/DictionaryFrame.py:123
+msgid "Do you want to clear the current content?"
+msgstr "Möchten Sie den aktuellen Inhalt löschen?"
+
+#: src/components/DictionaryFrame.py:160 src/components/DictionaryFrame.py:185
+#: src/components/DictionaryFrame.py:222
+msgid "Select Language"
+msgstr "Sprache auswählen"
+
+#: src/components/DictionaryFrame.py:168 src/components/DictionaryFrame.py:217
 msgid "Create Dictionary File"
 msgstr "Wörterbuchdatei erstellen"
 
-#: src/components/DictionaryFrame.py:120
+#: src/components/DictionaryFrame.py:177 src/components/DictionaryFrame.py:218
 msgid "Delete selected Dictionary File"
 msgstr "Ausgewählte Wörterbuchdatei löschen"
 
-#: src/components/LanguagesFrame.py:59
+#: src/components/DictionaryFrame.py:202
+msgid "Confirm Deletion"
+msgstr "Löschen bestätigen"
+
+#: src/components/DictionaryFrame.py:203
+msgid "Do you want to delete the selected Dictionary File?"
+msgstr "Ausgewählte Wörterbuchdatei löschen?"
+
+#: src/components/LanguagesFrame.py:64 src/components/LanguagesFrame.py:194
 msgid "New Language"
 msgstr "Neue Sprache"
 
-#: src/components/LanguagesFrame.py:69
+#: src/components/LanguagesFrame.py:72 src/components/LanguagesFrame.py:195
 msgid "Add Language"
 msgstr "Sprache hinzufügen"
 
-#: src/components/LanguagesFrame.py:78
+#: src/components/LanguagesFrame.py:81 src/components/LanguagesFrame.py:196
 msgid "Remove Language"
 msgstr "Sprache entfernen"
 
-#: src/components/LanguagesFrame.py:89
+#: src/components/LanguagesFrame.py:90 src/components/LanguagesFrame.py:148
+#: src/components/LanguagesFrame.py:197
 msgid "Save Custom"
 msgstr "Benutzerdefiniert speichern"
 
-#: src/components/LanguagesFrame.py:98
+#: src/components/LanguagesFrame.py:99 src/components/LanguagesFrame.py:165
+#: src/components/LanguagesFrame.py:198
 msgid "Load Custom"
 msgstr "Benutzerdefiniert laden"
 
-#: src/components/LanguagesFrame.py:107
+#: src/components/LanguagesFrame.py:108 src/components/LanguagesFrame.py:182
+#: src/components/LanguagesFrame.py:199
 msgid "Load Default"
 msgstr "Standard laden"
 
-#: src/components/LanguagesFrame.py:134
+#: src/components/LanguagesFrame.py:120
 msgid "Invalid characters: "
 msgstr "Ungültige Zeichen: "
 
-#: src/components/LanguagesFrame.py:137
+#: src/components/LanguagesFrame.py:124
 msgid "Invalid Input"
 msgstr "Ungültige Eingabe"
 
-#: src/components/OptionsFrame.py:51 src/components/OptionsFrame.py:250
+#: src/components/LanguagesFrame.py:149
+msgid ""
+"Are you sure you want to save the languages to the custom configuration file?"
+msgstr ""
+"Sind Sie sicher, dass Sie die Sprachen in der benutzerdefinierten "
+"Konfigurationsdatei speichern wollen?"
+
+#: src/components/LanguagesFrame.py:166
+msgid ""
+"Are you sure you want to load the languages from the custom configuration "
+"file?"
+msgstr ""
+"Sind Sie sicher, dass Sie die Sprachen aus der benutzerdefinierten "
+"Konfigurationsdatei laden wollen?"
+
+#: src/components/LanguagesFrame.py:183
+msgid ""
+"Are you sure you want to load the languages from the default configuration "
+"file?"
+msgstr ""
+"Sind Sie sicher, dass Sie die Sprachen aus der Standardkonfigurationsdatei "
+"laden wollen?"
+
+#: src/components/OptionsFrame.py:44 src/components/OptionsFrame.py:342
+msgid "Reset Everything"
+msgstr "Alles zurücksetzen"
+
+#: src/components/OptionsFrame.py:98 src/components/OptionsFrame.py:330
 msgid "Save on Window Close"
 msgstr "Beim Schließen des Fensters speichern"
 
-#: src/components/OptionsFrame.py:58 src/components/OptionsFrame.py:254
+#: src/components/OptionsFrame.py:106 src/components/OptionsFrame.py:334
 msgid "Window Size"
 msgstr "Fenstergröße"
 
-#: src/components/OptionsFrame.py:69 src/components/OptionsFrame.py:255
+#: src/components/OptionsFrame.py:118 src/components/OptionsFrame.py:335
 msgid "Window Position"
 msgstr "Fensterposition"
 
-#: src/components/OptionsFrame.py:80 src/components/OptionsFrame.py:257
+#: src/components/OptionsFrame.py:130 src/components/OptionsFrame.py:336
 msgid "Selected Languages"
 msgstr "Ausgewählte Sprachen"
 
-#: src/components/OptionsFrame.py:91 src/components/OptionsFrame.py:167
-#: src/components/OptionsFrame.py:264 src/components/OptionsFrame.py:265
+#: src/components/OptionsFrame.py:142 src/components/OptionsFrame.py:224
+#: src/components/OptionsFrame.py:343 src/components/OptionsFrame.py:344
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: src/components/OptionsFrame.py:131 src/components/OptionsFrame.py:251
+#: src/components/OptionsFrame.py:184 src/components/OptionsFrame.py:331
 msgid "Appearance Mode"
 msgstr "Erscheinungsbildmodus"
 
-#: src/components/OptionsFrame.py:138 src/components/OptionsFrame.py:259
+#: src/components/OptionsFrame.py:192 src/components/OptionsFrame.py:337
 msgid "Use High DPI Scaling"
 msgstr "High-DPI-Skalierung verwenden"
 
-#: src/components/OptionsFrame.py:151 src/components/OptionsFrame.py:247
-#: src/components/OptionsFrame.py:261
+#: src/components/OptionsFrame.py:206 src/components/OptionsFrame.py:240
+#: src/components/OptionsFrame.py:339
 msgid "Light"
 msgstr "Hell"
 
-#: src/components/OptionsFrame.py:151 src/components/OptionsFrame.py:247
-#: src/components/OptionsFrame.py:261
+#: src/components/OptionsFrame.py:206 src/components/OptionsFrame.py:241
+#: src/components/OptionsFrame.py:339
 msgid "Dark"
 msgstr "Dunkel"
 
-#: src/components/OptionsFrame.py:151 src/components/OptionsFrame.py:247
-#: src/components/OptionsFrame.py:261
+#: src/components/OptionsFrame.py:206 src/components/OptionsFrame.py:242
+#: src/components/OptionsFrame.py:339
 msgid "System"
 msgstr "System"
 
-#: src/components/OptionsFrame.py:160 src/components/OptionsFrame.py:248
-#: src/components/OptionsFrame.py:262
+#: src/components/OptionsFrame.py:216 src/components/OptionsFrame.py:258
+#: src/components/OptionsFrame.py:340
 msgid "English"
 msgstr "Englisch"
 
-#: src/components/OptionsFrame.py:160 src/components/OptionsFrame.py:248
-#: src/components/OptionsFrame.py:262
+#: src/components/OptionsFrame.py:216 src/components/OptionsFrame.py:259
+#: src/components/OptionsFrame.py:340
 msgid "German"
 msgstr "Deutsch"
 
-#: src/components/OptionsFrame.py:214 src/components/OptionsFrame.py:252
+#: src/components/OptionsFrame.py:295 src/components/OptionsFrame.py:332
 msgid "Reset Settings"
 msgstr "Einstellungen zurücksetzen"
 
-#: src/components/OptionsFrame.py:221 src/components/OptionsFrame.py:266
+#: src/components/OptionsFrame.py:303 src/components/OptionsFrame.py:345
 msgid "Reset Window Size"
 msgstr "Fenstergröße zurücksetzen"
 
-#: src/components/OptionsFrame.py:229 src/components/OptionsFrame.py:267
+#: src/components/OptionsFrame.py:312 src/components/OptionsFrame.py:346
 msgid "Reset Window Position"
 msgstr "Fensterposition zurücksetzen"
 
-#: src/components/TranslationFrame.py:58
+#: src/components/TranslationFrame.py:70 src/components/TranslationFrame.py:153
 msgid "Check All"
 msgstr "Alle auswählen"
 
-#: src/components/TranslationFrame.py:66
+#: src/components/TranslationFrame.py:79 src/components/TranslationFrame.py:154
 msgid "Uncheck All"
 msgstr "Alle abwählen"
 
-#: src/components/TranslationFrame.py:74
+#: src/components/TranslationFrame.py:88 src/components/TranslationFrame.py:155
 msgid "Translate"
 msgstr "Übersetzen"
 
-#: src/components/TranslationFrame.py:82
+#: src/components/TranslationFrame.py:97 src/components/TranslationFrame.py:156
 msgid "Validate Output Files"
 msgstr "Ausgabedateien überprüfen"
 
-#: src/components/TranslationFrame.py:122
+#: src/components/TranslationFrame.py:144
+#: src/components/TranslationFrame.py:157
 msgid "Clear Console"
 msgstr "Konsole leeren"
 
-#: src/components/WindowMain.py:72
+#: src/components/WindowMain.py:20 src/components/WindowMain.py:82
 msgid "Translation"
 msgstr "Übersetzung"
 
-#: src/components/WindowMain.py:76
+#: src/components/WindowMain.py:21 src/components/WindowMain.py:83
 msgid "Languages"
 msgstr "Sprachen"
 
-#: src/components/WindowMain.py:80
+#: src/components/WindowMain.py:22 src/components/WindowMain.py:84
 msgid "Dictionary"
 msgstr "Wörterbuch"
 
-#: src/components/WindowMain.py:84
+#: src/components/WindowMain.py:23 src/components/WindowMain.py:85
 msgid "Options"
 msgstr "Optionen"
 
-#: src/custom_widgets/CustomConsoleTextbox.py:31
-#: src/custom_widgets/CustomTextbox.py:17
-#: src/custom_widgets/ScriptRunningTextbox.py:63
+#: src/custom_widgets/CustomConsoleTextbox.py:32
+#: src/custom_widgets/CustomTextbox.py:18
+#: src/custom_widgets/CustomTextbox.py:34
 msgid "Clear"
 msgstr "Leeren"
 
-#: src/custom_widgets/CustomConsoleTextbox.py:32
-#: src/custom_widgets/CustomTextbox.py:14
-#: src/custom_widgets/ScriptRunningTextbox.py:64
+#: src/custom_widgets/CustomConsoleTextbox.py:33
+#: src/custom_widgets/CustomTextbox.py:15
+#: src/custom_widgets/CustomTextbox.py:31
 msgid "Copy"
 msgstr "Kopieren"
 
-#: src/custom_widgets/CustomConsoleTextbox.py:33
-#: src/custom_widgets/CustomTextbox.py:18
-#: src/custom_widgets/ScriptRunningTextbox.py:65
+#: src/custom_widgets/CustomConsoleTextbox.py:34
+#: src/custom_widgets/CustomTextbox.py:19
+#: src/custom_widgets/CustomTextbox.py:35
 msgid "Select All"
 msgstr "Alle auswählen"
 
-#: src/custom_widgets/CustomPopupMessageBox.py:12
-msgid "Close"
-msgstr "Schliesen"
-
-#: src/custom_widgets/CustomTextbox.py:15
-#: src/custom_widgets/ScriptRunningTextbox.py:66
+#: src/custom_widgets/CustomTextbox.py:16
+#: src/custom_widgets/CustomTextbox.py:32
 msgid "Paste"
 msgstr "Einfügen"
 
-#: src/custom_widgets/CustomTextbox.py:16
+#: src/custom_widgets/CustomTextbox.py:17
+#: src/custom_widgets/CustomTextbox.py:33
 msgid "Cut"
 msgstr "Ausschneiden"
-
-#~ msgid "Restart Required"
-#~ msgstr "Neustart erforderlich"
-
-#~ msgid ""
-#~ "The application needs to be restarted"
-#~ " for the language change to take "
-#~ "effect."
-#~ msgstr ""
-#~ "Die Anwendung muss neu gestartet werden,"
-#~ " damit die Änderung der Sprache "
-#~ "wirksam wird."
-
-#~ msgid "Window Size/Pos"
-#~ msgstr "Fenstergröße/-position"
-

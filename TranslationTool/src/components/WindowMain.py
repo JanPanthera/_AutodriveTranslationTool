@@ -80,16 +80,9 @@ class WindowMain(ctk.CTk):
         self.tab_view.pack(fill="both", expand=True)
 
         self.translation_frame = TranslationFrame(self, self.tab_view.add(_("Translation")))
-        self.translation_frame.create_widgets()
-
         self.languages_frame = LanguagesFrame(self, self.tab_view.add(_("Languages")))
-        self.languages_frame.create_widgets()
-
         self.dictionary_frame = DictionaryFrame(self, self.tab_view.add(_("Dictionary")))
-        self.dictionary_frame.create_widgets()
-
         self.options_frame = OptionsFrame(self, self.tab_view.add(_("Options")))
-        self.options_frame.create_widgets()
 
     def refresh_appearance(
         self, refresh_gui_theme=False, refresh_dpi_scaling=False,
@@ -245,7 +238,7 @@ class WindowMain(ctk.CTk):
             if self.cfg_manager.get_var("save_window_pos").get():
                 self.save_window_position()
             if self.cfg_manager.get_var("save_selected_languages").get():
-                self.cfg_manager.save_setting("Settings", "selected_languages", ",".join(self.translation_frame.language_selection_frame.get_checked_entries()))
+                self.cfg_manager.save_setting("Settings", "selected_languages", ",".join(self.translation_frame.scroll_list_language_selection.get_checked_entries()))
 
             self.destroy()
         except Exception as e:
