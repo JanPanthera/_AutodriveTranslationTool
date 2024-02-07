@@ -15,25 +15,67 @@ class OptionsFrame(ctk.CTkFrame):
 
         # Vertical expansion weights
         self.rowconfigure(0, weight=0)
-        self.rowconfigure(1, weight=0)
+        self.rowconfigure(1, weight=1)
         self.rowconfigure(2, weight=0)
 
         # Horizontal expansion weights
         self.columnconfigure(0, weight=0)
         self.columnconfigure(1, weight=0)
+        self.columnconfigure(2, weight=0)
 
         save_on_window_close_frame = ctk.CTkFrame(self)
-        save_on_window_close_frame.grid(column=0, row=0, sticky="nsew", padx=(20, 20), pady=(20, 5))
+        save_on_window_close_frame.grid(column=0, row=0, sticky="nsew", padx=(20, 5), pady=(20, 20))
 
         ui_appearance_frame = ctk.CTkFrame(self)
-        ui_appearance_frame.grid(column=0, row=1, sticky="nsew", padx=(20, 20), pady=(5, 5))
+        ui_appearance_frame.grid(column=1, row=0, sticky="nsew", padx=(5, 5), pady=(20, 20))
 
         reset_buttons_frame = ctk.CTkFrame(self)
-        reset_buttons_frame.grid(column=0, row=2, sticky="nsew", padx=(20, 20), pady=(5, 20))
+        reset_buttons_frame.grid(column=2, row=0, sticky="nsew", padx=(5, 20), pady=(20, 20))
 
         self._create_save_on_window_close_frame(save_on_window_close_frame)
         self._create_ui_appearance_frame(ui_appearance_frame)
         self._create_reset_buttons_frame(reset_buttons_frame)
+
+        # create reset everything button
+        self.button_reset_everything = ctk.CTkButton(
+            self,
+            text=_("Reset Everything"),
+            font=self.window.font_big_bold,
+            command=self._on_reset_everything_button_press,
+            )
+        self.button_reset_everything.grid(column=0, row=2, sticky="nsew", padx=(20, 20), pady=(20, 20))
+
+    def _on_reset_everything_button_press(self):
+        settings_to_reset = [
+            ["SaveOnWindowClose", "save_window_size"],
+            ["SaveOnWindowClose", "save_window_pos"],
+            ["SaveOnWindowClose", "save_selected_languages"],
+            ["Settings", "use_high_dpi_scaling"],
+            ["Settings", "ui_theme"],
+            ["Settings", "ui_language"],
+            ["WindowGeometry", "width"],
+            ["WindowGeometry", "height"],
+            ["WindowGeometry", "pos_x"],
+            ["WindowGeometry", "pos_y"]
+        ]
+
+        self.cfg_manager.reset_settings(settings_to_reset)
+
+        self.cfg_manager.set_var("save_window_size", ctk.BooleanVar(self, self.cfg_manager.load_setting("SaveOnWindowClose", "save_window_size", "True")))
+        self.cfg_manager.set_var("save_window_pos", ctk.BooleanVar(self, self.cfg_manager.load_setting("SaveOnWindowClose", "save_window_pos", "True")))
+        self.cfg_manager.set_var("save_selected_languages", ctk.BooleanVar(self, self.cfg_manager.load_setting("SaveOnWindowClose", "save_selected_languages", "False")))
+        self.cfg_manager.set_var("use_high_dpi_scaling", ctk.BooleanVar(self, self.cfg_manager.load_setting("Settings", "use_high_dpi_scaling", "True")))
+        self.cfg_manager.set_var("ui_theme_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "ui_theme", "System")))
+        self.cfg_manager.set_var("ui_language_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "ui_language", "English")))
+
+        self.checkbox_save_window_size.select() if self.get_var("save_window_size").get() else self.checkbox_save_window_size.deselect()
+        self.checkbox_save_window_pos.select() if self.get_var("save_window_pos").get() else self.checkbox_save_window_pos.deselect()
+        self.checkbox_save_selected_languages.select() if self.get_var("save_selected_languages").get() else self.checkbox_save_selected_languages.deselect()
+        self.checkbox_use_high_dpi_scaling.select() if self.get_var("use_high_dpi_scaling").get() else self.checkbox_use_high_dpi_scaling.deselect()
+        self.dropdown_ui_theme.configure(variable=self.get_var("ui_theme_code"))
+        self.dropdown_ui_language.configure(variable=self.get_var("ui_language_code"))
+
+        self.window.refresh_appearance(refresh_dpi_scaling=True, refresh_gui_theme=True, refresh_ui_localization=True, refresh_window_size=True, refresh_window_position=True)
 
     # ---------------------------------------------------------------------------------
 
@@ -183,18 +225,32 @@ class OptionsFrame(ctk.CTkFrame):
     def _on_ui_theme_dropdown_select(self, selected_theme=None):
         if selected_theme is None:
             self.logger.error("dropdown_ui_theme: on_ui_theme_dropdown_select called with selected_theme=None")
+            return
 
+        theme_mapping = {
+            _("Light"): "Light",
+            _("Dark"): "Dark",
+            _("System"): "System"
+        }
+
+        selected_theme = theme_mapping.get(selected_theme, selected_theme)
+
+        self.cfg_manager.set_var("ui_theme_code", ctk.StringVar(self, selected_theme))
         self.cfg_manager.save_setting("Settings", "ui_theme", selected_theme)
+
         self.window.refresh_appearance(refresh_gui_theme=True)
 
     def _on_ui_language_dropdown_select(self, selected_language=None):
         if selected_language is None:
             self.logger.error("dropdown_ui_language: on_ui_language_dropdown_select called with selected_language=None")
+            return
 
-        if selected_language == _("English"):
-            selected_language = "English"
-        elif selected_language == _("German"):
-            selected_language = "German"
+        language_mapping = {
+            _("English"): "English",
+            _("German"): "German"
+        }
+
+        selected_language = language_mapping.get(selected_language, selected_language)
 
         self.cfg_manager.set_var("ui_language_code", ctk.StringVar(self, selected_language))
         self.cfg_manager.save_setting("Settings", "ui_language", selected_language)
@@ -202,11 +258,16 @@ class OptionsFrame(ctk.CTkFrame):
         self.window.refresh_appearance(refresh_ui_localization=True)
 
     def _on_reset_ui_appearance_settings_button_press(self):
-        self.cfg_manager.reset_settings([["Settings", "appearance_mode"], ["Settings", "use_high_dpi_scaling"], ["Settings", "ui_language_code"]])
-        self.cfg_manager.set_var("ui_theme_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "appearance_mode", "System")))
-        self.cfg_manager.set_var("ui_language_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "ui_language_code", "en")))
+        self.cfg_manager.reset_settings([["Settings", "use_high_dpi_scaling"], ["Settings", "ui_theme"], ["Settings", "ui_language"]])
         self.cfg_manager.set_var("use_high_dpi_scaling", ctk.BooleanVar(self, self.cfg_manager.load_setting("Settings", "use_high_dpi_scaling", "True")))
-        self.window.refresh_appearance(refresh_gui_theme=True, refresh_dpi_scaling=True, refresh_ui_localization=True)
+        self.cfg_manager.set_var("ui_theme_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "ui_theme", "System")))
+        self.cfg_manager.set_var("ui_language_code", ctk.StringVar(self, self.cfg_manager.load_setting("Settings", "ui_language", "English")))
+
+        self.checkbox_use_high_dpi_scaling.select() if self.get_var("use_high_dpi_scaling").get() else self.checkbox_use_high_dpi_scaling.deselect()
+        self.dropdown_ui_theme.configure(variable=self.get_var("ui_theme_code"))
+        self.dropdown_ui_language.configure(variable=self.get_var("ui_language_code"))
+
+        self.window.refresh_appearance(refresh_dpi_scaling=True, refresh_gui_theme=True, refresh_ui_localization=True)
 
     # ---------------------------------------------------------------------------------
 
@@ -245,27 +306,22 @@ class OptionsFrame(ctk.CTkFrame):
 
     def _on_reset_window_size_button_press(self):
         self.cfg_manager.reset_settings([["WindowGeometry", "width"], ["WindowGeometry", "height"]])
-        self.window.refresh_appearance(refresh_window_size=True)
+        self.window.refresh_appearance(refresh_window_size=True, refresh_window_position=False)
 
     def _on_reset_window_pos_button_press(self):
         self.cfg_manager.reset_settings([["WindowGeometry", "pos_x"], ["WindowGeometry", "pos_y"]])
-        self.window.refresh_appearance(refresh_window_position=True)
+        self.window.refresh_appearance(refresh_window_size=False, refresh_window_position=True)
 
     # ---------------------------------------------------------------------------------
 
-    # Called by the main window to refresh the UI with the current language
     def refresh_user_interface(self):
-        mode_dict = {"Light": _("Light"), "Dark": _("Dark"), "System": _("System")}
-
         self.label_save_on_close.configure(text=_("Save on Window Close"))
         self.label_appearance_mode.configure(text=_("Appearance Mode"))
         self.label_reset_settings.configure(text=_("Reset Settings"))
 
         self.checkbox_save_window_size.configure(text=_("Window Size"))
         self.checkbox_save_window_pos.configure(text=_("Window Position"))
-
         self.checkbox_save_selected_languages.configure(text=_("Selected Languages"))
-
         self.checkbox_use_high_dpi_scaling.configure(text=_("Use High DPI Scaling"))
 
         self.dropdown_ui_theme.configure(values=[_("Light"), _("Dark"), _("System")])
@@ -276,11 +332,10 @@ class OptionsFrame(ctk.CTkFrame):
         self.button_reset_window_size.configure(text=_("Reset Window Size"))
         self.button_reset_window_pos.configure(text=_("Reset Window Position"))
 
-        mode = mode_dict.get(self.get_var("ui_theme_code").get())
-        self.cfg_manager.set_var("ui_theme_text", ctk.StringVar(self, mode))
-        self.dropdown_ui_theme["textvariable"] = self.get_var("ui_theme_text")
+        mode = self.get_var("ui_theme_code").get()
+        self.cfg_manager.set_var("ui_theme_text", ctk.StringVar(self, _(mode)))
+        self.dropdown_ui_theme.configure(variable=self.get_var("ui_theme_text"))
 
         language = self.get_var("ui_language_code").get()
         self.cfg_manager.set_var("ui_language_text", ctk.StringVar(self, _(language)))
-        #test = self.get_var("ui_language_text")
         self.dropdown_ui_language.configure(variable=self.get_var("ui_language_text"))
