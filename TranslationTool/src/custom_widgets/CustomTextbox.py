@@ -54,3 +54,6 @@ class CustomTextbox(ctk.CTkTextbox):
     def selection_present(self):
         """Check if there is any text selected."""
         return bool(self._textbox.tag_ranges("sel"))
+
+    def is_empty(self):
+        return not bool(self.get("1.0", "end-1c"))

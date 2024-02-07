@@ -28,7 +28,8 @@ class ScrollableSelectionFrame(ctk.CTkScrollableFrame):
         self.states = {}
 
         self.add_entries(entries)
-        if values:
+        # if values is not None and values != "" and values != [] and values != [""]:
+        if values is not None and values != "" and values != [] and values != [""]:
             self.set_entries_state(values, True)
 
     def add_entry(self, entry):
