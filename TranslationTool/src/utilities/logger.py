@@ -106,8 +106,7 @@ class CustomLogger:
         log_file_dir = os.path.dirname(log_file)
         log_file_path = log_file if log_file_dir else os.path.join("logs", log_file)
 
-        if log_file_dir:
-            os.makedirs(log_file_dir, exist_ok=True)
+        os.makedirs(os.path.dirname(log_file_path), exist_ok=True)
 
         log_formatter = logging.Formatter(
             '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
