@@ -18,7 +18,7 @@ class WindowMain(ctk.CTk):
 
         self.cfg_manager = ConfigManager(self.logger)
 
-        self.base_path = "TranslationTool/" if 'VSAPPIDDIR' in os.environ else ""
+        self.base_path = "TranslationTool\\" if 'VSAPPIDDIR' in os.environ else ""
 
         self.load_settings()
         self.init_fonts()
@@ -78,16 +78,16 @@ class WindowMain(ctk.CTk):
         self.tab_view = ctk.CTkTabview(self, fg_color="transparent", bg_color="transparent")
         self.tab_view.pack(fill="both", expand=True)
 
-        self.translation_frame = TranslationFrame(self.tab_view.add(_("Translation")), self)
+        self.translation_frame = TranslationFrame(self, self.tab_view.add(_("Translation")))
         self.translation_frame.create_widgets()
 
-        self.languages_frame = LanguagesFrame(self.tab_view.add(_("Languages")), self)
+        self.languages_frame = LanguagesFrame(self, self.tab_view.add(_("Languages")))
         self.languages_frame.create_widgets()
 
-        self.dictionary_frame = DictionaryFrame(self.tab_view.add(_("Dictionary")), self)
+        self.dictionary_frame = DictionaryFrame(self, self.tab_view.add(_("Dictionary")))
         self.dictionary_frame.create_widgets()
 
-        self.options_frame = OptionsFrame(self.tab_view.add(_("Options")), self)
+        self.options_frame = OptionsFrame(self, self.tab_view.add(_("Options")))
         self.options_frame.create_widgets()
 
     def refresh_appearance(
@@ -98,7 +98,7 @@ class WindowMain(ctk.CTk):
         try:
             self.withdraw()
             self.update_idletasks()
-
+    
             if refresh_window_position:
                 self.reset_window_position()
             if refresh_window_size:
@@ -110,18 +110,18 @@ class WindowMain(ctk.CTk):
             if refresh_ui_localization:
                 self._refresh_ui_localization()
                 self._refresh_ui()
-
-            self.after(100, self.deiconify)
         except Exception as e:
             self.logger.error(f"Error resetting appearance mode: {e}")
             trigger_debug_break()
+        finally:
+            self.after(100, self.deiconify)
 
     def _refresh_ui(self):
         try:
-            self.translation_frame.refresh_ui()
-            self.languages_frame.refresh_ui()
-            self.dictionary_frame.refresh_ui()
-            self.options_frame.refresh_ui()
+            self.translation_frame.refresh_user_interface()
+            self.languages_frame.refresh_user_interface()
+            self.dictionary_frame.refresh_user_interface()
+            self.options_frame.refresh_user_interface()
         except Exception as e:
             self.logger.error(f"Error refreshing UI: {e}")
             trigger_debug_break()
@@ -137,16 +137,15 @@ class WindowMain(ctk.CTk):
 
     def _refresh_ui_localization(self):
         self.translation_tool.setup_localization(language=self.cfg_manager.get_var("ui_language_code").get())
-
+    
         for i, original_name in enumerate(self.original_tab_names):
             translated_name = _(original_name)
-            if translated_name != self.main_tab_names[i]:
+            if translated_name != self.main_tab_names[i] and translated_name not in self.main_tab_names:
                 self.tab_view.rename(self.main_tab_names[i], translated_name)
                 self.main_tab_names[i] = translated_name
 
     def get_window_position(self):
         return handle_exception(
-            self,
             operation=lambda: tuple(map(int, self.geometry().split('+')[1:])),
             error_message="Failed to get window position",
             exception_return_value=(100, 100),
@@ -155,7 +154,6 @@ class WindowMain(ctk.CTk):
 
     def get_window_size(self):
         return handle_exception(
-            self,
             operation=lambda: tuple(map(int, self.geometry().split('+')[0].split('x'))),
             error_message="Failed to get window size",
             exception_return_value=(1366, 768),
@@ -164,7 +162,6 @@ class WindowMain(ctk.CTk):
 
     def set_window_size(self, width, height):
         handle_exception(
-            self,
             operation=lambda: self.geometry(f"{width}x{height}+{self.get_window_position()[0]}+{self.get_window_position()[1]}"),
             error_message="Failed to set window size",
             logger=self.logger
@@ -172,7 +169,6 @@ class WindowMain(ctk.CTk):
 
     def set_window_position(self, pos_x, pos_y):
         handle_exception(
-            self,
             operation=lambda: self.geometry(f"{self.get_window_size()[0]}x{self.get_window_size()[1]}+{pos_x}+{pos_y}"),
             error_message="Failed to set window position",
             logger=self.logger
@@ -180,7 +176,6 @@ class WindowMain(ctk.CTk):
 
     def reset_window_size(self):
         handle_exception(
-            self,
             operation=lambda: self.set_window_size(*self.load_window_size()),
             error_message="Failed to reset window size",
             logger=self.logger
@@ -188,7 +183,6 @@ class WindowMain(ctk.CTk):
 
     def reset_window_position(self):
         handle_exception(
-            self,
             operation=lambda: self.set_window_position(*self.load_window_position()),
             error_message="Failed to reset window position",
             logger=self.logger
@@ -196,7 +190,6 @@ class WindowMain(ctk.CTk):
 
     def save_window_size(self):
         handle_exception(
-            self,
             operation=lambda: self.cfg_manager.save_settings([
                 ["WindowGeometry", "width", str(self.get_window_size()[0])],
                 ["WindowGeometry", "height", str(self.get_window_size()[1])]
@@ -207,7 +200,6 @@ class WindowMain(ctk.CTk):
 
     def save_window_position(self):
         handle_exception(
-            self,
             operation=lambda: self.cfg_manager.save_settings([
                 ["WindowGeometry", "pos_x", str(self.get_window_position()[0])],
                 ["WindowGeometry", "pos_y", str(self.get_window_position()[1])]
@@ -218,7 +210,6 @@ class WindowMain(ctk.CTk):
 
     def load_window_position(self):
         return handle_exception(
-            self,
             operation=lambda: (
                 int(self.cfg_manager.load_setting("WindowGeometry", "pos_x", default_value="100")),
                 int(self.cfg_manager.load_setting("WindowGeometry", "pos_y", default_value="100"))
@@ -230,7 +221,6 @@ class WindowMain(ctk.CTk):
 
     def load_window_size(self):
         return handle_exception(
-            self,
             operation=lambda: (
                 int(self.cfg_manager.load_setting("WindowGeometry", "width", default_value="1366")),
                 int(self.cfg_manager.load_setting("WindowGeometry", "height", default_value="768"))
@@ -247,7 +237,7 @@ class WindowMain(ctk.CTk):
             if self.cfg_manager.get_var("save_window_pos").get():
                 self.save_window_position()
             if self.cfg_manager.get_var("save_selected_languages").get():
-                self.cfg_manager.save_setting("Settings", "selected_languages", ",".join(self.translation_frame.languages_to_translate.get_checked_entries()))
+                self.cfg_manager.save_setting("Settings", "selected_languages", ",".join(self.translation_frame.language_selection_frame.get_checked_entries()))
 
             self.destroy()
         except Exception as e:

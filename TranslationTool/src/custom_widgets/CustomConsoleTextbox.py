@@ -16,10 +16,11 @@ class CustomConsoleTextbox(ctk.CTkTextbox):
     def write_console(self, text):
         self.configure(state='normal')
         self.insert('end', text)
-        self.limit_text_length()
+        self._limit_text_length()
         if self.autoscroll:
             self.see('end')
         self.configure(state='disabled')
+        self.update_idletasks()
 
     def clear_console(self):
         self.configure(state='normal')
