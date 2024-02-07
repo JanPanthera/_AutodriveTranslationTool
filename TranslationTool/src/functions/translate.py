@@ -81,10 +81,6 @@ def _perform_translation(input_path, output_path, patterns, language, output_wid
     _output(f"Input: {input_path}\nOutput: {output_path}\n", output_widget)
 
     for root, dirs, files in os.walk(input_path):
-        if not files:
-            _output(f"No input files found in directory: {root}. Skipping.", output_widget)
-            continue
-
         for file in files:
             input_file_path = os.path.join(root, file)
             output_dir_path = os.path.join(output_path, os.path.relpath(root, input_path))
@@ -94,6 +90,7 @@ def _perform_translation(input_path, output_path, patterns, language, output_wid
             else:
                 files_skipped += 1
 
+    # Check if any files were processed
     if files_processed > 0:
         file_word = "file" if files_processed == 1 else "files"
         _output(f"Processed {files_processed} {file_word}. Skipped {files_skipped} files.", output_widget)
@@ -102,7 +99,7 @@ def _perform_translation(input_path, output_path, patterns, language, output_wid
             clean_source_text = source_text.replace(r'\b', '')
             _output(f'   {clean_source_text} --> {target_text}: {count} replacements', output_widget)
     else:
-        _output("No translations were performed. All files were skipped.", output_widget)
+        _output(f"No input files found in directory: {input_path}. Skipping.", output_widget)
 
     _output("\n", output_widget)
 
