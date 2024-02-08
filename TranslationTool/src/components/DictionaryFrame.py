@@ -61,7 +61,7 @@ class DictionaryFrame(ctk.CTkFrame):
         # Button for saving to a dictionary file
         self.button_save_dictionary_file = ctk.CTkButton(
             frame,
-            text=_("Save to selected Dictionary"),
+            text=_("Save Dictionary File"),
             font=self.window.font_big_bold,
             command=self._on_save_dictionary_file_button_press
         )
@@ -70,7 +70,7 @@ class DictionaryFrame(ctk.CTkFrame):
         # Button for loading from a dictionary file
         self.button_load_dictionary_file = ctk.CTkButton(
             frame,
-            text=_("Load from selected Dictionary"),
+            text=_("Load Dictionary File"),
             font=self.window.font_big_bold,
             command=self._on_load_dictionary_file_button_press
         )
@@ -174,7 +174,7 @@ class DictionaryFrame(ctk.CTkFrame):
         # Button to delete a dictionary file
         self.button_delete_dictionary_file = ctk.CTkButton(
             frame,
-            text=_("Delete selected Dictionary File"),
+            text=_("Delete Dictionary File"),
             font=self.window.font_big_bold,
             command=self._on_delete_dictionary_file_button_press,
         )
@@ -211,11 +211,11 @@ class DictionaryFrame(ctk.CTkFrame):
 
     # Called by main window when language is changed
     def refresh_user_interface(self):
-        self.button_save_dictionary_file.configure(text=_("Save to selected Dictionary"))
-        self.button_load_dictionary_file.configure(text=_("Load from selected Dictionary"))
+        self.button_save_dictionary_file.configure(text=_("Save Dictionary File"))
+        self.button_load_dictionary_file.configure(text=_("Load Dictionary File"))
         self.button_clear_edit_textbox.configure(text=_("Clear text edit box"))
         self.button_create_dictionary_file.configure(text=_("Create Dictionary File"))
-        self.button_delete_dictionary_file.configure(text=_("Delete selected Dictionary File"))
+        self.button_delete_dictionary_file.configure(text=_("Delete Dictionary File"))
         
         self.textbox_dictionary_edit_box.refresh_context_menu_translations()
 

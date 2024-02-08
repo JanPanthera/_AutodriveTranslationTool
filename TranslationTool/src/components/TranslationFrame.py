@@ -8,7 +8,7 @@ from src.custom_widgets.CustomConsoleTextbox import CustomConsoleTextbox
 from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
 from src.functions.translate import Translator
 from src.functions.validate_output_files import Validator
-from src.functions import find_missing_translations
+from src.functions.find_missing_translations import TranslationFinder
 
 
 class TranslationFrame(ctk.CTkFrame):
@@ -96,37 +96,43 @@ class TranslationFrame(ctk.CTkFrame):
         self.button_translate_files.grid(column=0, row=2, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
         # Button for starting the validation of the output files
-        self.validate_output_files_button = ctk.CTkButton(
+        self.button_validate_output_files = ctk.CTkButton(
             frame,
             text=_("Validate Output Files"),
             font=self.window.font_big_bold,
             command=self._on_validate_output_files_button_press,
         )
-        self.validate_output_files_button.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_validate_output_files.grid(column=0, row=3, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 5))
 
-        # Test button
-        self.button_test2 = ctk.CTkButton(
+        # Button for starting the search for missing translations
+        self.button_find_missing_translations = ctk.CTkButton(
             frame,
             text=_("Find missing translations"),
             font=self.window.font_big_bold,
-            command=self._on_test2_button_press,
+            command=self._on_find_missing_translations_button_press,
         )
-        self.button_test2.grid(column=0, row=5, sticky="nsew", padx=(10, 10), pady=(5, 10))
+        self.button_find_missing_translations.grid(column=0, row=4, columnspan=2, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
-    def _on_test2_button_press(self):
+    def _on_find_missing_translations_button_press(self):
         if not self.scroll_list_language_selection.get_checked_entries():
             return
-        input_path = self.get_var("input_path")
+
         output_path = "missing_translations.txt"
         output_path = output_path if 'VSAPPIDDIR' not in os.environ else f"TranslationTool/{output_path}"
-        dictionary_path = self.get_var("dictionaries_path")
-
-        find_missing_translations.find_missing_translations(input_path=input_path, output_path=output_path, dictionary_path=dictionary_path, languages=self.scroll_list_language_selection.get_checked_entries(), output_widget=self.textbox_output_console)
+        TranslationFinder(
+            input_path=self.get_var("input_path"),
+            output_path=output_path,
+            dictionary_path=self.get_var("dictionaries_path"),
+            languages=self.scroll_list_language_selection.get_checked_entries(),
+            output_widget=self.textbox_output_console,
+            logger=self.window.logger,
+            console=False,
+        )
 
     def _on_translate_button_press(self):
         def on_yes(is_yes):
             if is_yes:
-                translator = Translator(
+                Translator(
                     input_path=self.get_var("input_path"),
                     output_path=self.get_var("output_path"),
                     dictionaries_path=self.get_var("dictionaries_path"),
@@ -136,7 +142,6 @@ class TranslationFrame(ctk.CTkFrame):
                     console=False,
                     whole_word=self.get_var("whole_word_replacement"),
                 )
-                translator.translate_files()
         CustomPopupMessageBox(
             self,
             title=_("Translation Process"),
@@ -149,14 +154,13 @@ class TranslationFrame(ctk.CTkFrame):
         self.update_idletasks()
 
     def _on_validate_output_files_button_press(self):
-        validator = Validator(
+        Validator(
             input_path=self.get_var("output_path"),
             languages=self.scroll_list_language_selection.get_checked_entries(),
             output_widget=self.textbox_output_console,
             logger=self.window.logger,
             console=False,
         )
-        validator.validate_output_files()
 
     # -----------------------------------------------------------------------------------------------
 
@@ -195,5 +199,6 @@ class TranslationFrame(ctk.CTkFrame):
         self.button_select_all_languages.configure(text=_("Select All"))
         self.button_unselect_all_languages.configure(text=_("Unselect All"))
         self.button_translate_files.configure(text=_("Translate"))
-        self.validate_output_files_button.configure(text=_("Validate Output Files"))
+        self.button_validate_output_files.configure(text=_("Validate Output Files"))
         self.button_clear_output_console.configure(text=_("Clear Console"))
+        self.button_find_missing_translations.configure(text=_("Find missing translations"))

@@ -1,89 +1,83 @@
-import re
 import os
+import re
 
-def _output(message, output_widget=None, output_file=None):
-    """Outputs messages to console, widget, and optionally to a file."""
-    if output_widget:
-        output_widget.write_console(message + "\n")
-    else:
-        print(message)
-    
-    if output_file:
-        try:
-            with open(output_file, 'a', encoding='utf-8') as f:
-                f.write(message + "\n")
-        except PermissionError:
-            print(f"Error: Permission denied. Unable to write to file {output_file}.")
+class TranslationFinder:
+    def __init__(self, input_path, output_path, dictionary_path, languages, output_widget=None, logger=None, console=False):
+        self.input_path = os.path.normpath(input_path)
+        self.output_path = os.path.normpath(output_path)
+        self.dictionary_path = os.path.normpath(dictionary_path)
+        self.languages = languages.split(',') if isinstance(languages, str) else languages
+        self.output_widget = output_widget
+        self.logger = logger
+        self.console = console
 
-def _load_translations(dictionary_path, languages):
-    """Loads translations from dictionary files for specified languages into a dictionary."""
-    translations = {}
-    for root, dirs, files in os.walk(dictionary_path):
-        for file in files:
-            if file.endswith(".dic"):
-                for language in languages:
-                    if language.lower() in file.lower():
-                        with open(os.path.join(root, file), 'r', encoding='utf-8') as f:
-                            translations[language] = set()
-                            for line in f:
-                                if ',' in line:
-                                    word, _ = line.strip().split(',')
-                                    translations[language].add(word)
-                                else:
-                                    print(f"Skipping line {line.strip()} as it does not contain a comma.")
-    return translations
+        self._find_missing_translations()
 
-def _find_missing_translations_in_file(input_file, translations):
-    """Finds missing translations in a single input file."""
-    word_pattern = re.compile(r'<(?:name|group)>(.*?)</(?:name|group)>')
-    with open(input_file, 'r', encoding='utf-8') as f:
-        content = f.read()
+    def _output(self, message, is_error=False, is_warning=False):
+        if self.logger:
+            if is_error:
+                self.logger.error(message)
+            elif is_warning:
+                self.logger.warning(message)
+            else:
+                self.logger.info(message)
+        message = message + "\n"
+        if is_error:
+            message = f"ERROR: {message}"
+        elif is_warning:
+            message = f"WARNING: {message}"
+        if self.output_widget:
+            self.output_widget.write_console(message)
+        if self.console:
+            print(message, end='')
 
-    words = word_pattern.findall(content)
-    unique_words = set([word for phrase in words for word in phrase.split()])
+    def _load_translations(self):
+        translations = {}
+        for language in self.languages:
+            dictionary_file = self._get_dictionary_file(language)
+            try:
+                with open(dictionary_file, 'r', encoding='utf-8') as f:
+                    translations[language] = set()
+                    for line in f:
+                        if ',' in line:
+                            word, _ = line.strip().split(',')
+                            translations[language].add(word)
+            except FileNotFoundError:
+                self._output(f"Dictionary file for {language} not found.", is_error=True)
+        return translations
 
-    missing_translations = {lang: unique_words - trans for lang, trans in translations.items()}
-    return missing_translations
+    def _get_dictionary_file(self, language):
+        dictionary_file = os.path.join(self.dictionary_path, f"Dictionary_{language}.dic")
+        return dictionary_file
 
-def find_missing_translations(input_path, output_path, dictionary_path, languages, output_widget=None):
-    """Finds and outputs words without translations for all input files."""
-    
-    _output(f"Starting search for missing translations in {input_path} for {len(languages)} languages: {', '.join(languages)}.\n", output_widget, output_path)
+    def _find_missing_translations_in_file(self, input_file, translations):
+        word_pattern = re.compile(r'<(?:name|group)>(.*?)</(?:name|group)>')
+        with open(input_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        words = word_pattern.findall(content)
+        unique_words = set([word for phrase in words for word in phrase.split()])
+        missing_translations = {lang: unique_words - trans for lang, trans in translations.items()}
+        return missing_translations
 
-    # Convert languages to a list if it's a string
-    if isinstance(languages, str):
-        languages = [lang.strip() for lang in languages.split(',')]
+    def _find_missing_translations(self):
+        self._output(f"Starting search missing translations process for {len(self.languages)} languages: {', '.join(self.languages)}.\n")
 
-    # Load translations for the specified languages
-    translations = _load_translations(dictionary_path, languages)
+        translations = self._load_translations()
 
-    # Prepare the output file
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write("")
+        for root, _, files in os.walk(self.input_path):
+            for file in files:
+                if file.endswith(".xml"):
+                    input_file = os.path.join(root, file)
+                    self._output(f"Processing file: {input_file}")
+                    missing_translations = self._find_missing_translations_in_file(input_file, translations)
 
-    # Search for XML files and process each
-    for root, dirs, files in os.walk(input_path):
-        for file in files:
-            if file.endswith(".xml"):
-                input_file = os.path.join(root, file)
-                _output(f"\n{input_file}", output_widget, output_path)
-                missing_translations = _find_missing_translations_in_file(input_file, translations)
+                    for language, missing in missing_translations.items():
+                        if missing:
+                            self._output(f"{language} is missing {len(missing)} translations:")
+                            for word in sorted(missing):
+                                self._output(f"{word}")
+                        else:
+                            self._output(f"{language} has all words translated.")
 
-                for language, missing in missing_translations.items():
-                    if missing:
-                        _output(f"\n{language} is missing ({len(missing)}) translations", output_widget, output_path)
-                        for word in sorted(missing):
-                            _output(f"{word}", output_widget, output_path)
-                    else:
-                        _output(f"{language}\n    All words have translations.", output_widget, output_path)
-
-    _output("\nFinished search for missing translations.", output_widget, output_path)
-
-# Example usage
-# if __name__ == "__main__":
-#     input_path = 'path_to_input_folder'  # Replace with the actual path to your input folder
-#     output_path = 'path_to_output_file.txt'  # Replace with the actual path to your output file
-#     dictionary_path = 'path_to_dictionary_folder'  # Replace with the actual path to your dictionary folder
-#     languages = ["English", "German"]  # Specify the languages
-# 
-#     find_missing_translations(input_path, output_path, dictionary_path, languages)
+        self._output("")
+        self._output("Search for missing translations finished.")

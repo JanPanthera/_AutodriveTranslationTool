@@ -2,10 +2,8 @@ import os
 import re
 
 class Translator:
-    def __init__(self, input_path="TranslationTool/_input", output_path="TranslationTool/_output",
-                 dictionaries_path="TranslationTool/_dictionaries", languages="",
+    def __init__(self, input_path, output_path, dictionaries_path, languages,
                  output_widget=None, logger=None, console=False, whole_word=False):
-        # Normalize paths to ensure consistent separators
         self.input_path = os.path.normpath(input_path)
         self.output_path = os.path.normpath(output_path)
         self.dictionaries_path = os.path.normpath(dictionaries_path)
@@ -14,6 +12,8 @@ class Translator:
         self.logger = logger
         self.console = console
         self.whole_word = whole_word
+
+        self._translate_files()
 
     def _output(self, message, is_error=False, is_warning=False):
         if self.logger:
@@ -91,7 +91,7 @@ class Translator:
 
         self._output("")
 
-    def translate_files(self):
+    def _translate_files(self):
         self._output(f"Starting translation process for {len(self.languages)} languages: {', '.join(self.languages)}.\n")
         self._output(f"Input: {self.input_path}")
         self._output(f"Output: {self.output_path}\n")

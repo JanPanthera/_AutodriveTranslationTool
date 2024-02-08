@@ -18,7 +18,8 @@ class OptionsFrame(ctk.CTkFrame):
         # Vertical expansion weights
         self.rowconfigure(0, weight=0)
         self.rowconfigure(1, weight=0)
-        self.rowconfigure(2, weight=0)
+        self.rowconfigure(2, weight=1)
+        self.rowconfigure(3, weight=0)
 
         # Horizontal expansion weights
         self.columnconfigure(0, weight=0)
@@ -49,7 +50,7 @@ class OptionsFrame(ctk.CTkFrame):
             font=self.window.font_big_bold,
             command=self._on_reset_everything_button_press,
             )
-        self.button_reset_everything.grid(column=0, row=2, sticky="nsew", padx=(20, 20), pady=(5, 20))
+        self.button_reset_everything.grid(column=0, row=3, sticky="nsew", padx=(20, 20), pady=(5, 20))
 
     def _on_reset_everything_button_press(self):
         settings_to_reset = [
@@ -346,7 +347,7 @@ class OptionsFrame(ctk.CTkFrame):
             text=_("Translation Settings"),
             font=self.window.font_bigger_bold,
         )
-        self.label_translation_settings.grid(column=0, row=0, sticky="nsew", padx=(20, 20), pady=(20, 5))
+        self.label_translation_settings.grid(column=0, row=0, sticky="nsew", padx=(10, 10), pady=(10, 5))
 
         # Checkbox for whole word replacement
         self.checkbox_whole_word_replacement = ctk.CTkCheckBox(
@@ -358,7 +359,7 @@ class OptionsFrame(ctk.CTkFrame):
             offvalue=False,
             command=self._on_whole_word_replacement_checkbox_toggle,
         )
-        self.checkbox_whole_word_replacement.grid(column=0, row=1, sticky="nsew", padx=(20, 20), pady=(5, 20))
+        self.checkbox_whole_word_replacement.grid(column=0, row=1, sticky="nsew", padx=(10, 10), pady=(5, 10))
 
     def _on_whole_word_replacement_checkbox_toggle(self):
         self.cfg_manager.save_setting("TranslationSettings", "whole_word_replacement", str(self.checkbox_whole_word_replacement.get()))

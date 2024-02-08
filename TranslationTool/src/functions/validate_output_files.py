@@ -2,12 +2,14 @@ import os
 import re
 
 class Validator:
-    def __init__(self, input_path="TranslationTool/_output", languages="", output_widget=None, logger=None, console=False):
+    def __init__(self, input_path, languages, output_widget=None, logger=None, console=False):
         self.input_path = os.path.normpath(input_path)
         self.languages = languages.split(',') if isinstance(languages, str) else languages
         self.output_widget = output_widget
         self.logger = logger
         self.console = console
+
+        self._validate_output_files()
 
     def _output(self, message, is_error=False, is_warning=False):
         if self.logger:
@@ -48,7 +50,7 @@ class Validator:
                         error_message = f"Line {line_no}: \"{text_inside_tag}\" exceeds max length of ({len(text_inside_tag)}/{max_length} characters). <{tag_name}>"
                         errors.append((error_message, line_no))
 
-    def validate_output_files(self):
+    def _validate_output_files(self):
         self._output(f"Starting validation process for {len(self.languages)} languages: {', '.join(self.languages)}.\n")
         self._output(f"Input: {self.input_path}")
 
