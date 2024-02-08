@@ -37,6 +37,15 @@ class DictionaryFrame(ctk.CTkFrame):
         self._create_dictionary_edit_box_frame(frame_dictionary_edit)
         self._create_dictionary_files_frame(frame_dictionary_files)
 
+        self.widgets = {
+            "Save Dictionary File": self.button_save_dictionary_file,
+            "Load Dictionary File": self.button_load_dictionary_file,
+            "Clear text edit box": self.button_clear_edit_textbox,
+            "Create Dictionary File": self.button_create_dictionary_file,
+            "Delete Dictionary File": self.button_delete_dictionary_file,
+            "Select Language": self.dropdown_language_select
+        }
+
     # -----------------------------------------------------------------------------------------------
 
     # Dictionary edit box frame
@@ -211,12 +220,12 @@ class DictionaryFrame(ctk.CTkFrame):
 
     # Called by main window when language is changed
     def refresh_user_interface(self):
-        self.button_save_dictionary_file.configure(text=_("Save Dictionary File"))
-        self.button_load_dictionary_file.configure(text=_("Load Dictionary File"))
-        self.button_clear_edit_textbox.configure(text=_("Clear text edit box"))
-        self.button_create_dictionary_file.configure(text=_("Create Dictionary File"))
-        self.button_delete_dictionary_file.configure(text=_("Delete Dictionary File"))
-        
+        for original_text, widget in self.widgets.items():
+            localized_text = _(original_text)
+            if isinstance(widget, ctk.CTkButton):
+                widget.configure(text=localized_text)
+            elif isinstance(widget, ctk.CTkOptionMenu):
+                widget.configure(variable=ctk.StringVar(self, value=localized_text))
+
         self.textbox_dictionary_edit_box.refresh_context_menu_translations()
 
-        self.dropdown_language_select.configure(variable=ctk.StringVar(self, _("Select Language")))

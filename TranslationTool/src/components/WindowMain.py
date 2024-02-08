@@ -15,7 +15,7 @@ class WindowMain(ctk.CTk):
         super().__init__()
         self.logger = logger
         self.translation_tool = parent
-    
+
         self.tab_name_map = {
             "Translation": _("Translation"),
             "Languages": _("Languages"),
@@ -39,7 +39,7 @@ class WindowMain(ctk.CTk):
             refresh_window_size=True,
             refresh_window_position=True
         )
-    
+
         self.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def load_settings(self):
@@ -79,10 +79,17 @@ class WindowMain(ctk.CTk):
         self.tab_view = ctk.CTkTabview(self, fg_color="transparent", bg_color="transparent")
         self.tab_view.pack(fill="both", expand=True)
 
-        self.translation_frame = TranslationFrame(self, self.tab_view.add(_("Translation")))
-        self.languages_frame = LanguagesFrame(self, self.tab_view.add(_("Languages")))
-        self.dictionary_frame = DictionaryFrame(self, self.tab_view.add(_("Dictionary")))
-        self.options_frame = OptionsFrame(self, self.tab_view.add(_("Options")))
+        # self.translation_frame = TranslationFrame(self, self.tab_view.add(_("Translation")))
+        # self.languages_frame = LanguagesFrame(self, self.tab_view.add(_("Languages")))
+        # self.dictionary_frame = DictionaryFrame(self, self.tab_view.add(_("Dictionary")))
+        # self.options_frame = OptionsFrame(self, self.tab_view.add(_("Options")))
+
+        self.frames = {
+            "Translation": [_("Translation"), TranslationFrame(self, self.tab_view.add(_("Translation")))],
+            "Languages": [_("Languages"), LanguagesFrame(self, self.tab_view.add(_("Languages")))],
+            "Dictionary": [_("Dictionary"), DictionaryFrame(self, self.tab_view.add(_("Dictionary")))],
+            "Options": [_("Options"), OptionsFrame(self, self.tab_view.add(_("Options")))]
+        }
 
     def refresh_appearance(
         self, refresh_gui_theme=False, refresh_dpi_scaling=False,
@@ -92,7 +99,7 @@ class WindowMain(ctk.CTk):
         try:
             self.withdraw()
             self.update_idletasks()
-    
+
             if refresh_window_position:
                 self.reset_window_position()
             if refresh_window_size:
@@ -112,10 +119,8 @@ class WindowMain(ctk.CTk):
 
     def _refresh_ui(self):
         try:
-            self.translation_frame.refresh_user_interface()
-            self.languages_frame.refresh_user_interface()
-            self.dictionary_frame.refresh_user_interface()
-            self.options_frame.refresh_user_interface()
+            for frame_name, frame in self.frames.items():
+                frame[1].refresh_user_interface()
         except Exception as e:
             self.logger.error(f"Error refreshing UI: {e}")
             trigger_debug_break()
@@ -131,19 +136,14 @@ class WindowMain(ctk.CTk):
 
     def _refresh_ui_localization(self):
         self.translation_tool.setup_localization(language=self.cfg_manager.get_var("ui_language_code").get())
-        
-        updated_tab_name_map = {}
-    
-        for original_name, localized_name in self.tab_name_map.items():
-            translated_name = _(original_name)  # Fetch the translated name using the _() function
-            if localized_name != translated_name:
-                self.tab_view.rename(localized_name, translated_name)  # Update the tab name
-            
-            # Instead of updating the dictionary directly, store the changes in a temporary dictionary
-            updated_tab_name_map[original_name] = translated_name
-    
-        # After iteration, update the original map
-        self.tab_name_map = updated_tab_name_map
+
+        for original_name, frame in self.frames.items():
+            localized_name = frame[0] # previous localized name
+            frame_instance = frame[1] # frame instance
+            new_localized_name = _(original_name)
+            if new_localized_name != localized_name:
+                self.tab_view.rename(localized_name, new_localized_name)
+                frame[0] = new_localized_name
 
     def get_window_position(self):
         return handle_exception(
