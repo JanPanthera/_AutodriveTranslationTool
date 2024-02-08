@@ -25,13 +25,12 @@ class WindowMain(ctk.CTk):
 
         self.cfg_manager = ConfigManager(self.logger)
 
-        self.base_path = "TranslationTool\\" if 'VSAPPIDDIR' in os.environ else ""
+        self.base_path = "TranslationTool/" if 'VSAPPIDDIR' in os.environ else ""
 
         self.load_settings()
         self.init_fonts()
         self.init_ui_components()
 
-        # Setup localization and refresh appearance
         self.translation_tool.setup_localization(language=self.cfg_manager.get_var("ui_language_code").get())
         self.refresh_appearance(
             refresh_gui_theme=True,
@@ -59,7 +58,8 @@ class WindowMain(ctk.CTk):
             "supported_languages": load("Settings", "supported_languages", default_value="English").split(","),
             "input_path": join(self.base_path, load("Settings", "input_path", default_value="_input")),
             "output_path": join(self.base_path, load("Settings", "output_path", default_value="_output")),
-            "dictionaries_path": join(self.base_path, load("Settings", "dictionaries_path", default_value="_dictionaries"))
+            "dictionaries_path": join(self.base_path, load("Settings", "dictionaries_path", default_value="_dictionaries")),
+            "whole_word_replacement": ctk.BooleanVar(self, value=load("TranslationSettings", "whole_word_replacement", default_value="True")),
         })
 
     def init_fonts(self):
