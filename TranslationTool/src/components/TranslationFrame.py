@@ -6,7 +6,8 @@ import customtkinter as ctk
 from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 from src.custom_widgets.CustomConsoleTextbox import CustomConsoleTextbox
 from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
-from src.functions import translate, validate_output_files, find_missing_translations
+from src.functions.translate import Translator
+from src.functions import validate_output_files, find_missing_translations
 
 
 class TranslationFrame(ctk.CTkFrame):
@@ -124,14 +125,16 @@ class TranslationFrame(ctk.CTkFrame):
     def _on_translate_button_press(self):
         def on_yes(is_yes):
             if is_yes:
-                translate.translate_files(
+                translator = Translator(
                     input_path=self.get_var("input_path"),
                     output_path=self.get_var("output_path"),
                     dictionaries_path=self.get_var("dictionaries_path"),
                     languages=self.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.textbox_output_console,
                     logger=self.window.logger,
+                    whole_word=self.get_var("whole_word_replacement"),
                 )
+                translator.translate_files()
         CustomPopupMessageBox(
             self,
             title=_("Translation Process"),
