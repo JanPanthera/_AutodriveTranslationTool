@@ -7,7 +7,8 @@ from src.custom_widgets.ScrollableSelectionFrame import ScrollableSelectionFrame
 from src.custom_widgets.CustomConsoleTextbox import CustomConsoleTextbox
 from src.custom_widgets.CustomPopupMessageBox import CustomPopupMessageBox
 from src.functions.translate import Translator
-from src.functions import validate_output_files, find_missing_translations
+from src.functions.validate_output_files import Validator
+from src.functions import find_missing_translations
 
 
 class TranslationFrame(ctk.CTkFrame):
@@ -117,7 +118,7 @@ class TranslationFrame(ctk.CTkFrame):
             return
         input_path = self.get_var("input_path")
         output_path = "missing_translations.txt"
-        output_path = output_path if 'VSAPPIDDIR' not in os.environ else f"TranslationTool\\{output_path}"
+        output_path = output_path if 'VSAPPIDDIR' not in os.environ else f"TranslationTool/{output_path}"
         dictionary_path = self.get_var("dictionaries_path")
 
         find_missing_translations.find_missing_translations(input_path=input_path, output_path=output_path, dictionary_path=dictionary_path, languages=self.scroll_list_language_selection.get_checked_entries(), output_widget=self.textbox_output_console)
@@ -132,6 +133,7 @@ class TranslationFrame(ctk.CTkFrame):
                     languages=self.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.textbox_output_console,
                     logger=self.window.logger,
+                    console=False,
                     whole_word=self.get_var("whole_word_replacement"),
                 )
                 translator.translate_files()
@@ -147,11 +149,14 @@ class TranslationFrame(ctk.CTkFrame):
         self.update_idletasks()
 
     def _on_validate_output_files_button_press(self):
-        validate_output_files.validate_output_files(
+        validator = Validator(
             input_path=self.get_var("output_path"),
             languages=self.scroll_list_language_selection.get_checked_entries(),
             output_widget=self.textbox_output_console,
+            logger=self.window.logger,
+            console=False,
         )
+        validator.validate_output_files()
 
     # -----------------------------------------------------------------------------------------------
 

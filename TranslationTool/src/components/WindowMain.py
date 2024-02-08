@@ -25,7 +25,7 @@ class WindowMain(ctk.CTk):
 
         self.cfg_manager = ConfigManager(self.logger)
 
-        self.base_path = "TranslationTool\\" if 'VSAPPIDDIR' in os.environ else ""
+        self.base_path = "TranslationTool/" if 'VSAPPIDDIR' in os.environ else ""
 
         self.load_settings()
         self.init_fonts()
