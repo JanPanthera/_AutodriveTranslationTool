@@ -22,13 +22,13 @@ class TextboxHandler(logging.Handler):
 
 class CustomRotatingFileHandler(RotatingFileHandler):
     def __init__(self, filename, date_format, backup_count,
-                 append_datetime_to_rolled_files, **kwargs):
+                 append_datetime_to_rolled_files, encoding='utf-8', **kwargs):
         self.base_filename = filename
         self.original_filename = filename
         self.date_format = date_format
         self.backup_count = backup_count
         self.append_datetime_to_rolled_files = append_datetime_to_rolled_files
-        super().__init__(filename, **kwargs)
+        super().__init__(filename, encoding=encoding, **kwargs)
 
     def _append_date_to_filename(self, filename):
         base, ext = os.path.splitext(filename)
@@ -99,7 +99,7 @@ class CustomLogger:
     def __init__(self, name='application', textbox=None, log_level=logging.INFO,
                  log_file='application.log', max_log_size=10*1024*1024,
                  backup_count=5, rotate_on_start=False, append_datetime_to_rolled_files=False,
-                 rotation_datetime_format="%Y-%m-%d_%H-%M-%S", datetime_format='%H:%M:%S'):
+                 rotation_datetime_format="%Y-%m-%d_%H-%M-%S", datetime_format='%H:%M:%S', encoding='utf-8'):
         self.logger = logging.getLogger(name)
         self.logger.setLevel(log_level)
 
@@ -116,7 +116,7 @@ class CustomLogger:
         self.file_handler = CustomRotatingFileHandler(
             log_file_path, rotation_datetime_format, backup_count,
             append_datetime_to_rolled_files=append_datetime_to_rolled_files,
-            maxBytes=max_log_size
+            maxBytes=max_log_size, encoding=encoding
         )
         self.file_handler.setLevel(log_level)
         self.file_handler.setFormatter(log_formatter)
