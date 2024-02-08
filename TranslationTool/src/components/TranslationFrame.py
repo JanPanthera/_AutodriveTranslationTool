@@ -130,6 +130,7 @@ class TranslationFrame(ctk.CTkFrame):
                     dictionaries_path=self.get_var("dictionaries_path"),
                     languages=self.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.textbox_output_console,
+                    logger=self.window.logger,
                 )
         CustomPopupMessageBox(
             self,

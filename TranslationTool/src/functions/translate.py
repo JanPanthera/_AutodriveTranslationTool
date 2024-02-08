@@ -1,36 +1,25 @@
 import os
 import re
 
-def _output(message, output_widget=None):
-    """
-    Display the given message.
-
-    Args:
-        message (str): The message to be displayed.
-        output_widget (object, optional): The output widget for displaying the message. Defaults to None.
-
-    Returns:
-        None
-    """
+def _output(message, output_widget=None, logger=None, console=False, is_error=False, is_warning=False):
+    if logger:
+        if is_error:
+            logger.error(message)
+        elif is_warning:
+            logger.warning(message)
+        else:
+            logger.info(message)
+    message = message + "\n"
+    if is_error:
+        message = f"ERROR: {message}"
+    if is_warning:
+        message = f"WARNING: {message}"
     if output_widget:
-        output_widget.write_console(message + "\n")
-    else:
-        print(message)
+        output_widget.write_console(message)
+    if console:
+        print(message, end='')
 
-def _process_file(input_file_path, output_dir_path, patterns, translation_counts, output_widget=None):
-    """
-    Process a file by applying the specified patterns for translation.
-
-    Args:
-        input_file_path (str): The path to the input file.
-        output_dir_path (str): The path to the output directory.
-        patterns (dict): A dictionary containing the patterns to search for and their corresponding target texts.
-        translation_counts (dict): A dictionary to keep track of the translation counts for each pattern.
-        output_widget (object, optional): The output widget for displaying translation progress.
-
-    Returns:
-        bool: True if replacements were made in the file, False otherwise.
-    """
+def _process_file(input_file_path, output_dir_path, patterns, translation_counts, output_widget=None, logger=None):
     replacements_in_file = False
 
     try:
@@ -52,77 +41,57 @@ def _process_file(input_file_path, output_dir_path, patterns, translation_counts
         if replacements_in_file:
             with open(output_file_path, 'w', encoding='utf-8') as file:
                 file.write(file_text)
+            _output(f"File processed: {input_file_path}", output_widget, logger)
             return True
 
     except Exception as e:
-        _output(f"An error occurred while processing file '{input_file_path}': {e}", output_widget)
+        _output(f"An error occurred while processing file '{input_file_path}': {e}", output_widget, logger, is_error=True)
 
     return False
 
-def _perform_translation(input_path, output_path, patterns, language, output_widget=None):
-    """
-    Performs translation on the files in the input directory based on the provided patterns for a specific language.
-
-    Args:
-        input_path (str): The path to the input directory.
-        output_path (str): The path to the output directory.
-        patterns (dict): A dictionary containing the patterns to search for and their corresponding target texts.
-        language (str): The language for which the translation is being performed.
-        output_widget (object, optional): The output widget for displaying translation progress.
-
-    Returns:
-        None
-    """
+def _perform_translation(input_path, output_path, patterns, language, output_widget=None, logger=None):
     translation_counts = {}
     files_processed = 0
     files_skipped = 0
 
-    _output(f"--- {language} Translation ---", output_widget)
-    _output(f"Input: {input_path}\nOutput: {output_path}\n", output_widget)
+    _output(f"--- {language} Translation ---", output_widget, logger)
+    _output(f"Input: {input_path}\nOutput: {output_path}\n", output_widget, logger)
 
-    for root, dirs, files in os.walk(input_path):
+    for root, _, files in os.walk(input_path):
         for file in files:
             input_file_path = os.path.join(root, file)
             output_dir_path = os.path.join(output_path, os.path.relpath(root, input_path))
 
-            if _process_file(input_file_path, output_dir_path, patterns, translation_counts, output_widget):
+            if _process_file(input_file_path, output_dir_path, patterns, translation_counts, output_widget, logger):
                 files_processed += 1
             else:
                 files_skipped += 1
+                
+    _output("", output_widget, logger)
 
-    # Check if any files were processed
     if files_processed > 0:
         file_word = "file" if files_processed == 1 else "files"
-        _output(f"Processed {files_processed} {file_word}. Skipped {files_skipped} files.", output_widget)
-        _output("Translation Counts:", output_widget)
+        _output(f"Processed {files_processed} {file_word}. Skipped {files_skipped} files.\n", output_widget, logger)
+        _output("Translation Counts:", output_widget, logger)
         for source_text, (count, target_text) in translation_counts.items():
             clean_source_text = source_text.replace(r'\b', '')
-            _output(f'   {clean_source_text} --> {target_text}: {count} replacements', output_widget)
+            _output(f'   {clean_source_text} --> {target_text}: {count} replacements', output_widget, logger)
     else:
-        _output(f"No input files found in directory: {input_path}. Skipping.", output_widget)
+        _output(f"No input files found in directory: {input_path}. Skipping.", output_widget, logger, is_warning=True)
 
-    _output("\n", output_widget)
+    _output("", output_widget, logger)
 
 def translate_files(input_path="TranslationTool/_input", output_path="TranslationTool/_output",
-                    dictionaries_path="TranslationTool/_dictionaries", languages="", output_widget=None):
-    """
-    Translates files based on the provided dictionaries for multiple languages.
-
-    Args:
-        input_path (str, optional): The path to the input directory. Defaults to "TranslationTool/_input".
-        output_path (str, optional): The path to the output directory. Defaults to "TranslationTool/_output".
-        dictionaries_path (str, optional): The path to the dictionaries directory. Defaults to "TranslationTool/_dictionaries".
-        languages (str, optional): The languages to translate. Defaults to "".
-        output_widget (object, optional): The output widget for displaying translation progress. Defaults to None.
-    """
-    _output(f"Starting translation process for {len(languages)} languages: {', '.join(languages)}.\n", output_widget)
+                    dictionaries_path="TranslationTool/_dictionaries", languages="",
+                    output_widget=None, logger=None):
+    _output(f"Starting translation process for {len(languages)} languages: {', '.join(languages)}.\n", output_widget, logger)
 
     for language in languages:
         dictionary_file_name = os.path.join(dictionaries_path, f"Dictionary_{language}.dic")
         language_output_path = os.path.join(output_path, language)
 
         if not os.path.isfile(dictionary_file_name):
-            _output(f"Dictionary file '{dictionary_file_name}' not found. Skipping translation for {language}.\n", output_widget)
+            _output(f"Dictionary file '{dictionary_file_name}' not found. Skipping translation for {language}.\n", output_widget, logger, is_warning=True)
             continue
 
         with open(dictionary_file_name, 'r', encoding='utf-8') as file:
@@ -138,6 +107,6 @@ def translate_files(input_path="TranslationTool/_input", output_path="Translatio
                 source_text, target_text = parts
                 patterns[re.compile(r'\b' + re.escape(source_text) + r'\b')] = target_text
 
-        _perform_translation(input_path, language_output_path, patterns, language, output_widget)
+        _perform_translation(input_path, language_output_path, patterns, language, output_widget, logger)
 
-    _output("Translation process completed.\n\n", output_widget)
+    _output("Translation process completed.\n\n", output_widget, logger)
