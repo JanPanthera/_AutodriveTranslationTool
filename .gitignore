@@ -157,4 +157,3 @@ cython_debug/
 *.sln
 *.suo
 *.user
-TranslationTool/config/config-custom.ini
