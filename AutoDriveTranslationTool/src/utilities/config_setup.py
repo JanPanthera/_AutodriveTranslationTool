@@ -69,7 +69,7 @@ class ConfigSetup:
         return {
             "AppSettings": {
                 "ui_theme": "System",
-                "ui_color_theme": "green",
+                "ui_color_theme": "ad-green",
                 "ui_language": "English",
                 "locales_dir": "locales",
                 "locale_updater": "False"
@@ -77,7 +77,7 @@ class ConfigSetup:
             "WindowSettings": {
                 "window_title": "AutoDrive Translation Tool",
                 "window_icon": "resources/ad_icon.ico",
-                "window_size": "2560x1440",
+                "window_size": "1366x768",
                 "window_position": "0+0",
                 "use_high_dpi_scaling": "True",
                 "centered": "True"
@@ -89,10 +89,10 @@ class ConfigSetup:
             },
             "TranslationSettings": {
                 "selected_languages": "English",
-                "supported_languages": "Chinese,English,French,German,Italian,Japanese,Korean,Portuguese,Russian,Spanish",
+                "supported_languages": "English,French,German,Italian,Russian,Spanish",
                 "input_path": "_input",
                 "output_path": "_output",
                 "dictionaries_path": "_dictionaries",
-                "whole_word_replacement": "False"
+                "whole_word_replacement": "True"
             }
         }
