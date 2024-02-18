@@ -1,0 +1,85 @@
+{
+   "default": {
+   },
+   "generic": {
+      "yes": "Ja",
+      "no": "Nein",
+      "ok": "OK",
+      "cancel": "Abbrechen",
+      "copy": "Kopieren",
+      "paste": "Einfügen",
+      "cut": "Ausschneiden",
+      "delete": "Löschen",
+      "select_all": "Alles auswählen",
+      "close": "Schließen"
+   },
+   "messages": {
+      "confirm_save_dic_title": "Bestätigen Speichern",
+      "confirm_save_dic_msg": "Sind Sie sicher, dass Sie den Inhalt des Textfeldes in die ausgewählte Wörterbuch-Datei speichern möchten?",
+      "confirm_load_dic_title": "Bestätigen Laden",
+      "confirm_load_dic_msg": "Sind Sie sicher, dass Sie die ausgewählte Wörterbuch-Datei laden und alle nicht gespeicherten Änderungen verwerfen möchten?",
+      "confirm_clear_editbox_title": "Bestätigen Leeren",
+      "confirm_clear_editbox_msg": "Sind Sie sicher, dass Sie das Textfeld leeren möchten?",
+      "confirm_del_dic_title": "Bestätigen Löschen",
+      "confirm_del_dic_msg": "Sind Sie sicher, dass Sie die ausgewählte Wörterbuch-Datei löschen möchten?"
+   },
+   "languages": {
+      "english": "Englisch",
+      "french": "Französisch",
+      "german": "Deutsch",
+      "italian": "Italienisch",
+      "russian": "Russian"
+   },
+   "themes": {
+      "dark": "Dunkel",
+      "light": "Hell",
+      "system": "System",
+      "blue": "Blau - Standard",
+      "dark-blue": "Dunkelblau - Standard",
+      "green": "Grün - Standard",
+      "ad-green": "Ad-Grün"
+   },
+   "translation_frame": {
+      "btn_clear_console": "Konsole leeren",
+      "btn_deselect_all": "Alles abwählen",
+      "btn_find_missing_translations": "Fehlende Übersetzungen finden",
+      "btn_select_all": "Alles auswählen",
+      "btn_translate": "Übersetzen",
+      "btn_validate_output_files": "Übersetzte Dateien validieren",
+      "tab_translation": "Übersetzung"
+   },
+   "languages_frame": {
+      "btn_add_language": "Sprache hinzufügen",
+      "btn_remove_language": "Sprache entfernen",
+      "btn_save_custom": "Speichern",
+      "btn_load_custom": "Laden",
+      "btn_load_default": "Standard laden",
+      "tab_languages": "Sprachen"
+   },
+   "dictionaries_frame": {
+      "btn_create_dictionary_file": "Wörterbuch-Datei erstellen",
+      "btn_delete_dictionary_file": "Wörterbuch-Datei löschen",
+      "btn_save_dictionary_file": "Wörterbuch-Datei speichern",
+      "btn_load_dictionary_file": "Wörterbuch-Datei laden",
+      "btn_clear_dictionary_edit_textbox": "Textfeld leeren",
+      "tab_dictionaries": "Wörterbücher"
+   },
+   "options_frame": {
+      "btn_reset_everything": "Alles zurücksetzen",
+      "btn_reset_save_on_window_close_settings": "Zurücksetzen",
+      "btn_reset_ui_appearance_settings": "Zurücksetzen",
+      "btn_reset_window_pos": "Fensterposition zurücksetzen",
+      "btn_reset_window_size": "Fenstergröße zurücksetzen",
+      "checkbox_save_selected_languages": "Ausgewählte Sprachen speichern",
+      "checkbox_save_window_pos": "Fensterposition speichern",
+      "checkbox_save_window_size": "Fenstergröße speichern",
+      "checkbox_use_high_dpi_scaling": "High DPI Skalierung verwenden",
+      "checkbox_whole_word_replacement": "Nur ganze Wörter ersetzen",
+      "label_appearance_settings": "Erscheinungsbild",
+      "label_reset_settings": "Einstellungen zurücksetzen",
+      "label_save_on_close": "Speichern beim Schließen",
+      "label_translation_settings": "Übersetzungseinstellungen",
+      "tab_options": "Optionen"
+   },
+   "unused": {}
+}

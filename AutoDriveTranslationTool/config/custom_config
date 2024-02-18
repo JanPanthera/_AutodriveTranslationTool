@@ -1,0 +1,28 @@
+[AppSettings]
+ui_theme = System
+ui_color_theme = Ad-green
+ui_language = German
+locales_dir = locales
+locale_updater = False
+
+[WindowSettings]
+window_title = AutoDrive Translation Tool
+window_icon = resources/ad_icon.ico
+window_size = 2894x1521
+window_position = 473+286
+use_high_dpi_scaling = True
+centered = True
+
+[SaveOnWindowClose]
+save_window_size = True
+save_window_pos = True
+save_selected_languages = False
+
+[TranslationSettings]
+selected_languages = English
+supported_languages = Chinese,English,French,German,Italian,Japanese,Korean,Portuguese,Russian,Spanish
+input_path = _input
+output_path = _output
+dictionaries_path = _dictionaries
+whole_word_replacement = False
+
