@@ -1,0 +1,478 @@
+{
+   "frame_main": {
+      "widget_type": "CTkFrame",
+      "widget_properties": {
+      },
+      "packing_properties": {
+         "packing_type": "pack",
+         "fill": "both",
+         "expand": true
+      },
+      "grid_configuration": {
+         "rows": {
+            "0": { "weight": 1 },
+            "1": { "weight": 1 },
+            "2": { "weight": 0 }
+         },
+         "columns": {
+            "0": { "weight": 1 },
+            "1": { "weight": 1 }
+         }
+      },
+      "children": {
+
+         "frame_save_on_window_close": {
+            "widget_type": "CTkFrame",
+            "widget_properties": {
+            },
+            "packing_properties": {
+               "packing_type": "grid",
+               "sticky": "nsew",
+               "row": 0,
+               "column": 0,
+               "padx": [ 20, 20 ],
+               "pady": [ 20, 20 ]
+            },
+            "grid_configuration": {
+               "rows": {
+                  "0": { "weight": 0 }
+               },
+               "columns": {
+                  "0": { "weight": 0 }
+               }
+            },
+            "children": {
+               "label_save_on_close": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_save_on_close",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 0,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 10, 5 ]
+                  }
+               },
+               "checkbox_save_window_size": {
+                  "widget_type": "CTkCheckBox",
+                  "widget_properties": {
+                     "text": "checkbox_save_window_size",
+                     "variable": "save_window_size",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "onvalue": true,
+                     "offvalue": false,
+                     "command": "_on_save_window_size_checkbox"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 1,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "checkbox_save_window_pos": {
+                  "widget_type": "CTkCheckBox",
+                  "widget_properties": {
+                     "text": "checkbox_save_window_pos",
+                     "variable": "save_window_pos",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "onvalue": true,
+                     "offvalue": false,
+                     "command": "_on_save_window_pos_checkbox"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 2,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "checkbox_save_selected_languages": {
+                  "widget_type": "CTkCheckBox",
+                  "widget_properties": {
+                     "text": "checkbox_save_selected_languages",
+                     "variable": "save_selected_languages",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "onvalue": true,
+                     "offvalue": false,
+                     "command": "_on_save_selected_languages_checkbox"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 3,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "btn_reset_save_on_window_close_settings": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_save_on_window_close_settings",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_save_on_window_close_settings_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 4,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               }
+            }
+         },
+
+         "frame_ui_appearance": {
+            "widget_type": "CTkFrame",
+            "widget_properties": {
+            },
+            "packing_properties": {
+               "packing_type": "grid",
+               "sticky": "nsew",
+               "row": 1,
+               "column": 0,
+               "padx": [ 20, 20 ],
+               "pady": [ 20, 20 ]
+            },
+            "grid_configuration": {
+               "rows": {
+                  "0": { "weight": 0 }
+               },
+               "columns": {
+                  "0": { "weight": 0 }
+               }
+            },
+            "children": {
+               "label_appearance_settings": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_appearance_settings",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 0,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 10, 5 ]
+                  }
+               },
+               "checkbox_use_high_dpi_scaling": {
+                  "widget_type": "CTkCheckBox",
+                  "widget_properties": {
+                     "text": "checkbox_use_high_dpi_scaling",
+                     "variable": "use_high_dpi_scaling",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "onvalue": true,
+                     "offvalue": false,
+                     "command": "_on_use_high_dpi_scaling_checkbox"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 1,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "dropdown_ui_theme": {
+                  "widget_type": "CTkOptionMenu",
+                  "widget_properties": {
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "variable": "ui_theme",
+                     "values": "dropdown_ui_themes",
+                     "command": "_on_ui_theme_dropdown"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 2,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "dropdown_ui_color_theme": {
+                  "widget_type": "CTkOptionMenu",
+                  "widget_properties": {
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "variable": "ui_color_theme",
+                     "values": "dropdown_ui_color_themes",
+                     "command": "_on_ui_color_theme"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 3,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "dropdown_ui_language": {
+                  "widget_type": "CTkOptionMenu",
+                  "widget_properties": {
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "variable": "ui_language",
+                     "values": "dropdown_ui_languages",
+                     "command": "_on_ui_language_dropdown"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 4,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "btn_reset_ui_appearance_settings": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_ui_appearance_settings",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_ui_appearance_settings_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 5,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 10 ]
+                  }
+               }
+            }
+         },
+
+         "frame_reset_buttons": {
+            "widget_type": "CTkFrame",
+            "widget_properties": {
+            },
+            "packing_properties": {
+               "packing_type": "grid",
+               "sticky": "nsew",
+               "row": 0,
+               "column": 1,
+               "padx": [ 20, 20 ],
+               "pady": [ 20, 20 ]
+            },
+            "grid_configuration": {
+               "rows": {
+                  "0": { "weight": 0 }
+               },
+               "columns": {
+                  "0": { "weight": 0 }
+               }
+            },
+            "children": {
+               "label_reset_settings": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_reset_settings",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 0,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 10, 5 ]
+                  }
+               },
+               "btn_reset_window_size": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_window_size",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_window_size_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 1,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "btn_reset_window_pos": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_window_pos",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_window_pos_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 2,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 10 ]
+                  }
+               }
+            }
+         },
+
+         "frame_translation_settings": {
+            "widget_type": "CTkFrame",
+            "widget_properties": {
+            },
+            "packing_properties": {
+               "packing_type": "grid",
+               "sticky": "nsew",
+               "row": 1,
+               "column": 1,
+               "padx": [ 20, 20 ],
+               "pady": [ 20, 20 ]
+            },
+            "grid_configuration": {
+               "rows": {
+                  "0": { "weight": 0 }
+               },
+               "columns": {
+                  "0": { "weight": 0 }
+               }
+            },
+            "children": {
+               "label_translation_settings": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_translation_settings",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 0,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 10, 5 ]
+                  }
+               },
+               "checkbox_whole_word_replacement": {
+                  "widget_type": "CTkCheckBox",
+                  "widget_properties": {
+                     "text": "checkbox_whole_word_replacement",
+                     "variable": "whole_word_replacement",
+                     "font": {
+                        "family": "Comic Sans MS",
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "onvalue": true,
+                     "offvalue": false,
+                     "command": "_on_whole_word_replacement_checkbox"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 1,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 10 ]
+                  }
+               }
+            }
+         },
+
+         "btn_reset_everything": {
+            "widget_type": "CTkButton",
+            "widget_properties": {
+               "text": "btn_reset_everything",
+               "font": {
+                  "family": "Comic Sans MS",
+                  "size": 18,
+                  "weight": "bold"
+               },
+               "command": "_on_reset_everything_button"
+            },
+            "packing_properties": {
+               "packing_type": "grid",
+               "sticky": "nsew",
+               "row": 3,
+               "column": 0,
+               "columnspan": 2,
+               "padx": [ 20, 20 ],
+               "pady": [ 5, 20 ]
+            }
+         }
+
+      }
+   }
+}
