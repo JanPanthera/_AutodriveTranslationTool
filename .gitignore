@@ -157,5 +157,6 @@ cython_debug/
 *.sln
 *.suo
 *.user
+/AutoDriveTranslationTool/_output/*
 /AutoDriveTranslationTool/config/custom_config.ini
 /AutoDriveTranslationTool/_input/map_name/AutoDrive_config.xml
