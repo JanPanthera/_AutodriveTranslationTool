@@ -1,4 +1,4 @@
-# translation_frame.py
+# translation_frame.py ~ AutoDriveTranslationTool
 
 import os
 import customtkinter as ctk

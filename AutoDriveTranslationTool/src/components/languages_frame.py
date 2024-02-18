@@ -1,4 +1,4 @@
-﻿# languages_frame.py
+﻿# languages_frame.py ~ AutoDriveTranslationTool
 
 import re
 import os

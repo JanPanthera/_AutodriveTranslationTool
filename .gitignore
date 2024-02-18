@@ -160,3 +160,4 @@ cython_debug/
 /AutoDriveTranslationTool/_output/*
 /AutoDriveTranslationTool/config/custom_config.ini
 /AutoDriveTranslationTool/_input/map_name/AutoDrive_config.xml
+/AutoDriveTranslationTool/dist/AutoDriveTranslationTool.zip
