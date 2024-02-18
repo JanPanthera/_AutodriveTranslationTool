@@ -1,60 +1,62 @@
 # AutoDriveTranslationTool
 
 ## Introduction
-Welcome to AutoDriveTranslationTool, a Python-based utility designed to streamline the translation process for AutoDrive courses. With customtkinter for an enhanced user interface, and a GUI framework (available at [JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)), this tool offers an intuitive and efficient way to translate your AutoDrive Course files into multiple languages.
+AutoDriveTranslationTool is a Python utility that facilitates the translation of AutoDrive course files. Utilizing customtkinter for UI elements and leveraging a GUI framework (available at [JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)), the tool provides functionalities to manage translations efficiently.
 
 ## Features
-- **Intuitive GUI**: Built with customtkinter and a proprietary GUI framework for ease of use and accessibility.
-- **Multi-Language Support**: Add or remove languages to translate your project into multiple languages.
-- **Efficient Translation Management**: With the integrated Dictionary system, create and edit translations for your Course files.
-- **Open Source**: Access the source code, contribute, and customize the tool to fit your unique requirements.
+- **Customtkinter GUI**: Incorporates customtkinter for a modern UI experience.
+- **Language Management**: Allows addition and removal of languages for project translation.
+- **Translation Dictionary System**: Integrates a system to create and manage translations.
+- **Open Source**: The source code is available for use and contribution on GitHub.
 
 ## Requirements
-If you want to use the AutoDriveTranslationTool via python, you will need the following:
-- **Python**: Ensure you have Python installed on your system. This tool is developed and tested with Python 3.12
-- **Dependencies**: Requires Babel, customtkinter, and other dependencies which can be installed via pip. A detailed list will be provided in the Installation section.
+To run AutoDriveTranslationTool, ensure the following are installed:
+- **Python**: Python 3.3 or higher is required.
+- **Dependencies**: Babel, customtkinter, and other dependencies are needed, which can be installed via pip.
 
 ## Installation
-To get AutoDriveTranslationTool up and running on your system, follow these steps:
+Execute the following steps to set up the tool:
 
-1. **Clone the Repository**: First, clone this repository to your local machine using Git:
-git clone https://github.com/JanPanthera/_AutodriveTranslationTool.git
+1. **Clone the Repository**:
+git clone --recurse-submodules https://github.com/JanPanthera/_AutodriveTranslationTool.git
 cd AutoDriveTranslationTool
 
-2. **Install Dependencies**: Install all required dependencies by running:
+2. **Install Dependencies**:
 pip install -r requirements.txt
 
-This command will install Babel, customtkinter, and any other necessary Python packages.
-
-3. **Set Up GUI Framework**: Ensure you have the custom GUI framework set up by following the instructions provided at [JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework). TODO: decide how to handle this.
+3. **Set Up GUI Framework**:
+If the _GuiFramework submodule has not been initialized, run:
+git submodule update --init
 
 ## Usage
-To use the AutoDriveTranslationTool, follow these steps:
+Follow these steps to operate the tool:
 
-1. **Launch the Tool**: Run `main.py` inside the AutoDriveTranslationTool directory to start the application:
+1. **Start the Tool**: Execute `main.py` to launch the application:
 python main.py
 
 
-2. **Configure Settings**: Add or remove your target languages inside the Languages tab. Then, int the Dictionaries tab, create and edit dictionaries for each language to manage your translations.
+2. **Configure Languages**: Manage your target languages in the Languages tab.
 
-3. **Translate**: With your dictionaries set up, you can now start translating your AutoDrive Course files. Use the Translation tab to start translating your Courses. Additionally, you can hit the Find Missing Translations button to check for any missing translations in your dictionaries.
+3. **Manage Dictionaries**: Use the Dictionaries tab to create and edit your Dictionaries.
 
-4. **Validate**: You can validate the translated files for AutoDrive's maximum character limits.
+4. **Translation Process**: Translate your course files using the Translation tab and find any missing translations with the provided functionality.
+
+5. **Validation Button**: Confirms that the translated files adhere to AutoDrive's character limits.
 
 ## Contributing
-Contributions to the AutoDriveTranslationTool are welcome! Whether it's bug reports, feature requests, or code contributions, here's how you can help:
+Your contributions are encouraged. To contribute:
 
-1. **Report Issues**: If you encounter any bugs or have suggestions, please file an issue on the GitHub repository.
+1. **Issues**: Report bugs or suggest enhancements via GitHub issues.
 
-2. **Submit Pull Requests**: Feel free to fork the repository and submit pull requests with your improvements or new features.
+2. **Pull Requests**: Submit pull requests with your proposed changes.
 
-3. **Feedback and Suggestions**: Any feedback or suggestions for improving the tool are greatly appreciated.
+3. **Feedback**: Any constructive feedback is welcomed to improve the tool.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+The project is under the MIT License. Refer to [LICENSE.md](LICENSE.md) for full details.
 
 ## Acknowledgments
-- **Babel**: For providing the comprehensive internationalization and localization support that powers the the Gui's multi-language capabilities.
-- **customtkinter**: For an awesome modern style gui library.
-- **[JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)**: A special thanks to JanPanthera for the bespoke GUI framework that forms the backbone of this tool's interface.
-- **Contributors**: A heartfelt thank you to all the contributors who have helped improve this tool through their code contributions, bug reports, and feature suggestions.
+- **Babel**: Used for internationalization of the GUI.
+- **customtkinter**: For creating the modern styled GUI.
+- **[JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)**: The GUI framework is integral to the application's interface.
+- **Contributors**: Thanks to those who have contributed to the project.
