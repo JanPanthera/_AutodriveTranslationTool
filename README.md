@@ -1,34 +1,60 @@
-# _AutoDriveTranslationTool
+# AutoDriveTranslationTool
 
-TranslationTool.py is now the main entry point for the application.
-You can run it directly via TranslationTool.py or via the run_script.cmd.
+## Introduction
+Welcome to AutoDriveTranslationTool, a Python-based utility designed to streamline the translation process for AutoDrive courses. With customtkinter for an enhanced user interface, and a GUI framework (available at [JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)), this tool offers an intuitive and efficient way to translate your AutoDrive Course files into multiple languages.
 
-window size and selected language are now saved in the config.ini file.
-You can delete it to restore the default settings.
+## Features
+- **Intuitive GUI**: Built with customtkinter and a proprietary GUI framework for ease of use and accessibility.
+- **Multi-Language Support**: Add or remove languages to translate your project into multiple languages.
+- **Efficient Translation Management**: With the integrated Dictionary system, create and edit translations for your Course files.
+- **Open Source**: Access the source code, contribute, and customize the tool to fit your unique requirements.
 
-!!!TODO!!!
+## Requirements
+If you want to use the AutoDriveTranslationTool via python, you will need the following:
+- **Python**: Ensure you have Python installed on your system. This tool is developed and tested with Python 3.12
+- **Dependencies**: Requires Babel, customtkinter, and other dependencies which can be installed via pip. A detailed list will be provided in the Installation section.
 
-AutoDrive Translation Script:
-Script base from BuyNow_John
-with Ideas of Welten and Joshua (a friend of Welten studying Coding) added and improved
+## Installation
+To get AutoDriveTranslationTool up and running on your system, follow these steps:
 
-1. Name an folder Translation Script and unzip there.
-2. add the Translationlist_Global in the folder (remove the EXAMPLE if you want to use it)
+1. **Clone the Repository**: First, clone this repository to your local machine using Git:
+git clone https://github.com/JanPanthera/_AutodriveTranslationTool.git
+cd AutoDriveTranslationTool
 
-How to use the Script:
-1. Install Pyhton https://www.python.org/downloads/
-2. place an AutoDrive config in the "Input" folder
-3. press double click on the "run_script.cmd" and let it do its stuff
-4. look in the "output" folder there should be the translated version
+2. **Install Dependencies**: Install all required dependencies by running:
+pip install -r requirements.txt
 
-Things to be aware with your Translationlist_Global:
-1. The TranslationList_Global is an list that you have to keep up to date and add new translations.
-2. There will work all Languages if you add them in the TranslationList_Global
-3. single names like Farm, LU,... Put them at the end of the list so that double names like Farm Gasstation get translated
-4. you can work with empty lines (The script will jump to the next available if there is an empty line)
+This command will install Babel, customtkinter, and any other necessary Python packages.
 
-other Tipps:
-You can translate many AutoDrive_config.xml files at oncer.
-Make a folder and name it like the map. Do this for each map to translate.
+3. **Set Up GUI Framework**: Ensure you have the custom GUI framework set up by following the instructions provided at [JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework). TODO: decide how to handle this.
 
-Authors: BuyNow_John, Welten, Joshua
+## Usage
+To use the AutoDriveTranslationTool, follow these steps:
+
+1. **Launch the Tool**: Run `main.py` inside the AutoDriveTranslationTool directory to start the application:
+python main.py
+
+
+2. **Configure Settings**: Add or remove your target languages inside the Languages tab. Then, int the Dictionaries tab, create and edit dictionaries for each language to manage your translations.
+
+3. **Translate**: With your dictionaries set up, you can now start translating your AutoDrive Course files. Use the Translation tab to start translating your Courses. Additionally, you can hit the Find Missing Translations button to check for any missing translations in your dictionaries.
+
+4. **Validate**: You can validate the translated files for AutoDrive's maximum character limits.
+
+## Contributing
+Contributions to the AutoDriveTranslationTool are welcome! Whether it's bug reports, feature requests, or code contributions, here's how you can help:
+
+1. **Report Issues**: If you encounter any bugs or have suggestions, please file an issue on the GitHub repository.
+
+2. **Submit Pull Requests**: Feel free to fork the repository and submit pull requests with your improvements or new features.
+
+3. **Feedback and Suggestions**: Any feedback or suggestions for improving the tool are greatly appreciated.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Acknowledgments
+- **Babel**: For providing the comprehensive internationalization and localization support that powers the the Gui's multi-language capabilities.
+- **customtkinter**: For an awesome modern style gui library.
+- **[JanPanthera's _GuiFramework](https://github.com/JanPanthera/_GuiFramework)**: A special thanks to JanPanthera for the bespoke GUI framework that forms the backbone of this tool's interface.
+- **Contributors**: A heartfelt thank you to all the contributors who have helped improve this tool through their code contributions, bug reports, and feature suggestions.
