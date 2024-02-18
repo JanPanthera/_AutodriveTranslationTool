@@ -27,7 +27,7 @@
                "sticky": "nsew",
                "row": 0,
                "column": 0,
-               "padx": [ 20, 20 ],
+               "padx": [ 20, 5 ],
                "pady": [ 20, 20 ]
             },
             "grid_configuration": {
@@ -133,7 +133,7 @@
                "sticky": "nsew",
                "row": 0,
                "column": 1,
-               "padx": [ 20, 20 ],
+               "padx": [ 5, 20 ],
                "pady": [ 20, 20 ]
             },
             "grid_configuration": {

@@ -20,12 +20,11 @@ class ConfigSetup:
         self.config_manager = ConfigManager(
             default_config_creator_func=self._create_default_config,
             config_path=config_path,
-            default_config_name='default_config',
-            custom_config_name='custom_config',
+            default_config_name='default_config.ini',
+            custom_config_name='custom_config.ini',
             logger=self.logger
         )
         self.config_manager.load_config()
-        # self.config_manager.reset_all_settings() # DEBUG
         self._register_config_variables()
         self._load_settings()
 
@@ -89,7 +88,7 @@ class ConfigSetup:
             },
             "TranslationSettings": {
                 "selected_languages": "English",
-                "supported_languages": "English,French,German,Italian,Russian,Spanish",
+                "supported_languages": "English,French,German,Italian,Russian",
                 "input_path": "_input",
                 "output_path": "_output",
                 "dictionaries_path": "_dictionaries",
