@@ -46,19 +46,3 @@ def trigger_debug_break(logger=None):
             logger.warning("IsDebuggerPresent function not available.")
     except Exception as e:
         logger.error(f"Failed to trigger debug break: {type(e).__name__}: {e}")
-
-
-def handle_exception(operation, error_message, exception_return_value=None, logger=None):
-    """
-    Function to handle exceptions for a given operation.
-    If an exception occurs during the operation, logs the error message and triggers a debug break.
-    Returns the exception_return_value if an exception occurs.
-    """
-    logger = logger or logging.getLogger(__name__)
-    try:
-        return operation()
-    except Exception as e:
-        logger.error(f"{error_message}:\n   {e}")
-        trigger_debug_break(logger)
-
-        return exception_return_value

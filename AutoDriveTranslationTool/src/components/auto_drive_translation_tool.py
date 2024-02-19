@@ -2,18 +2,18 @@
 
 import os
 
-from AutoDriveTranslationTool.src.utilities import ConfigSetup
+from src.utilities import ConfigSetup
 
-from GuiFramework.src.components import Window
+from GuiFramework.gui import Window
 
-from GuiFramework.src.utilities.gui import GuiManager
-from GuiFramework.src.utilities import (
+from GuiFramework.gui.gui_manager import GuiManager
+from GuiFramework.utilities import (
     LocalizationManager, LocaleUpdater
 )
-from GuiFramework.src.widgets import (
+from GuiFramework.widgets import (
     TabView, ScrollableSelectionFrame, CustomConsoleTextbox, CustomTextbox
 )
-from AutoDriveTranslationTool.src.components import (
+from src.components import (
     TranslationFrame, LanguagesFrame, DictionaryFrame, OptionsFrame
 )
 

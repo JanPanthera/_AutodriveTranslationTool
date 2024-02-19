@@ -2,8 +2,8 @@
 
 import os
 
-from GuiFramework.src.utilities.logger import CustomLogger, LOG_LEVEL
-from AutoDriveTranslationTool.src.components.auto_drive_translation_tool import AutoDriveTranslationTool
+from GuiFramework.utilities.logger import CustomLogger, LOG_LEVEL
+from src.components.auto_drive_translation_tool import AutoDriveTranslationTool
 
 
 def main():

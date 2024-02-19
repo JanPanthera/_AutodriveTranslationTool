@@ -3,8 +3,8 @@
 import os
 import customtkinter as ctk
 
-from GuiFramework.src.utilities import update_widget_text
-from GuiFramework.src.widgets import CustomPopupMessageBox
+from GuiFramework.utilities import update_widget_text
+from GuiFramework.widgets import CustomPopupMessageBox
 
 from src.functions import (
     TranslationFinder, Validator, Translator

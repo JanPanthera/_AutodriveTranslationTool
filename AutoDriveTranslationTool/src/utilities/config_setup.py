@@ -4,7 +4,7 @@ import os
 import customtkinter as ctk
 
 import src.utilities as utils
-from GuiFramework.src.utilities import ConfigManager, file_ops
+from GuiFramework.utilities import ConfigManager, file_ops
 
 
 class ConfigSetup:

@@ -3,7 +3,7 @@
 import os
 import customtkinter as ctk
 
-from GuiFramework.src.utilities import update_widget_text
+from GuiFramework.utilities import update_widget_text
 
 
 class OptionsFrame(ctk.CTkFrame):
