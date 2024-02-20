@@ -22,6 +22,7 @@ class OptionsFrame(ctk.CTkFrame):
         self.loc = self.localization_manager.translate
 
         self.config_manager = self.app_instance.config_manager
+        self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
         self.load_setting = self.config_manager.load_setting
@@ -29,7 +30,23 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.localization_manager.subscribe(self)
         self.gui_manager.subscribe(self)
+        self._create_func_vars()
         self._register_gui_components()
+
+    def _create_func_vars(self):
+        self.add_var(name="_on_reset_everything_button", value=self._on_reset_everything_button)
+        self.add_var(name="_on_save_window_size_checkbox", value=self._on_save_window_size_checkbox)
+        self.add_var(name="_on_save_window_pos_checkbox", value=self._on_save_window_pos_checkbox)
+        self.add_var(name="_on_save_selected_languages_checkbox", value=self._on_save_selected_languages_checkbox)
+        self.add_var(name="_on_reset_save_on_window_close_settings_button", value=self._on_reset_save_on_window_close_settings_button)
+        self.add_var(name="_on_use_high_dpi_scaling_checkbox", value=self._on_use_high_dpi_scaling_checkbox)
+        self.add_var(name="_on_ui_theme_dropdown", value=self._on_ui_theme_dropdown)
+        self.add_var(name="_on_ui_color_theme", value=self._on_ui_color_theme)
+        self.add_var(name="_on_ui_language_dropdown", value=self._on_ui_language_dropdown)
+        self.add_var(name="_on_reset_ui_appearance_settings_button", value=self._on_reset_ui_appearance_settings_button)
+        self.add_var(name="_on_reset_window_size_button", value=self._on_reset_window_size_button)
+        self.add_var(name="_on_reset_window_pos_button", value=self._on_reset_window_pos_button)
+        self.add_var(name="_on_whole_word_replacement_checkbox", value=self._on_whole_word_replacement_checkbox)
 
     def set_widget_references(self):
         widgets = self.gui_manager.widgets.get("options_frame")
@@ -56,11 +73,10 @@ class OptionsFrame(ctk.CTkFrame):
         )
 
     def _register_gui_components(self):
-        self.gui_manager.register(
+        self.gui_manager.register_gui_file(
             "options_frame",
             self.GUI_FILE_PATH,
-            self,  # master frame
-            self,  # self
+            self
         )
 
     def _on_reset_everything_button(self):

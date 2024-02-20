@@ -22,12 +22,21 @@ class DictionaryFrame(ctk.CTkFrame):
         self.loc = self.localization_manager.translate
 
         self.config_manager = self.app_instance.config_manager
+        self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
 
         self.localization_manager.subscribe(self)
         self.gui_manager.subscribe(self)
+        self._create_func_vars()
         self._register_gui_components()
+
+    def _create_func_vars(self):
+        self.add_var(name="_on_save_dictionary_file", value=self._on_save_dictionary_file)
+        self.add_var(name="_on_load_dictionary_file", value=self._on_load_dictionary_file)
+        self.add_var(name="_on_clear_dictionary_edit_textbox", value=self._on_clear_dictionary_edit_textbox)
+        self.add_var(name="_on_create_dictionary_file", value=self._on_create_dictionary_file)
+        self.add_var(name="_on_delete_dictionary_file", value=self._on_delete_dictionary_file)
 
     def set_widget_references(self):
         self.widgets = self.gui_manager.widgets.get("dictionary_frame")
@@ -40,11 +49,10 @@ class DictionaryFrame(ctk.CTkFrame):
             update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
-        self.gui_manager.register(
+        self.gui_manager.register_gui_file(
             "dictionary_frame",
             self.GUI_FILE_PATH,
-            self,  # master frame
-            self,  # self
+            self
         )
 
     def _on_save_dictionary_file(self):

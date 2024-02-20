@@ -26,12 +26,22 @@ class TranslationFrame(ctk.CTkFrame):
         self.loc = self.localization_manager.translate
 
         self.config_manager = self.app_instance.config_manager
+        self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
 
         self.localization_manager.subscribe(self)
         self.gui_manager.subscribe(self)
+        self._create_func_vars()
         self._register_gui_components()
+
+    def _create_func_vars(self):
+        self.add_var(name="_on_select_all", value=self._on_select_all)
+        self.add_var(name="_on_deselect_all", value=self._on_deselect_all)
+        self.add_var(name="_on_translate", value=self._on_translate)
+        self.add_var(name="_on_validate_output_files", value=self._on_validate_output_files)
+        self.add_var(name="_on_find_missing_translations", value=self._on_find_missing_translations)
+        self.add_var(name="_on_clear_console", value=self._on_clear_console)
 
     def set_widget_references(self):
         self.widgets = self.gui_manager.widgets.get("translation_frame")
@@ -44,11 +54,10 @@ class TranslationFrame(ctk.CTkFrame):
             update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
-        self.gui_manager.register(
+        self.gui_manager.register_gui_file(
             "translation_frame",
             self.GUI_FILE_PATH,
-            self,  # master frame
-            self,  # self
+            self
         )
 
     def _on_select_all(self):

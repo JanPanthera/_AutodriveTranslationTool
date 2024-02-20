@@ -23,13 +23,22 @@ class LanguagesFrame(ctk.CTkFrame):
         self.loc = self.localization_manager.translate
 
         self.config_manager = self.app_instance.config_manager
+        self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
         self.load_setting = self.config_manager.load_setting
 
         self.localization_manager.subscribe(self)
         self.gui_manager.subscribe(self)
+        self._create_func_vars()
         self._register_gui_components()
+
+    def _create_func_vars(self):
+        self.add_var(name="_on_add_language", value=self._on_add_language)
+        self.add_var(name="_on_remove_language", value=self._on_remove_language)
+        self.add_var(name="_on_save_custom", value=self._on_save_custom)
+        self.add_var(name="_on_load_custom", value=self._on_load_custom)
+        self.add_var(name="_on_load_default", value=self._on_load_default)
 
     def set_widget_references(self):
         self.widgets = self.gui_manager.widgets.get("languages_frame")
@@ -45,11 +54,10 @@ class LanguagesFrame(ctk.CTkFrame):
             update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
-        self.gui_manager.register(
+        self.gui_manager.register_gui_file(
             "languages_frame",
             self.GUI_FILE_PATH,
-            self,  # master frame
-            self,  # self
+            self
         )
 
     def _on_add_language(self):
