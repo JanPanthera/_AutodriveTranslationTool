@@ -22,6 +22,7 @@ class DictionaryFrame(ctk.CTkFrame):
         self.loc = self.localization_manager.translate
 
         self.config_manager = self.app_instance.config_manager
+        self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
 
@@ -40,11 +41,11 @@ class DictionaryFrame(ctk.CTkFrame):
             update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
-        self.gui_manager.register(
+        self.gui_manager.register_gui_file(
             "dictionary_frame",
             self.GUI_FILE_PATH,
-            self,  # master frame
-            self,  # self
+            self,
+            self
         )
 
     def _on_save_dictionary_file(self):
