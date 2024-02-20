@@ -16,7 +16,7 @@ from GuiFramework.widgets import (
 from src.components import (
     TranslationFrame, LanguagesFrame, DictionaryFrame, OptionsFrame
 )
-from src.widget_builder import (
+from GuiFramework.gui.gui_manager.widget_builder import (
     CtkFrameBuilder, CtkLabelBuilder, CtkEntryBuilder, CtkOptionMenuBuilder, CtkCheckBoxBuilder,
     CtkButtonBuilder, ScrollableSelectionFrameBuilder, CustomConsoleTextboxBuilder, CustomTextboxBuilder
 )
@@ -87,14 +87,14 @@ class AutoDriveTranslationTool():
     def _initialize_gui_manager(self):
         self.gui_manager = GuiManager(logger=self.logger)
         self.gui_manager.register_widget_builder(CtkFrameBuilder(self.logger))
-        self.gui_manager.register_widget_builder(CtkLabelBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CtkEntryBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CtkOptionMenuBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CtkCheckBoxBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CtkButtonBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(ScrollableSelectionFrameBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CustomConsoleTextboxBuilder(self.config_manager, self.localization_manager, self.logger))
-        self.gui_manager.register_widget_builder(CustomTextboxBuilder(self.config_manager, self.localization_manager, self.logger))
+        self.gui_manager.register_widget_builder(CtkLabelBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CtkEntryBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CtkOptionMenuBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CtkCheckBoxBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CtkButtonBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(ScrollableSelectionFrameBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CustomConsoleTextboxBuilder(self.config_manager, self.loc, self.logger))
+        self.gui_manager.register_widget_builder(CustomTextboxBuilder(self.config_manager, self.loc, self.logger))
 
     def _setup_gui_components(self):
         self.tab_names = {

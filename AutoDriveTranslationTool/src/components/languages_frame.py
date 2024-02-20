@@ -30,15 +30,7 @@ class LanguagesFrame(ctk.CTkFrame):
 
         self.localization_manager.subscribe(self)
         self.gui_manager.subscribe(self)
-        self._create_func_vars()
         self._register_gui_components()
-
-    def _create_func_vars(self):
-        self.add_var(name="_on_add_language", value=self._on_add_language)
-        self.add_var(name="_on_remove_language", value=self._on_remove_language)
-        self.add_var(name="_on_save_custom", value=self._on_save_custom)
-        self.add_var(name="_on_load_custom", value=self._on_load_custom)
-        self.add_var(name="_on_load_default", value=self._on_load_default)
 
     def set_widget_references(self):
         self.widgets = self.gui_manager.widgets.get("languages_frame")
@@ -57,6 +49,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.gui_manager.register_gui_file(
             "languages_frame",
             self.GUI_FILE_PATH,
+            self,
             self
         )
 
