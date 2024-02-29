@@ -5,14 +5,15 @@ import re
 
 
 class TranslationFinder:
-    def __init__(self, input_path, output_path, dictionary_path, languages, output_widget=None, logger=None, console=False):
+    def __init__(self, input_path, output_path, dictionary_path, languages, output_widget=None, localization_manager=None, console=False, logger=None):
         self.input_path = os.path.normpath(input_path)
         self.output_path = os.path.normpath(output_path)
         self.dictionary_path = os.path.normpath(dictionary_path)
         self.languages = languages.split(',') if isinstance(languages, str) else languages
         self.output_widget = output_widget
-        self.logger = logger
         self.console = console
+        self.loc = localization_manager.translate_with_params # localization_manager can be None add error handling
+        self.logger = logger
 
         self._find_missing_translations()
 
@@ -63,7 +64,16 @@ class TranslationFinder:
         return missing_translations
 
     def _find_missing_translations(self):
-        self._output(f"Starting search missing translations process for {len(self.languages)} languages: {', '.join(self.languages)}.\n")
+        # Prepare the dynamic data
+        num_languages = len(self.languages)
+        languages_str = ', '.join(self.languages)
+        # Localize the message with dynamic data
+        localized_message = self.loc(
+            "search_missing_translations",
+            num_languages=num_languages,
+            languages=languages_str
+        )
+        self._output(localized_message)
 
         translations = self._load_translations()
 

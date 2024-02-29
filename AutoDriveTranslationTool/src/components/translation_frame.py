@@ -20,7 +20,7 @@ class TranslationFrame(ctk.CTkFrame):
         self.window_instance = self.app_instance.window
         self.localization_manager = self.app_instance.localization_manager
 
-        self.dev_path = self.app_instance.dev_path
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "translation_frame.gui.json")
 
         self.loc = self.localization_manager.translate
@@ -101,6 +101,7 @@ class TranslationFrame(ctk.CTkFrame):
             languages=checked_entries,
             output_widget=self.widgets.get("textbox_output_console"),
             logger=self.app_instance.logger,
+            localization_manager=self.localization_manager,
             console=False,
         )
 

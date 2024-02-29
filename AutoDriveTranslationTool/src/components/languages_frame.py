@@ -1,4 +1,4 @@
-﻿# languages_frame.py ~ AutoDriveTranslationTool
+# languages_frame.py ~ AutoDriveTranslationTool
 
 import re
 import os
@@ -17,7 +17,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.window_instance = self.app_instance.window
         self.localization_manager = self.app_instance.localization_manager
 
-        self.dev_path = self.app_instance.dev_path
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "languages_frame.gui.json")
 
         self.loc = self.localization_manager.translate

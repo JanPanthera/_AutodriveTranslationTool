@@ -16,7 +16,7 @@ class DictionaryFrame(ctk.CTkFrame):
         self.window_instance = app_instance.window
         self.localization_manager = app_instance.localization_manager
 
-        self.dev_path = self.app_instance.dev_path
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "dictionary_frame.gui.json")
 
         self.loc = self.localization_manager.translate
