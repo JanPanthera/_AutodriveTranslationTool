@@ -28,7 +28,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.get_var = self.config_manager.get_variable
         self.load_setting = self.config_manager.load_setting
 
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
         self._register_gui_components()
 
@@ -40,10 +40,11 @@ class LanguagesFrame(ctk.CTkFrame):
         self.scroll_list_language_selection = self.gui_manager.widgets.get("translation_frame").get("scroll_list_language_selection")
         self.scroll_list_languages = self.widgets.get("scroll_list_languages")
 
-    def on_language_updated(self, language_code, change_type):
-        widgets = self.gui_manager.widgets.get("languages_frame")
-        for name_id, widget_ref in widgets.items():
-            update_widget_text(widget_ref, self.loc(name_id))
+    def on_language_updated(self, language_code, event_type):
+        if event_type == "lang_update":
+            widgets = self.gui_manager.widgets.get("languages_frame")
+            for name_id, widget_ref in widgets.items():
+                update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
         self.gui_manager.register_gui_file(

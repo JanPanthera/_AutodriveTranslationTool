@@ -26,7 +26,7 @@ class DictionaryFrame(ctk.CTkFrame):
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
 
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
         self._register_gui_components()
 
@@ -34,11 +34,13 @@ class DictionaryFrame(ctk.CTkFrame):
         self.widgets = self.gui_manager.widgets.get("dictionary_frame")
         for widget_name, widget_ref in self.widgets.items():
             setattr(self, widget_name, widget_ref)
+        self.scroll_list_dictionaries.add_entries(file_ops.get_all_file_names_in_directory(os.path.join(self.dev_path, self.get_var('dictionaries_path'))))
 
-    def on_language_updated(self, language_code, change_type):
-        widgets = self.gui_manager.widgets.get("dictionary_frame")
-        for name_id, widget_ref in widgets.items():
-            update_widget_text(widget_ref, self.loc(name_id))
+    def on_language_updated(self, language_code, event_type):
+        if event_type == "lang_update":
+            widgets = self.gui_manager.widgets.get("dictionary_frame")
+            for name_id, widget_ref in widgets.items():
+                update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
         self.gui_manager.register_gui_file(

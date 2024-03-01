@@ -59,7 +59,7 @@ class AutoDriveTranslationTool:
             logger=self.logger
         )
         self.localization_manager.set_active_language(self.get_var("ui_language").get())
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["before_subs_notify", "lang_update", "after_subs_notify"])
 
     def _initialize_window(self):
         color_theme_key = self.localization_manager.reverse_localize(self.get_var("ui_color_theme").get()).lower()
@@ -102,7 +102,6 @@ class AutoDriveTranslationTool:
         loc = self.localization_manager.localize
 
         self.tab_view = TabView(self.window)
-        self.tab_view.pack(fill='both', expand=True)
 
         self.tabs = {
             "tab_translation": Tab(TranslationFrame(self, self.tab_view), loc("tab_translation")),
@@ -116,13 +115,19 @@ class AutoDriveTranslationTool:
             self.tab_view.add_tab(tab.frame, title=tab.name)
         self.tab_view.show_tab(self.tabs["tab_translation"].frame)
 
-    def on_language_updated(self, language_code, change_type):
-        loc = self.localization_manager.localize
-        for original_name, tab in self.tabs.items():
-            new_name = loc(original_name)
-            old_name = tab.name
-            self.tab_view.rename_tab(old_name, new_name)
-            self.tabs[original_name] = Tab(tab.frame, new_name)
+    def on_language_updated(self, language_code, event_type):
+        if event_type == "before_subs_notify":
+            self.tab_view.hide()
+        elif event_type == "lang_update":
+            loc = self.localization_manager.localize
+            for original_name, tab in self.tabs.items():
+                new_name = loc(original_name)
+                old_name = tab.name
+                self.tab_view.rename_tab(old_name, new_name)
+                self.tabs[original_name] = Tab(tab.frame, new_name)
+        elif event_type == "after_subs_notify":
+            # delay a bit to allow the GUI to update
+            self.window.after(1, self.tab_view.show)
 
     def run(self):
         self.window.mainloop()

@@ -46,7 +46,6 @@
                   "widget_properties": {
                      "text": "btn_select_all",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -66,7 +65,6 @@
                   "widget_properties": {
                      "text": "btn_deselect_all",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -89,7 +87,6 @@
                      "values": "selected_languages",
                      "variable": "supported_languages",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -109,7 +106,6 @@
                   "widget_properties": {
                      "text": "btn_translate",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -130,7 +126,6 @@
                   "widget_properties": {
                      "text": "btn_validate_output_files",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -151,7 +146,6 @@
                   "widget_properties": {
                      "text": "btn_find_missing_translations",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -196,7 +190,6 @@
                      "autoscroll": true,
                      "max_lines": 1000,
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "normal"
                      }
@@ -216,7 +209,6 @@
                   "widget_properties": {
                      "text": "btn_clear_console",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },

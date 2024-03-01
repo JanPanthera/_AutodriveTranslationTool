@@ -54,7 +54,7 @@ class OptionsFrame(ctk.CTkFrame):
 
     def _subscribe_to_managers(self):
         """Subscribe to GUI and Localization managers."""
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
 
     def set_widget_references(self):
@@ -62,21 +62,22 @@ class OptionsFrame(ctk.CTkFrame):
         gui_utils.set_widget_references(self, self.GUI_COMPONENT_NAME, self.gui_manager)
         self.on_language_updated(self.localization_manager.get_language(), "init")
 
-    def on_language_updated(self, language_code, change_type):
+    def on_language_updated(self, language_code, event_type):
         """Update the language of the widgets in the frame."""
-        gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
-        self.dropdown_ui_theme.configure(
-            variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_THEME).get())),
-            values=self._translate_list(self.get_var(self.DROPDOWN_UI_THEMES))
-        )
-        self.dropdown_ui_color_theme.configure(
-            variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_COLOR_THEME).get())),
-            values=self._translate_list(self.get_var(self.DROPDOWN_UI_COLOR_THEMES))
-        )
-        self.dropdown_ui_language.configure(
-            variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_LANGUAGE).get())),
-            values=self._translate_list(self.get_var(self.DROPDOWN_UI_LANGUAGES))
-        )
+        if event_type == "lang_update":
+            gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
+            self.dropdown_ui_theme.configure(
+                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_THEME).get())),
+                values=self._translate_list(self.get_var(self.DROPDOWN_UI_THEMES))
+            )
+            self.dropdown_ui_color_theme.configure(
+                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_COLOR_THEME).get())),
+                values=self._translate_list(self.get_var(self.DROPDOWN_UI_COLOR_THEMES))
+            )
+            self.dropdown_ui_language.configure(
+                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_LANGUAGE).get())),
+                values=self._translate_list(self.get_var(self.DROPDOWN_UI_LANGUAGES))
+            )
 
     def _register_gui_components(self):
         """Register the GUI components."""
@@ -111,7 +112,7 @@ class OptionsFrame(ctk.CTkFrame):
         gui_utils.update_checkbox_state(self.checkbox_whole_word_replacement, self.WHOLE_WORD_REPLACEMENT, self.config_manager)
         self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
         self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
-        self.localization_manager.set_language(self.get_var(self.UI_LANGUAGE).get())
+        self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
 
     # Window settings callbacks
     def _on_center_window_on_startup_checkbox(self):
