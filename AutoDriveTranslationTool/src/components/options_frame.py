@@ -48,7 +48,7 @@ class OptionsFrame(ctk.CTkFrame):
 
         self.add_var, self.set_var, self.get_var = self.config_manager.add_variable, self.config_manager.set_variable, self.config_manager.get_variable
         self.load_setting, self.reset_settings = self.config_manager.load_setting, self.config_manager.reset_settings
-        self.loc = self.localization_manager.translate
+        self.loc = self.localization_manager.localize
 
         self.GUI_FILE_PATH = os.path.join(self.dev_path, self.GUI_FILE_PATH)
 
@@ -60,9 +60,9 @@ class OptionsFrame(ctk.CTkFrame):
     def set_widget_references(self):
         """Set widget references for the frame."""
         gui_utils.set_widget_references(self, self.GUI_COMPONENT_NAME, self.gui_manager)
-        self.update_language()
+        self.on_language_updated(self.localization_manager.get_language(), "init")
 
-    def update_language(self):
+    def on_language_updated(self, language_code, change_type):
         """Update the language of the widgets in the frame."""
         gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
         self.dropdown_ui_theme.configure(
@@ -156,20 +156,20 @@ class OptionsFrame(ctk.CTkFrame):
         self.window.set_high_dpi(self.get_var(self.USE_HIGH_DPI_SCALING).get())
 
     def _on_ui_theme_dropdown(self, selected_theme=None):
-        theme_key = self.localization_manager.get_key(selected_theme)
+        theme_key = self.localization_manager.reverse_localize(selected_theme)
         self.set_var("ui_theme", ctk.StringVar(self, theme_key[0].upper() + theme_key[1:]))
         self.window.set_ui_theme(theme_key)
 
     def _on_ui_color_theme(self, selected_color_theme=None):
-        color_theme_key = self.localization_manager.get_key(selected_color_theme)
+        color_theme_key = self.localization_manager.reverse_localize(selected_color_theme)
         self.set_var("ui_color_theme", ctk.StringVar(self, color_theme_key[0].upper() + color_theme_key[1:]))
         ui_color_theme = color_theme_key if color_theme_key in ["blue", "dark-blue", "green"] else os.path.join(self.dev_path, "resources", "themes", f"{color_theme_key}.json")
         self.window.set_ui_color_theme(ui_color_theme)
 
     def _on_ui_language_dropdown(self, selected_language=None):
-        language_key = self.localization_manager.get_key(selected_language)
+        language_key = self.localization_manager.reverse_localize(selected_language)
         self.set_var("ui_language", ctk.StringVar(self, language_key[0].upper() + language_key[1:]))
-        self.localization_manager.set_language(language_key)
+        self.localization_manager.set_active_language(language_key)
 
     def _on_reset_ui_appearance_settings_button(self):
         settings_to_reset = [
@@ -182,7 +182,7 @@ class OptionsFrame(ctk.CTkFrame):
         gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
         self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
         self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
-        self.localization_manager.set_language(self.get_var(self.UI_LANGUAGE).get())
+        self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
 
     # Translation settings callbacks
     def _on_whole_word_replacement_checkbox(self):

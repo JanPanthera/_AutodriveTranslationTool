@@ -23,6 +23,7 @@ from GuiFramework.gui.gui_manager.widget_builder import (
 )
 Tab = namedtuple('Tab', ['frame', 'name'])
 
+
 class AutoDriveTranslationTool:
     def __init__(self, logger):
         self.logger = logger
@@ -52,14 +53,16 @@ class AutoDriveTranslationTool:
             self.locale_updater.update_locales(os.path.join(self.config_setup.DEV_PATH, ""))
         self.localization_manager = LocalizationManager(
             locales_dir=os.path.join(self.config_setup.DEV_PATH, self.get_var("locales_dir").get()),
-            default_language="English",
+            active_language="English",
+            fallback_language="English",
+            lazy_load=True,
             logger=self.logger
         )
-        self.localization_manager.set_language(self.get_var("ui_language").get())
+        self.localization_manager.set_active_language(self.get_var("ui_language").get())
         self.localization_manager.subscribe(self)
 
     def _initialize_window(self):
-        color_theme_key = self.localization_manager.get_key(self.get_var("ui_color_theme").get()).lower()
+        color_theme_key = self.localization_manager.reverse_localize(self.get_var("ui_color_theme").get()).lower()
         if color_theme_key not in ["blue", "dark-blue", "green"]:
             color_theme_key = os.path.join(self.config_setup.DEV_PATH, "resources", "themes", f"{color_theme_key}.json")
 
@@ -79,7 +82,7 @@ class AutoDriveTranslationTool:
         self.window.show()
 
     def _initialize_gui_manager(self):
-        loc = self.localization_manager.translate
+        loc = self.localization_manager.localize
         self.gui_manager = GuiManager(logger=self.logger)
         widget_builders = [
             CtkFrameBuilder(self.logger),
@@ -96,25 +99,25 @@ class AutoDriveTranslationTool:
             self.gui_manager.register_widget_builder(builder)
 
     def _setup_gui_components(self):
-        loc = self.localization_manager.translate
-    
+        loc = self.localization_manager.localize
+
         self.tab_view = TabView(self.window)
         self.tab_view.pack(fill='both', expand=True)
-    
+
         self.tabs = {
             "tab_translation": Tab(TranslationFrame(self, self.tab_view), loc("tab_translation")),
             "tab_languages": Tab(LanguagesFrame(self, self.tab_view), loc("tab_languages")),
             "tab_dictionaries": Tab(DictionaryFrame(self, self.tab_view), loc("tab_dictionaries")),
             "tab_options": Tab(OptionsFrame(self, self.tab_view), loc("tab_options")),
         }
-    
+
         self.gui_manager.build()
         for _, tab in self.tabs.items():
             self.tab_view.add_tab(tab.frame, title=tab.name)
         self.tab_view.show_tab(self.tabs["tab_translation"].frame)
-    
-    def update_language(self):
-        loc = self.localization_manager.translate
+
+    def on_language_updated(self, language_code, change_type):
+        loc = self.localization_manager.localize
         for original_name, tab in self.tabs.items():
             new_name = loc(original_name)
             old_name = tab.name

@@ -23,7 +23,7 @@ class TranslationFrame(ctk.CTkFrame):
         self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "translation_frame.gui.json")
 
-        self.loc = self.localization_manager.translate
+        self.loc = self.localization_manager.localize
 
         self.config_manager = self.app_instance.config_manager
         self.add_var = self.config_manager.add_variable
@@ -39,7 +39,7 @@ class TranslationFrame(ctk.CTkFrame):
         for widget_name, widget_ref in self.widgets.items():
             setattr(self, widget_name, widget_ref)
 
-    def update_language(self):
+    def on_language_updated(self, language_code, change_type):
         widgets = self.gui_manager.widgets.get("translation_frame")
         for name_id, widget_ref in widgets.items():
             update_widget_text(widget_ref, self.loc(name_id))
