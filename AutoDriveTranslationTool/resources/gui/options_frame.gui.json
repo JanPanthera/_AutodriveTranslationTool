@@ -16,8 +16,8 @@
             "3": { "weight": 0 }
          },
          "columns": {
-            "0": { "weight": 0 },
-            "1": { "weight": 0 }
+            "0": { "weight": 1 },
+            "1": { "weight": 1 }
          }
       },
       "children": {
@@ -382,6 +382,7 @@
                      "sticky": "nsew",
                      "row": 5,
                      "column": 0,
+                     "columnspan": 2,
                      "padx": [ 10, 10 ],
                      "pady": [ 5, 10 ]
                   }
