@@ -2,42 +2,31 @@
 
 import os
 import re
+from src.utilities.func_helpers import output
 
 
 class Validator:
-    def __init__(self, input_path, languages, output_widget=None, logger=None, console=False):
+    def __init__(self, input_path, languages, output_widget=None, localization_manager=None, logger=None, console=False):
         self.input_path = os.path.normpath(input_path)
         self.languages = languages.split(',') if isinstance(languages, str) else languages
         self.output_widget = output_widget
         self.logger = logger
         self.console = console
 
+        self.loc = localization_manager.localize
+        self.loc_param = localization_manager.localize_with_params
+
         self._validate_output_files()
 
-    def _output(self, message, is_error=False, is_warning=False):
-        if self.logger:
-            if is_error:
-                self.logger.error(message)
-            elif is_warning:
-                self.logger.warning(message)
-            else:
-                self.logger.info(message)
-        message = message + "\n"
-        if is_error:
-            message = f"ERROR: {message}"
-        elif is_warning:
-            message = f"WARNING: {message}"
-        if self.output_widget:
-            self.output_widget.write_console(message)
-        if self.console:
-            print(message, end='')
+    def _output(self, message, loc_params=None, message_type=""):
+        output(message, message_type, self.loc, self.output_widget, self.console, self.loc_param, loc_params, self.logger)
 
     def _validate_output_file(self, file_path, errors):
         with open(file_path, 'r', encoding='utf-8') as file:
             file_text = file.read()
 
         if not file_text.strip():
-            errors.append(("File is empty or only contains whitespace.", 0))
+            errors.append((self.loc("vof_file_empty", 0)))
             return False
 
         validation_rules = [
@@ -50,18 +39,18 @@ class Validator:
                 matches = re.findall(pattern, line)
                 for text_inside_tag in matches:
                     if len(text_inside_tag) > max_length:
-                        error_message = f"Line {line_no}: \"{text_inside_tag}\" exceeds max length of ({len(text_inside_tag)}/{max_length} characters). <{tag_name}>"
+                        error_message = self.loc_param("vof_line_exceeds_max_length", line_no, text_inside_tag, max_length, tag_name)
                         errors.append((error_message, line_no))
 
     def _validate_output_files(self):
-        self._output(f"Starting validation process for {len(self.languages)} languages: {', '.join(self.languages)}.\n")
-        self._output(f"Input: {self.input_path}")
+        self._output("vof_starting_validation", (len(self.languages), ', '.join(self.languages)))
+        self._output("vof_input", (self.input_path))
 
         for language in self.languages:
-            self._output(f"\nValidation results for {language}:")
+            self._output("vof_validating_language", (language))
             language_path = os.path.join(self.input_path, language)
             if not os.path.exists(language_path):
-                self._output(f"- {os.path.normpath(language)}\\: No files found for validation.")
+                self._output("vof_language_not_found", (os.path.normpath(language)), "error")
                 continue
 
             for root, _, files in os.walk(language_path):
@@ -79,7 +68,7 @@ class Validator:
                             self._output(f"- {normalized_relative_root}\\:")
                             has_files_with_errors = True
                         self._output(f"  - {file}:")
-                        self._output(f"    - Total errors: {len(file_errors)}")
+                        self._output("vof_file_errors", (len(file_errors)))
                         for error_message, _ in file_errors:
                             self._output(f"        - {error_message}")
                     else:
@@ -88,5 +77,5 @@ class Validator:
                             has_files_with_errors = True
                         self._output(f"  - {file}: OK")
 
-        self._output("\nReview the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.\n")
-        self._output("Validation process finished.")
+        self._output("vof_validation_finished_info")
+        self._output("vof_validation_finished")

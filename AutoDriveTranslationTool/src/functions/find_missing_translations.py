@@ -2,6 +2,8 @@
 
 import os
 import re
+from collections import defaultdict
+from src.utilities.func_helpers import output
 
 
 class TranslationFinder:
@@ -12,42 +14,27 @@ class TranslationFinder:
         self.languages = languages.split(',') if isinstance(languages, str) else languages
         self.output_widget = output_widget
         self.console = console
-        self.loc = localization_manager.translate_with_params # localization_manager can be None add error handling
+        self.loc = localization_manager.localize
+        self.loc_param = localization_manager.localize_with_params
         self.logger = logger
 
         self._find_missing_translations()
 
-    def _output(self, message, is_error=False, is_warning=False):
-        if self.logger:
-            if is_error:
-                self.logger.error(message)
-            elif is_warning:
-                self.logger.warning(message)
-            else:
-                self.logger.info(message)
-        message = message + "\n"
-        if is_error:
-            message = f"ERROR: {message}"
-        elif is_warning:
-            message = f"WARNING: {message}"
-        if self.output_widget:
-            self.output_widget.write_console(message)
-        if self.console:
-            print(message, end='')
+    def _output(self, message, loc_params=None, message_type=""):
+        output(message, message_type, self.loc, self.output_widget, self.console, self.loc_param, loc_params, self.logger)
 
     def _load_translations(self):
-        translations = {}
+        translations = defaultdict(set)
         for language in self.languages:
             dictionary_file = self._get_dictionary_file(language)
             try:
                 with open(dictionary_file, 'r', encoding='utf-8') as f:
-                    translations[language] = set()
                     for line in f:
                         if ',' in line:
                             word, _ = line.strip().split(',')
                             translations[language].add(word)
             except FileNotFoundError:
-                self._output(f"Dictionary file for {language} not found.", is_error=True)
+                self._output("fmt_dictionary_not_found", (language), "error")
         return translations
 
     def _get_dictionary_file(self, language):
@@ -59,21 +46,12 @@ class TranslationFinder:
         with open(input_file, 'r', encoding='utf-8') as f:
             content = f.read()
         words = word_pattern.findall(content)
-        unique_words = set([word for phrase in words for word in phrase.split()])
+        unique_words = set(word for phrase in words for word in phrase.split() if not word.isdigit() and re.search(r'[a-zA-Z]', word))
         missing_translations = {lang: unique_words - trans for lang, trans in translations.items()}
         return missing_translations
 
     def _find_missing_translations(self):
-        # Prepare the dynamic data
-        num_languages = len(self.languages)
-        languages_str = ', '.join(self.languages)
-        # Localize the message with dynamic data
-        localized_message = self.loc(
-            "search_missing_translations",
-            num_languages=num_languages,
-            languages=languages_str
-        )
-        self._output(localized_message)
+        self._output("fmt_search_missing_translations", (len(self.languages), ', '.join(self.languages)))
 
         translations = self._load_translations()
 
@@ -81,16 +59,16 @@ class TranslationFinder:
             for file in files:
                 if file.endswith(".xml"):
                     input_file = os.path.join(root, file)
-                    self._output(f"Processing file: {input_file}")
+                    self._output("fmt_processing_file", (input_file))
                     missing_translations = self._find_missing_translations_in_file(input_file, translations)
 
                     for language, missing in missing_translations.items():
                         if missing:
-                            self._output(f"{language} is missing {len(missing)} translations:")
+                            self._output("fmt_missing_translations", (language, len(missing)))
                             for word in sorted(missing):
                                 self._output(f"{word}")
                         else:
-                            self._output(f"{language} has all words translated.")
+                            self._output("fmt_no_missing_translations", (language))
 
         self._output("")
-        self._output("Search for missing translations finished.")
+        self._output("fmt_search_finished")

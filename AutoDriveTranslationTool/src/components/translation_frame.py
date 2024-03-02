@@ -69,6 +69,7 @@ class TranslationFrame(ctk.CTkFrame):
                     languages=self.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.widgets.get("textbox_output_console"),
                     logger=self.app_instance.logger,
+                    localization_manager=self.localization_manager,
                     console=False,
                     whole_word=self.get_var("whole_word_replacement"),
                 )
@@ -87,6 +88,7 @@ class TranslationFrame(ctk.CTkFrame):
             input_path=os.path.join(self.dev_path, self.get_var("output_path")),
             languages=self.scroll_list_language_selection.get_checked_entries(),
             output_widget=self.widgets.get("textbox_output_console"),
+            localization_manager=self.localization_manager,
             logger=self.app_instance.logger,
             console=False,
         )
