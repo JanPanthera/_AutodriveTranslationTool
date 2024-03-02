@@ -46,7 +46,6 @@
                   "widget_properties": {
                      "activate_scrollbars": true,
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -66,7 +65,6 @@
                   "widget_properties": {
                      "text": "btn_save_dictionary_file",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -86,7 +84,6 @@
                   "widget_properties": {
                      "text": "btn_load_dictionary_file",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -106,7 +103,6 @@
                   "widget_properties": {
                      "text": "btn_clear_dictionary_edit_textbox",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -150,9 +146,7 @@
                   "widget_properties": {
                      "widget_type": "label",
                      "single_select": true,
-                     "variable": "dictionary_files_list",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -171,7 +165,6 @@
                   "widget_type": "CTkOptionMenu",
                   "widget_properties": {
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -191,7 +184,6 @@
                   "widget_properties": {
                      "text": "btn_create_dictionary_file",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -211,7 +203,6 @@
                   "widget_properties": {
                      "text": "btn_delete_dictionary_file",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },

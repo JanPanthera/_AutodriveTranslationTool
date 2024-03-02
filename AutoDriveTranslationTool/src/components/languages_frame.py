@@ -1,4 +1,4 @@
-﻿# languages_frame.py ~ AutoDriveTranslationTool
+# languages_frame.py ~ AutoDriveTranslationTool
 
 import re
 import os
@@ -17,10 +17,10 @@ class LanguagesFrame(ctk.CTkFrame):
         self.window_instance = self.app_instance.window
         self.localization_manager = self.app_instance.localization_manager
 
-        self.dev_path = self.app_instance.dev_path
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "languages_frame.gui.json")
 
-        self.loc = self.localization_manager.translate
+        self.loc = self.localization_manager.localize
 
         self.config_manager = self.app_instance.config_manager
         self.add_var = self.config_manager.add_variable
@@ -28,7 +28,7 @@ class LanguagesFrame(ctk.CTkFrame):
         self.get_var = self.config_manager.get_variable
         self.load_setting = self.config_manager.load_setting
 
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
         self._register_gui_components()
 
@@ -40,10 +40,11 @@ class LanguagesFrame(ctk.CTkFrame):
         self.scroll_list_language_selection = self.gui_manager.widgets.get("translation_frame").get("scroll_list_language_selection")
         self.scroll_list_languages = self.widgets.get("scroll_list_languages")
 
-    def update_language(self):
-        widgets = self.gui_manager.widgets.get("languages_frame")
-        for name_id, widget_ref in widgets.items():
-            update_widget_text(widget_ref, self.loc(name_id))
+    def on_language_updated(self, language_code, event_type):
+        if event_type == "lang_update":
+            widgets = self.gui_manager.widgets.get("languages_frame")
+            for name_id, widget_ref in widgets.items():
+                update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
         self.gui_manager.register_gui_file(
@@ -55,15 +56,17 @@ class LanguagesFrame(ctk.CTkFrame):
 
     def _on_add_language(self):
         new_language = self.entry_new_language.get()
+        if not new_language:
+            return
         pattern = r'[^a-zA-Z0-9äöüÄÖÜß_\-]'
         invalid_chars = re.findall(pattern, new_language)
         if invalid_chars:
             invalid_chars_str = ', '.join(set(invalid_chars))
-            popup_message = self.loc("Invalid characters: ")
+            popup_message = self.loc("invalid_characters")
             popup_message += f"{invalid_chars_str}"
             CustomPopupMessageBox(
                 self,
-                title=self.loc("Invalid Input"),
+                title=self.loc("invalid_input"),
                 message=popup_message,
             )
         else:
@@ -86,11 +89,11 @@ class LanguagesFrame(ctk.CTkFrame):
                 self.scroll_list_languages.sort_entries()
         CustomPopupMessageBox(
             self,
-            title=self.loc("Save Custom"),
-            message=self.loc("Are you sure you want to save the languages to the custom configuration file?"),
+            title=self.loc("confirm_save_custom_lang_msg_title"),
+            message=self.loc("confirm_save_custom_lang_msg"),
             interactive=True,
-            yes_button_text=self.loc("Yes"),
-            no_button_text=self.loc("No"),
+            yes_button_text=self.loc("yes"),
+            no_button_text=self.loc("no"),
             on_yes=on_yes
         )
 
@@ -103,11 +106,11 @@ class LanguagesFrame(ctk.CTkFrame):
                 self.scroll_list_languages.sort_entries()
         CustomPopupMessageBox(
             self,
-            title=self.loc("Load Custom"),
-            message=self.loc("Are you sure you want to load the languages from the custom configuration file?"),
+            title=self.loc("confirm_load_custom_lang_msg_title"),
+            message=self.loc("confirm_load_custom_lang_msg"),
             interactive=True,
-            yes_button_text=self.loc("Yes"),
-            no_button_text=self.loc("No"),
+            yes_button_text=self.loc("yes"),
+            no_button_text=self.loc("no"),
             on_yes=on_yes
         )
 
@@ -120,10 +123,10 @@ class LanguagesFrame(ctk.CTkFrame):
                 self.scroll_list_languages.sort_entries()
         CustomPopupMessageBox(
             self,
-            title=self.loc("Load Default"),
-            message=self.loc("Are you sure you want to load the languages from the default configuration file?"),
+            title=self.loc("confirm_load_default_lang_msg_title"),
+            message=self.loc("confirm_load_default_lang_msg"),
             interactive=True,
-            yes_button_text=self.loc("Yes"),
-            no_button_text=self.loc("No"),
+            yes_button_text=self.loc("yes"),
+            no_button_text=self.loc("no"),
             on_yes=on_yes
         )

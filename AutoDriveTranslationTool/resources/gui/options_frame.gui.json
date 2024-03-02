@@ -10,9 +10,10 @@
       },
       "grid_configuration": {
          "rows": {
-            "0": { "weight": 1 },
-            "1": { "weight": 1 },
-            "2": { "weight": 0 }
+            "0": { "weight": 0 },
+            "1": { "weight": 0 },
+            "2": { "weight": 1 },
+            "3": { "weight": 0 }
          },
          "columns": {
             "0": { "weight": 1 },
@@ -21,7 +22,7 @@
       },
       "children": {
 
-         "frame_save_on_window_close": {
+         "frame_window_settings": {
             "widget_type": "CTkFrame",
             "widget_properties": {
             },
@@ -30,8 +31,8 @@
                "sticky": "nsew",
                "row": 0,
                "column": 0,
-               "padx": [ 20, 20 ],
-               "pady": [ 20, 20 ]
+               "padx": [ 10, 5 ],
+               "pady": [ 10, 5 ]
             },
             "grid_configuration": {
                "rows": {
@@ -42,12 +43,12 @@
                }
             },
             "children": {
-               "label_save_on_close": {
+
+               "label_window_settings": {
                   "widget_type": "CTkLabel",
                   "widget_properties": {
-                     "text": "label_save_on_close",
+                     "text": "label_window_settings",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -67,7 +68,6 @@
                      "text": "checkbox_save_window_size",
                      "variable": "save_window_size",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -90,7 +90,6 @@
                      "text": "checkbox_save_window_pos",
                      "variable": "save_window_pos",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -107,19 +106,18 @@
                      "pady": [ 5, 5 ]
                   }
                },
-               "checkbox_save_selected_languages": {
+               "checkbox_center_window_on_startup": {
                   "widget_type": "CTkCheckBox",
                   "widget_properties": {
-                     "text": "checkbox_save_selected_languages",
-                     "variable": "save_selected_languages",
+                     "text": "checkbox_center_window_on_startup",
+                     "variable": "center_window_on_startup",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
                      "onvalue": true,
                      "offvalue": false,
-                     "command": "_on_save_selected_languages_checkbox"
+                     "command": "_on_center_window_on_startup_checkbox"
                   },
                   "packing_properties": {
                      "packing_type": "grid",
@@ -130,16 +128,15 @@
                      "pady": [ 5, 5 ]
                   }
                },
-               "btn_reset_save_on_window_close_settings": {
+               "btn_reset_window_settings": {
                   "widget_type": "CTkButton",
                   "widget_properties": {
-                     "text": "btn_reset_save_on_window_close_settings",
+                     "text": "btn_reset_window_settings",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
-                     "command": "_on_reset_save_on_window_close_settings_button"
+                     "command": "_on_reset_window_settings_button"
                   },
                   "packing_properties": {
                      "packing_type": "grid",
@@ -149,7 +146,46 @@
                      "padx": [ 10, 10 ],
                      "pady": [ 5, 5 ]
                   }
+               },
+               "btn_reset_window_size": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_window_size",
+                     "font": {
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_window_size_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 5,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "btn_reset_window_pos": {
+                  "widget_type": "CTkButton",
+                  "widget_properties": {
+                     "text": "btn_reset_window_pos",
+                     "font": {
+                        "size": 18,
+                        "weight": "bold"
+                     },
+                     "command": "_on_reset_window_pos_button"
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nsew",
+                     "row": 6,
+                     "column": 0,
+                     "padx": [ 10, 10 ],
+                     "pady": [ 5, 10 ]
+                  }
                }
+
             }
          },
 
@@ -160,10 +196,10 @@
             "packing_properties": {
                "packing_type": "grid",
                "sticky": "nsew",
-               "row": 1,
-               "column": 0,
-               "padx": [ 20, 20 ],
-               "pady": [ 20, 20 ]
+               "row": 0,
+               "column": 1,
+               "padx": [ 5, 10 ],
+               "pady": [ 10, 5 ]
             },
             "grid_configuration": {
                "rows": {
@@ -179,7 +215,6 @@
                   "widget_properties": {
                      "text": "label_appearance_settings",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -189,6 +224,7 @@
                      "sticky": "nsew",
                      "row": 0,
                      "column": 0,
+                     "columnspan": 2,
                      "padx": [ 10, 10 ],
                      "pady": [ 10, 5 ]
                   }
@@ -199,7 +235,6 @@
                      "text": "checkbox_use_high_dpi_scaling",
                      "variable": "use_high_dpi_scaling",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -212,7 +247,26 @@
                      "sticky": "nsew",
                      "row": 1,
                      "column": 0,
+                     "columnspan": 2,
                      "padx": [ 10, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "label_ui_theme": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_ui_theme",
+                     "font": {
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nw",
+                     "row": 2,
+                     "column": 0,
+                     "padx": [ 10, 5 ],
                      "pady": [ 5, 5 ]
                   }
                },
@@ -220,7 +274,7 @@
                   "widget_type": "CTkOptionMenu",
                   "widget_properties": {
                      "font": {
-                        "family": "Comic Sans MS",
+                        "text": "dropdown_ui_theme",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -232,8 +286,26 @@
                      "packing_type": "grid",
                      "sticky": "nsew",
                      "row": 2,
+                     "column": 1,
+                     "padx": [ 5, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "label_ui_color_theme": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_ui_color_theme",
+                     "font": {
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nw",
+                     "row": 3,
                      "column": 0,
-                     "padx": [ 10, 10 ],
+                     "padx": [ 10, 5 ],
                      "pady": [ 5, 5 ]
                   }
                },
@@ -241,7 +313,6 @@
                   "widget_type": "CTkOptionMenu",
                   "widget_properties": {
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -253,8 +324,26 @@
                      "packing_type": "grid",
                      "sticky": "nsew",
                      "row": 3,
+                     "column": 1,
+                     "padx": [ 5, 10 ],
+                     "pady": [ 5, 5 ]
+                  }
+               },
+               "label_ui_language": {
+                  "widget_type": "CTkLabel",
+                  "widget_properties": {
+                     "text": "label_ui_language",
+                     "font": {
+                        "size": 18,
+                        "weight": "bold"
+                     }
+                  },
+                  "packing_properties": {
+                     "packing_type": "grid",
+                     "sticky": "nw",
+                     "row": 4,
                      "column": 0,
-                     "padx": [ 10, 10 ],
+                     "padx": [ 10, 5 ],
                      "pady": [ 5, 5 ]
                   }
                },
@@ -262,7 +351,6 @@
                   "widget_type": "CTkOptionMenu",
                   "widget_properties": {
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -274,8 +362,8 @@
                      "packing_type": "grid",
                      "sticky": "nsew",
                      "row": 4,
-                     "column": 0,
-                     "padx": [ 10, 10 ],
+                     "column": 1,
+                     "padx": [ 5, 10 ],
                      "pady": [ 5, 5 ]
                   }
                },
@@ -284,7 +372,6 @@
                   "widget_properties": {
                      "text": "btn_reset_ui_appearance_settings",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -295,89 +382,7 @@
                      "sticky": "nsew",
                      "row": 5,
                      "column": 0,
-                     "padx": [ 10, 10 ],
-                     "pady": [ 5, 10 ]
-                  }
-               }
-            }
-         },
-
-         "frame_reset_buttons": {
-            "widget_type": "CTkFrame",
-            "widget_properties": {
-            },
-            "packing_properties": {
-               "packing_type": "grid",
-               "sticky": "nsew",
-               "row": 0,
-               "column": 1,
-               "padx": [ 20, 20 ],
-               "pady": [ 20, 20 ]
-            },
-            "grid_configuration": {
-               "rows": {
-                  "0": { "weight": 0 }
-               },
-               "columns": {
-                  "0": { "weight": 0 }
-               }
-            },
-            "children": {
-               "label_reset_settings": {
-                  "widget_type": "CTkLabel",
-                  "widget_properties": {
-                     "text": "label_reset_settings",
-                     "font": {
-                        "family": "Comic Sans MS",
-                        "size": 18,
-                        "weight": "bold"
-                     }
-                  },
-                  "packing_properties": {
-                     "packing_type": "grid",
-                     "sticky": "nsew",
-                     "row": 0,
-                     "column": 0,
-                     "padx": [ 10, 10 ],
-                     "pady": [ 10, 5 ]
-                  }
-               },
-               "btn_reset_window_size": {
-                  "widget_type": "CTkButton",
-                  "widget_properties": {
-                     "text": "btn_reset_window_size",
-                     "font": {
-                        "family": "Comic Sans MS",
-                        "size": 18,
-                        "weight": "bold"
-                     },
-                     "command": "_on_reset_window_size_button"
-                  },
-                  "packing_properties": {
-                     "packing_type": "grid",
-                     "sticky": "nsew",
-                     "row": 1,
-                     "column": 0,
-                     "padx": [ 10, 10 ],
-                     "pady": [ 5, 5 ]
-                  }
-               },
-               "btn_reset_window_pos": {
-                  "widget_type": "CTkButton",
-                  "widget_properties": {
-                     "text": "btn_reset_window_pos",
-                     "font": {
-                        "family": "Comic Sans MS",
-                        "size": 18,
-                        "weight": "bold"
-                     },
-                     "command": "_on_reset_window_pos_button"
-                  },
-                  "packing_properties": {
-                     "packing_type": "grid",
-                     "sticky": "nsew",
-                     "row": 2,
-                     "column": 0,
+                     "columnspan": 2,
                      "padx": [ 10, 10 ],
                      "pady": [ 5, 10 ]
                   }
@@ -393,9 +398,9 @@
                "packing_type": "grid",
                "sticky": "nsew",
                "row": 1,
-               "column": 1,
-               "padx": [ 20, 20 ],
-               "pady": [ 20, 20 ]
+               "column": 0,
+               "padx": [ 10, 5 ],
+               "pady": [ 5, 10 ]
             },
             "grid_configuration": {
                "rows": {
@@ -411,7 +416,6 @@
                   "widget_properties": {
                      "text": "label_translation_settings",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -431,7 +435,6 @@
                      "text": "checkbox_whole_word_replacement",
                      "variable": "whole_word_replacement",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -456,7 +459,6 @@
             "widget_properties": {
                "text": "btn_reset_everything",
                "font": {
-                  "family": "Comic Sans MS",
                   "size": 18,
                   "weight": "bold"
                },

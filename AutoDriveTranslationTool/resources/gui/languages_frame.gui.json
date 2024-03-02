@@ -48,7 +48,6 @@
                      "single_select": false,
                      "variable": "supported_languages",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -67,7 +66,6 @@
                   "widget_type": "CTkEntry",
                   "widget_properties": {
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      }
@@ -87,7 +85,6 @@
                   "widget_properties": {
                      "text": "btn_add_language",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -107,7 +104,6 @@
                   "widget_properties": {
                      "text": "btn_remove_language",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -127,7 +123,6 @@
                   "widget_properties": {
                      "text": "btn_save_custom",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -147,7 +142,6 @@
                   "widget_properties": {
                      "text": "btn_load_custom",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },
@@ -167,7 +161,6 @@
                   "widget_properties": {
                      "text": "btn_load_default",
                      "font": {
-                        "family": "Comic Sans MS",
                         "size": 18,
                         "weight": "bold"
                      },

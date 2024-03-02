@@ -16,17 +16,17 @@ class DictionaryFrame(ctk.CTkFrame):
         self.window_instance = app_instance.window
         self.localization_manager = app_instance.localization_manager
 
-        self.dev_path = self.app_instance.dev_path
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
         self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "dictionary_frame.gui.json")
 
-        self.loc = self.localization_manager.translate
+        self.loc = self.localization_manager.localize
 
         self.config_manager = self.app_instance.config_manager
         self.add_var = self.config_manager.add_variable
         self.set_var = self.config_manager.set_variable
         self.get_var = self.config_manager.get_variable
 
-        self.localization_manager.subscribe(self)
+        self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
         self._register_gui_components()
 
@@ -34,11 +34,13 @@ class DictionaryFrame(ctk.CTkFrame):
         self.widgets = self.gui_manager.widgets.get("dictionary_frame")
         for widget_name, widget_ref in self.widgets.items():
             setattr(self, widget_name, widget_ref)
+        self.scroll_list_dictionaries.add_entries(file_ops.get_all_file_names_in_directory(os.path.join(self.dev_path, self.get_var('dictionaries_path'))))
 
-    def update_language(self):
-        widgets = self.gui_manager.widgets.get("dictionary_frame")
-        for name_id, widget_ref in widgets.items():
-            update_widget_text(widget_ref, self.loc(name_id))
+    def on_language_updated(self, language_code, event_type):
+        if event_type == "lang_update":
+            widgets = self.gui_manager.widgets.get("dictionary_frame")
+            for name_id, widget_ref in widgets.items():
+                update_widget_text(widget_ref, self.loc(name_id))
 
     def _register_gui_components(self):
         self.gui_manager.register_gui_file(
@@ -70,7 +72,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
     def _on_create_dictionary_file(self):
         selected_language = self.dropdown_language_select.get()
-        if selected_language != self.loc("Select Language"):
+        if selected_language != self.loc("select_language"):
             file_name = f"Dictionary_{selected_language}.dic"
             if file_name not in self.scroll_list_dictionaries.get_all_entries():
                 file_path = os.path.join(self.dev_path, self.get_var('dictionaries_path'), file_name)
