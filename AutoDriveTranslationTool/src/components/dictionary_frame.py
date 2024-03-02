@@ -72,7 +72,7 @@ class DictionaryFrame(ctk.CTkFrame):
 
     def _on_create_dictionary_file(self):
         selected_language = self.dropdown_language_select.get()
-        if selected_language != self.loc("Select Language"):
+        if selected_language != self.loc("select_language"):
             file_name = f"Dictionary_{selected_language}.dic"
             if file_name not in self.scroll_list_dictionaries.get_all_entries():
                 file_path = os.path.join(self.dev_path, self.get_var('dictionaries_path'), file_name)

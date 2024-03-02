@@ -3,7 +3,6 @@
       "Are you sure you want to load the languages from the custom configuration file?": "Are you sure you want to load the languages from the custom configuration file?",
       "Are you sure you want to load the languages from the default configuration file?": "Are you sure you want to load the languages from the default configuration file?",
       "Are you sure you want to save the languages to the custom configuration file?": "Are you sure you want to save the languages to the custom configuration file?",
-      "Cancel": "Cancel",
       "Invalid characters: ": "Invalid characters: ",
       "Invalid Input": "Invalid Input",
       "Load Custom": "Load Custom",
@@ -28,7 +27,9 @@
       "paste": "Paste",
       "select_all": "Select All",
       "error_prefix": "ERROR: ",
-      "warning_prefix": "WARNING: "
+      "warning_prefix": "WARNING: ",
+      "invalid_input": "Invalid Input",
+      "invalid_characters": "Invalid characters: "
    },
    "messages": {
       "confirm_clear_editbox_msg": "Are you sure you want to clear the edit box?",
@@ -38,7 +39,13 @@
       "confirm_load_dic_msg": "Are you sure you want to load the selected Dictionary File and discard any unsaved changes?",
       "confirm_load_dic_title": "Confirm Load",
       "confirm_save_dic_msg": "Are you sure you want to save the Content of the Edit Box to the selected Dictionary File?",
-      "confirm_save_dic_title": "Confirm Save"
+      "confirm_save_dic_title": "Confirm Save",
+      "confirm_save_custom_lang_msg_title": "Save Custom",
+      "confirm_save_custom_lang_msg": "Are you sure you want to save the languages to the custom configuration file?",
+      "confirm_load_custom_lang_msg_title": "Load Custom",
+      "confirm_load_custom_lang_msg": "Are you sure you want to load the languages from the custom configuration file?",
+      "confirm_load_default_lang_msg_title": "Load Default",
+      "confirm_load_default_lang_msg": "Are you sure you want to load the languages from the default configuration file?"
    },
    "languages": {
       "english": "English",
@@ -57,13 +64,16 @@
       "ad-green": "AD Green"
    },
    "translation_frame": {
+      "tab_translation": "Translation",
       "btn_clear_console": "Clear Console",
       "btn_deselect_all": "Deselect All",
       "btn_find_missing_translations": "Find Missing Translations",
       "btn_select_all": "Select All",
       "btn_translate": "Translate",
       "btn_validate_output_files": "Validate Output Files",
-      "tab_translation": "Translation"
+      "start_translation": "Start Translation",
+      "translation_process": "Translation Process",
+      "waiting_for_translation": "Waiting for translation to finish..."
    },
    "languages_frame": {
       "btn_add_language": "Add Language",
@@ -74,12 +84,13 @@
       "tab_languages": "Languages"
    },
    "dictionaries_frame": {
+      "tab_dictionaries": "Dictionaries",
       "btn_clear_dictionary_edit_textbox": "Clear Dictionary Edit Textbox",
       "btn_create_dictionary_file": "Create Dictionary File",
       "btn_delete_dictionary_file": "Delete Dictionary File",
       "btn_load_dictionary_file": "Load Dictionary File",
       "btn_save_dictionary_file": "Save Dictionary File",
-      "tab_dictionaries": "Dictionaries"
+      "select_language": "Select Language"
    },
    "options_frame": {
       "tab_options": "Options",

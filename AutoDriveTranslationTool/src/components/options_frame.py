@@ -64,7 +64,7 @@ class OptionsFrame(ctk.CTkFrame):
 
     def on_language_updated(self, language_code, event_type):
         """Update the language of the widgets in the frame."""
-        if event_type == "lang_update":
+        if event_type == "lang_update" or event_type == "init":
             gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
             self.dropdown_ui_theme.configure(
                 variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_THEME).get())),

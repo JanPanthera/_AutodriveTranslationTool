@@ -10,7 +10,7 @@ from GuiFramework.utilities import ConfigManager, file_ops
 class ConfigSetup:
     UI_THEMES = ["light", "dark", "system"]
     UI_COLOR_THEMES = ["blue", "dark-blue", "green", "ad-green"]
-    UI_LANGUAGES = ["english", "german"]
+    UI_LANGUAGES = ["english", "german", "french", "italian", "russian"]
     DEV_PATH = "AutoDriveTranslationTool" if 'VSAPPIDDIR' in os.environ else ""
 
     def __init__(self, window, logger):

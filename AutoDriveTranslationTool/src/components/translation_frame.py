@@ -75,11 +75,11 @@ class TranslationFrame(ctk.CTkFrame):
                 )
         CustomPopupMessageBox(
             self,
-            title=self.loc("Translation Process"),
-            message=self.loc("The translation process will take a while. Please be patient."),
+            title=self.loc("translation_process"),
+            message=self.loc("waiting_for_translation"),
             interactive=True,
-            yes_button_text=self.loc("Start Translation"),
-            no_button_text=self.loc("Cancel"),
+            yes_button_text=self.loc("start_translation"),
+            no_button_text=self.loc("cancel"),
             on_yes=on_yes
         )
 
