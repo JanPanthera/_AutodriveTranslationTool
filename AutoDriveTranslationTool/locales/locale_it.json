@@ -26,7 +26,9 @@
       "delete": "delete",
       "ok": "ok",
       "paste": "paste",
-      "select_all": "select_all"
+      "select_all": "select_all",
+      "error_prefix": "ERROR: ",
+      "warning_prefix": "WARNING: "
    },
    "messages": {
       "confirm_clear_editbox_msg": "Are you sure you want to clear the edit box?",
@@ -36,8 +38,7 @@
       "confirm_load_dic_msg": "Are you sure you want to load the selected Dictionary File and discard any unsaved changes?",
       "confirm_load_dic_title": "Confirm Load",
       "confirm_save_dic_msg": "Are you sure you want to save the Content of the Edit Box to the selected Dictionary File?",
-      "confirm_save_dic_title": "Confirm Save",
-      "search_missing_translations": "search_missing_translations"
+      "confirm_save_dic_title": "Confirm Save"
    },
    "languages": {
       "english": "english",
@@ -47,9 +48,9 @@
       "italian": "italian"
    },
    "themes": {
-      "system": "system",
       "light": "light",
       "dark": "dark",
+      "system": "system",
       "dark-blue": "dark-blue",
       "blue": "blue",
       "green": "green",
@@ -98,6 +99,42 @@
       "label_translation_settings": "label_translation_settings",
       "checkbox_whole_word_replacement": "checkbox_whole_word_replacement",
       "btn_reset_everything": "btn_reset_everything"
+   },
+   "trn_script": {
+      "trn_error_translating_file": "An error occurred while translating file '{0}': {1}",
+      "trn_starting_translation": "--- Starting {0} Translation ---\n",
+      "trn_translating_files": "Translating files...",
+      "trn_file_translated": "File translated: {0}",
+      "trn_file_skipped": "File skipped: {0}",
+      "trn_translation_finished": "\n{0} translation results:",
+      "trn_translation_count": "  Translation Counts: {0}",
+      "trn_translation_summary": "    {0} --> {1}: {2} replacements",
+      "trn_starting_translation_process": "Starting translation process for {0} languages: {1}.\n",
+      "trn_input": "Input: {0}",
+      "trn_output": "Output: {0}\n",
+      "trn_whole_word_enabled": "Whole word replacement is enabled.\n",
+      "trn_whole_word_disabled": "Whole word replacement is disabled.\n",
+      "trn_dictionary_not_found": "Dictionary file '{0}' not found. Skipping translation for {1}.\n",
+      "trn_translation_process_finished": "Translation process finished.\n\n"
+   },
+   "fmt_script": {
+      "fmt_dictionary_not_found": "Dictionary file for {0} not found.",
+      "fmt_search_missing_translations": "Starting, search missing translations process for {0} languages: {1}.",
+      "fmt_processing_file": "Processing file: {0}",
+      "fmt_missing_translations": "{0} is missing {1} translations:",
+      "fmt_no_missing_translations": "{0} has all words translated.",
+      "fmt_search_finished": "Search for missing translations finished."
+   },
+   "vof_script": {
+      "vof_file_empty": "File is empty or only contains whitespace.",
+      "vof_line_exceeds_max_length": "Line {0}: \"{1}\" exceeds max length of ({2}/{3} characters). <{4}>",
+      "vof_starting_validation": "Starting validation process for {0} languages: {1}.\n",
+      "vof_input": "Input: {0}",
+      "vof_validating_language": "\nValidation results for {0}:",
+      "vof_language_not_found": "- {0}\\: No files found for validation.",
+      "vof_file_errors": "    - Total errors: {0}",
+      "vof_validation_finished_info": "\nReview the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.\n",
+      "vof_validation_finished": "Validation process finished."
    },
    "unused": {}
 }
