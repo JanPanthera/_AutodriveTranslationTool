@@ -68,7 +68,7 @@ class AutoDriveTranslationTool:
 
         window_config = {
             "window_title": "AutoDrive Translation Tool",
-            "window_icon": os.path.join(self.config_setup.DEV_PATH, "resources", "icons", "ad_icon.ico"),
+            "window_icon": os.path.join(self.config_setup.DEV_PATH, "resources", "ad_icon.ico"),
             "window_size": tuple(map(int, self.get_var("window_size").get().split('x'))),
             "window_position": tuple(map(int, self.get_var("window_position").get().split('+'))),
             "ui_theme": self.get_var("ui_theme").get(),

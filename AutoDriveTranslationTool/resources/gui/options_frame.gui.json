@@ -31,8 +31,8 @@
                "sticky": "nsew",
                "row": 0,
                "column": 0,
-               "padx": [ 10, 10 ],
-               "pady": [ 10, 10 ]
+               "padx": [ 10, 5 ],
+               "pady": [ 10, 5 ]
             },
             "grid_configuration": {
                "rows": {
@@ -198,8 +198,8 @@
                "sticky": "nsew",
                "row": 0,
                "column": 1,
-               "padx": [ 10, 10 ],
-               "pady": [ 10, 10 ]
+               "padx": [ 5, 10 ],
+               "pady": [ 10, 5 ]
             },
             "grid_configuration": {
                "rows": {
@@ -399,7 +399,7 @@
                "sticky": "nsew",
                "row": 1,
                "column": 0,
-               "padx": [ 5, 10 ],
+               "padx": [ 10, 5 ],
                "pady": [ 5, 10 ]
             },
             "grid_configuration": {
