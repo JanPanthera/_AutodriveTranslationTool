@@ -1,21 +1,5 @@
 {
-   "default": {
-      "Are you sure you want to load the languages from the custom configuration file?": "Are you sure you want to load the languages from the custom configuration file?",
-      "Are you sure you want to load the languages from the default configuration file?": "Are you sure you want to load the languages from the default configuration file?",
-      "Are you sure you want to save the languages to the custom configuration file?": "Are you sure you want to save the languages to the custom configuration file?",
-      "Cancel": "Cancel",
-      "Invalid characters: ": "Invalid characters: ",
-      "Invalid Input": "Invalid Input",
-      "Load Custom": "Load Custom",
-      "Load Default": "Load Default",
-      "No": "No",
-      "Save Custom": "Save Custom",
-      "Select Language": "Select Language",
-      "Start Translation": "Start Translation",
-      "The translation process will take a while. Please be patient.": "The translation process will take a while. Please be patient.",
-      "Translation Process": "Translation Process",
-      "Yes": "Yes"
-   },
+   "default": {},
    "generic": {
       "no": "Nein",
       "yes": "Ja",
@@ -27,8 +11,10 @@
       "ok": "OK",
       "paste": "Einfügen",
       "select_all": "Alles auswählen",
-      "error_prefix": "ERROR: ",
-      "warning_prefix": "WARNING: "
+      "error_prefix": "FEHLER: ",
+      "warning_prefix": "WARNUNG: ",
+      "invalid_input": "Ungültige Eingabe",
+      "invalid_characters": "Ungültige Zeichen: "
    },
    "messages": {
       "confirm_clear_editbox_msg": "Sind Sie sicher, dass Sie das Textfeld leeren möchten?",
@@ -38,7 +24,13 @@
       "confirm_load_dic_msg": "Sind Sie sicher, dass Sie die ausgewählte Wörterbuch-Datei laden und alle nicht gespeicherten Änderungen verwerfen möchten?",
       "confirm_load_dic_title": "Bestätigen Laden",
       "confirm_save_dic_msg": "Sind Sie sicher, dass Sie den Inhalt des Textfeldes in die ausgewählte Wörterbuch-Datei speichern möchten?",
-      "confirm_save_dic_title": "Bestätigen Speichern"
+      "confirm_save_dic_title": "Bestätigen Speichern",
+      "confirm_save_custom_lang_msg_title": "Speichere benutzerdefinierte",
+      "confirm_save_custom_lang_msg": "Sind Sie sicher, dass Sie die Sprachen in die benutzerdefinierte Konfigurationsdatei speichern möchten?",
+      "confirm_load_custom_lang_msg_title": "Lade benutzerdefinierte",
+      "confirm_load_custom_lang_msg": "Sind Sie sicher, dass Sie die Sprachen aus der benutzerdefinierten Konfigurationsdatei laden möchten?",
+      "confirm_load_default_lang_msg_title": "Lade Standard",
+      "confirm_load_default_lang_msg": "Sind Sie sicher, dass Sie die Standardsprachen laden möchten?"
    },
    "languages": {
       "english": "Englisch",
@@ -57,13 +49,16 @@
       "ad-green": "Ad-Grün"
    },
    "translation_frame": {
+      "tab_translation": "Übersetzung",
       "btn_clear_console": "Konsole leeren",
       "btn_deselect_all": "Alles abwählen",
       "btn_find_missing_translations": "Fehlende Übersetzungen finden",
       "btn_select_all": "Alles auswählen",
       "btn_translate": "Übersetzen",
       "btn_validate_output_files": "Ausgabedateien validieren",
-      "tab_translation": "Übersetzung"
+      "start_translation": "Starte Übersetzung",
+      "translation_process": "Übersetzungsprozess",
+      "waiting_for_translation": "Warte auf Übersetzung..."
    },
    "languages_frame": {
       "btn_add_language": "Sprache hinzufügen",
@@ -74,12 +69,13 @@
       "tab_languages": "Sprachen"
    },
    "dictionaries_frame": {
+      "tab_dictionaries": "Wörterbücher",
       "btn_clear_dictionary_edit_textbox": "Bearbeitungsfeld leeren",
       "btn_create_dictionary_file": "Erstelle Wörterbuch-Datei",
       "btn_delete_dictionary_file": "Lösche Wörterbuch-Datei",
       "btn_load_dictionary_file": "Lade Wörterbuch-Datei",
       "btn_save_dictionary_file": "Speichere Wörterbuch-Datei",
-      "tab_dictionaries": "Wörterbücher"
+      "select_language": "Sprache auswählen"
    },
    "options_frame": {
       "tab_options": "Optionen",
@@ -101,40 +97,40 @@
       "btn_reset_everything": "Alles zurücksetzen"
    },
    "trn_script": {
-      "trn_error_translating_file": "An error occurred while translating file '{0}': {1}",
-      "trn_starting_translation": "--- Starting {0} Translation ---\n",
-      "trn_translating_files": "Translating files...",
-      "trn_file_translated": "File translated: {0}",
-      "trn_file_skipped": "File skipped: {0}",
-      "trn_translation_finished": "\n{0} translation results:",
-      "trn_translation_count": "  Translation Counts: {0}",
-      "trn_translation_summary": "    {0} --> {1}: {2} replacements",
-      "trn_starting_translation_process": "Starting translation process for {0} languages: {1}.\n",
-      "trn_input": "Input: {0}",
-      "trn_output": "Output: {0}\n",
-      "trn_whole_word_enabled": "Whole word replacement is enabled.\n",
-      "trn_whole_word_disabled": "Whole word replacement is disabled.\n",
-      "trn_dictionary_not_found": "Dictionary file '{0}' not found. Skipping translation for {1}.\n",
-      "trn_translation_process_finished": "Translation process finished.\n\n"
+      "trn_error_translating_file": "Ein Fehler ist aufgetreten beim Übersetzen der Datei '{0}': {1}",
+      "trn_starting_translation": "--- Starte {0} Übersetzung ---\n",
+      "trn_translating_files": "Übersetze Dateien...",
+      "trn_file_translated": "Datei übersetzt: {0}",
+      "trn_file_skipped": "Datei übersprungen: {0}",
+      "trn_translation_finished": "\n{0} Übersetzungsergebnisse:",
+      "trn_translation_count": "  Anzahl der Übersetzungen: {0}",
+      "trn_translation_summary": "    {0} --> {1}: {2} Ersetzungen",
+      "trn_starting_translation_process": "Starte Übersetzungsprozess für {0} Sprachen: {1}.\n",
+      "trn_input": "Eingabe: {0}",
+      "trn_output": "Ausgabe: {0}\n",
+      "trn_whole_word_enabled": "Ganze Wortersetzung ist aktiviert.\n",
+      "trn_whole_word_disabled": "Ganze Wortersetzung ist deaktiviert.\n",
+      "trn_dictionary_not_found": "Wörterbuchdatei '{0}' nicht gefunden. Übersetzung für {1} wird übersprungen.\n",
+      "trn_translation_process_finished": "Übersetzungsprozess abgeschlossen.\n\n"
    },
    "fmt_script": {
-      "fmt_dictionary_not_found": "Dictionary file for {0} not found.",
-      "fmt_search_missing_translations": "Starting, search missing translations process for {0} languages: {1}.",
-      "fmt_processing_file": "Processing file: {0}",
-      "fmt_missing_translations": "{0} is missing {1} translations:",
-      "fmt_no_missing_translations": "{0} has all words translated.",
-      "fmt_search_finished": "Search for missing translations finished."
+      "fmt_dictionary_not_found": "Wörterbuchdatei für {0} nicht gefunden.",
+      "fmt_search_missing_translations": "Starte, Suche nach fehlenden Übersetzungen für {0} Sprachen: {1}.",
+      "fmt_processing_file": "Verarbeite Datei: {0}",
+      "fmt_missing_translations": "{0} fehlen {1} Übersetzungen:",
+      "fmt_no_missing_translations": "{0} hat alle Wörter übersetzt.",
+      "fmt_search_finished": "Suche nach fehlenden Übersetzungen abgeschlossen."
    },
    "vof_script": {
-      "vof_file_empty": "File is empty or only contains whitespace.",
-      "vof_line_exceeds_max_length": "Line {0}: \"{1}\" exceeds max length of ({2}/{3} characters). <{4}>",
-      "vof_starting_validation": "Starting validation process for {0} languages: {1}.\n",
-      "vof_input": "Input: {0}",
-      "vof_validating_language": "\nValidation results for {0}:",
-      "vof_language_not_found": "- {0}\\: No files found for validation.",
-      "vof_file_errors": "    - Total errors: {0}",
-      "vof_validation_finished_info": "\nReview the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.\n",
-      "vof_validation_finished": "Validation process finished."
+      "vof_file_empty": "Datei ist leer oder enthält nur Leerzeichen.",
+      "vof_line_exceeds_max_length": "Zeile {0}: \"{1}\" überschreitet die maximale Länge von ({2}/{3} Zeichen). <{4}>",
+      "vof_starting_validation": "Starte Validierungsprozess für {0} Sprachen: {1}.\n",
+      "vof_input": "Eingabe: {0}",
+      "vof_validating_language": "\nValidierungsergebnisse für {0}:",
+      "vof_language_not_found": "- {0}\\: Keine Dateien zur Validierung gefunden.",
+      "vof_file_errors": "    - Gesamtfehler: {0}",
+      "vof_validation_finished_info": "\nÜberprüfen Sie die obigen Fehler und passen Sie Ihren XML-Inhalt an, um die Längenanforderungen für <name> und <group> Tags zu erfüllen.\n",
+      "vof_validation_finished": "Validierungsprozess abgeschlossen."
    },
    "unused": {}
 }

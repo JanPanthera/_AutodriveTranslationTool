@@ -1,19 +1,5 @@
 {
    "default": {
-      "Are you sure you want to load the languages from the custom configuration file?": "Are you sure you want to load the languages from the custom configuration file?",
-      "Are you sure you want to load the languages from the default configuration file?": "Are you sure you want to load the languages from the default configuration file?",
-      "Are you sure you want to save the languages to the custom configuration file?": "Are you sure you want to save the languages to the custom configuration file?",
-      "Invalid characters: ": "Invalid characters: ",
-      "Invalid Input": "Invalid Input",
-      "Load Custom": "Load Custom",
-      "Load Default": "Load Default",
-      "No": "No",
-      "Save Custom": "Save Custom",
-      "Select Language": "Select Language",
-      "Start Translation": "Start Translation",
-      "The translation process will take a while. Please be patient.": "The translation process will take a while. Please be patient.",
-      "Translation Process": "Translation Process",
-      "Yes": "Yes"
    },
    "generic": {
       "no": "No",
