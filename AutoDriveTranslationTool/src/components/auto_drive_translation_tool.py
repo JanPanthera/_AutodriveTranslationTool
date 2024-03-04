@@ -82,18 +82,17 @@ class AutoDriveTranslationTool:
         self.window.show()
 
     def _initialize_gui_manager(self):
-        loc = self.localization_manager.localize
         self.gui_manager = GuiManager(logger=self.logger)
         widget_builders = [
-            CtkFrameBuilder(self.logger),
-            CtkLabelBuilder(self.config_manager, loc, self.logger),
-            CtkEntryBuilder(self.config_manager, loc, self.logger),
-            CtkOptionMenuBuilder(self.config_manager, loc, self.logger),
-            CtkCheckBoxBuilder(self.config_manager, loc, self.logger),
-            CtkButtonBuilder(self.config_manager, loc, self.logger),
-            ScrollableSelectionFrameBuilder(self.config_manager, loc, self.logger),
-            CustomConsoleTextboxBuilder(self.config_manager, loc, self.logger),
-            CustomTextboxBuilder(self.config_manager, loc, self.logger)
+            CtkFrameBuilder(self.config_manager, logger=self.logger),
+            CtkLabelBuilder(self.config_manager, logger=self.logger),
+            CtkEntryBuilder(self.config_manager, logger=self.logger),
+            CtkOptionMenuBuilder(self.config_manager, logger=self.logger),
+            CtkCheckBoxBuilder(self.config_manager, logger=self.logger),
+            CtkButtonBuilder(self.config_manager, logger=self.logger),
+            ScrollableSelectionFrameBuilder(self.config_manager, logger=self.logger),
+            CustomConsoleTextboxBuilder(self.config_manager, logger=self.logger),
+            CustomTextboxBuilder(self.config_manager, logger=self.logger)
         ]
         for builder in widget_builders:
             self.gui_manager.register_widget_builder(builder)
