@@ -34,7 +34,6 @@ class OptionsFrame(ctk.CTkFrame):
         self.app_instance = app_instance
 
         self._initialize_components()
-
         self._subscribe_to_managers()
         self._register_gui_components()
 
@@ -57,9 +56,19 @@ class OptionsFrame(ctk.CTkFrame):
         self.localization_manager.subscribe(self, ["lang_update"])
         self.gui_manager.subscribe(self)
 
-    def set_widget_references(self):
+    def _register_gui_components(self):
+        """Register the GUI components."""
+        self.gui_manager.register_gui_file(
+            self.GUI_COMPONENT_NAME,
+            self.GUI_FILE_PATH,
+            self,
+            self
+        )
+
+    # Manager Event Handlers
+    def on_gui_build(self):
         """Set widget references for the frame."""
-        gui_utils.set_widget_references(self, self.GUI_COMPONENT_NAME, self.gui_manager)
+        gui_utils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
         self.on_language_updated(self.localization_manager.get_language(), "init")
 
     def on_language_updated(self, language_code, event_type):
@@ -79,16 +88,7 @@ class OptionsFrame(ctk.CTkFrame):
                 values=self._translate_list(self.get_var(self.DROPDOWN_UI_LANGUAGES))
             )
 
-    def _register_gui_components(self):
-        """Register the GUI components."""
-        self.gui_manager.register_gui_file(
-            self.GUI_COMPONENT_NAME,
-            self.GUI_FILE_PATH,
-            self,
-            self
-        )
-
-    # main frame callbacks
+    # Widget Event Handlers
     def _on_reset_everything_button(self):
         settings_to_reset = [
             ["WindowSettings", self.WINDOW_SIZE],
@@ -114,7 +114,6 @@ class OptionsFrame(ctk.CTkFrame):
         self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
         self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
 
-    # Window settings callbacks
     def _on_center_window_on_startup_checkbox(self):
         self.set_var(self.CENTER_WINDOW_ON_STARTUP, ctk.BooleanVar(self, self.checkbox_center_window_on_startup.get()))
 
@@ -151,7 +150,6 @@ class OptionsFrame(ctk.CTkFrame):
         pos_x, pos_y = map(int, self.load_setting("WindowSettings", self.WINDOW_POSITION).split("+"))
         self.window.set_window_position((pos_x, pos_y))
 
-    # UI appearance settings callbacks
     def _on_use_high_dpi_scaling_checkbox(self):
         self.set_var(self.USE_HIGH_DPI_SCALING, ctk.BooleanVar(self, self.checkbox_use_high_dpi_scaling.get()))
         self.window.set_high_dpi(self.get_var(self.USE_HIGH_DPI_SCALING).get())
@@ -185,7 +183,6 @@ class OptionsFrame(ctk.CTkFrame):
         self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
         self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
 
-    # Translation settings callbacks
     def _on_whole_word_replacement_checkbox(self):
         self.set_var(self.WHOLE_WORD_REPLACEMENT, ctk.BooleanVar(self, self.checkbox_whole_word_replacement.get()))
 

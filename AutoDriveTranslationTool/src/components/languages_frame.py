@@ -1,85 +1,96 @@
 # languages_frame.py ~ AutoDriveTranslationTool
 
-import re
 import os
 import customtkinter as ctk
 
-from GuiFramework.utilities import update_widget_text
+import GuiFramework.utilities.gui_utils as gui_utils
 from GuiFramework.widgets import CustomPopupMessageBox
 
 
 class LanguagesFrame(ctk.CTkFrame):
+    GUI_COMPONENT_NAME = "languages_frame"
+    GUI_FILE_PATH = os.path.join("resources", "gui", f"{GUI_COMPONENT_NAME}.gui.json")
+
     def __init__(self, app_instance, tab_view):
         super().__init__(tab_view)
-
         self.app_instance = app_instance
-        self.gui_manager = app_instance.gui_manager
-        self.window_instance = self.app_instance.window
-        self.localization_manager = self.app_instance.localization_manager
 
-        self.dev_path = self.app_instance.config_setup.DEV_PATH
-        self.GUI_FILE_PATH = os.path.join(self.dev_path, "resources", "gui", "languages_frame.gui.json")
-
-        self.loc = self.localization_manager.localize
-
-        self.config_manager = self.app_instance.config_manager
-        self.add_var = self.config_manager.add_variable
-        self.set_var = self.config_manager.set_variable
-        self.get_var = self.config_manager.get_variable
-        self.load_setting = self.config_manager.load_setting
-
-        self.localization_manager.subscribe(self, ["lang_update"])
-        self.gui_manager.subscribe(self)
+        self._initialize_components()
+        self._subscribe_to_managers()
         self._register_gui_components()
 
-    def set_widget_references(self):
-        self.widgets = self.gui_manager.widgets.get("languages_frame")
-        for widget_name, widget_ref in self.widgets.items():
-            setattr(self, widget_name, widget_ref)
-        self.dropdown_language_select = self.gui_manager.widgets.get("dictionary_frame").get("dropdown_language_select")
-        self.scroll_list_language_selection = self.gui_manager.widgets.get("translation_frame").get("scroll_list_language_selection")
-        self.scroll_list_languages = self.widgets.get("scroll_list_languages")
+    def _initialize_components(self):
+        """Initialize essential components"""
+        self.window = self.app_instance.window
+        self.gui_manager = self.app_instance.gui_manager
+        self.localization_manager = self.app_instance.localization_manager
+        self.config_manager = self.app_instance.config_manager
+        self.dev_path = self.app_instance.config_setup.DEV_PATH
 
-    def on_language_updated(self, language_code, event_type):
-        if event_type == "lang_update":
-            widgets = self.gui_manager.widgets.get("languages_frame")
-            for name_id, widget_ref in widgets.items():
-                update_widget_text(widget_ref, self.loc(name_id))
+        self.add_var, self.set_var, self.get_var = self.config_manager.add_variable, self.config_manager.set_variable, self.config_manager.get_variable
+        self.load_setting, self.reset_settings = self.config_manager.load_setting, self.config_manager.reset_settings
+        self.loc = self.localization_manager.localize
+
+        self.GUI_FILE_PATH = os.path.join(self.dev_path, self.GUI_FILE_PATH)
+
+    def _subscribe_to_managers(self):
+        """Subscribe to GUI and Localization managers."""
+        self.localization_manager.subscribe(self, ["lang_update"])
+        self.gui_manager.subscribe(self)
 
     def _register_gui_components(self):
+        """Register the GUI components."""
         self.gui_manager.register_gui_file(
-            "languages_frame",
+            self.GUI_COMPONENT_NAME,
             self.GUI_FILE_PATH,
             self,
             self
         )
 
+    # Manager Event Handlers
+    def on_gui_build(self):
+        """Set widget references for the frame."""
+        gui_utils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
+        self.dropdown_language_select = self.gui_manager.widgets.get("dictionary_frame").get("dropdown_language_select")
+        self.scroll_list_language_selection = self.gui_manager.widgets.get("translation_frame").get("scroll_list_language_selection")
+        self.on_language_updated(self.localization_manager.get_language(), "init")
+
+    def on_language_updated(self, language_code, event_type):
+        """Update the language of the widgets in the frame."""
+        if event_type == "lang_update" or event_type == "init":
+            gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
+
+    # Widget Event Handlers
     def _on_add_language(self):
+        """Add a new language to the list of supported languages."""
         new_language = self.entry_new_language.get()
         if not new_language:
             return
-        pattern = r'[^a-zA-Z0-9äöüÄÖÜß_\-]'
-        invalid_chars = re.findall(pattern, new_language)
+        invalid_chars = [char for char in new_language if not char.isalnum() and char not in 'äöüÄÖÜß_-']
         if invalid_chars:
             invalid_chars_str = ', '.join(set(invalid_chars))
-            popup_message = self.loc("invalid_characters")
-            popup_message += f"{invalid_chars_str}"
-            CustomPopupMessageBox(
-                self,
-                title=self.loc("invalid_input"),
-                message=popup_message,
-            )
+            popup_message = self.loc("invalid_characters") + invalid_chars_str
+            CustomPopupMessageBox(self, title=self.loc("invalid_language_title"), message=popup_message)
         else:
             self.scroll_list_languages.add_entry(new_language)
             self.scroll_list_languages.sort_entries()
             self.entry_new_language.delete(0, ctk.END)
 
     def _on_remove_language(self):
-        self.scroll_list_languages.remove_checked_entries()
+        """Remove the selected languages from the list of supported languages."""
+        def callback_handler(is_confirmed):
+            if is_confirmed:
+                self.scroll_list_languages.remove_checked_entries()
+        self._create_PopupMessageBox(
+            self.loc("confirm_remove_lang_msg_title"),
+            self.loc("confirm_remove_lang_msg"),
+            callback_handler
+        )
 
     def _on_save_custom(self):
-        def on_yes(is_yes):
-            if is_yes:
+        """Save the custom list of supported languages."""
+        def callback_handler(is_confirmed):
+            if is_confirmed:
                 supported_languages = self.scroll_list_languages.get_all_entries()
                 self.set_var("supported_languages", supported_languages)
                 self.dropdown_language_select.configure(values=supported_languages)
@@ -87,46 +98,50 @@ class LanguagesFrame(ctk.CTkFrame):
                 self.scroll_list_language_selection.add_entries(supported_languages)
                 self.entry_new_language.delete(0, ctk.END)
                 self.scroll_list_languages.sort_entries()
-        CustomPopupMessageBox(
-            self,
-            title=self.loc("confirm_save_custom_lang_msg_title"),
-            message=self.loc("confirm_save_custom_lang_msg"),
-            interactive=True,
-            yes_button_text=self.loc("yes"),
-            no_button_text=self.loc("no"),
-            on_yes=on_yes
+        self._create_PopupMessageBox(
+            self.loc("confirm_save_custom_lang_msg_title"),
+            self.loc("confirm_save_custom_lang_msg"),
+            callback_handler
         )
 
     def _on_load_custom(self):
-        def on_yes(is_yes):
-            if is_yes:
+        """Load the custom list of supported languages."""
+        def callback_handler(is_confirmed):
+            if is_confirmed:
                 supported_languages = self.load_setting("TranslationSettings", "supported_languages", default_value=["English"]).split(",")
                 self.scroll_list_languages.remove_all_entries()
                 self.scroll_list_languages.add_entries(supported_languages)
                 self.scroll_list_languages.sort_entries()
-        CustomPopupMessageBox(
-            self,
-            title=self.loc("confirm_load_custom_lang_msg_title"),
-            message=self.loc("confirm_load_custom_lang_msg"),
-            interactive=True,
-            yes_button_text=self.loc("yes"),
-            no_button_text=self.loc("no"),
-            on_yes=on_yes
+        self._create_PopupMessageBox(
+            self.loc("confirm_load_custom_lang_msg_title"),
+            self.loc("confirm_load_custom_lang_msg"),
+            callback_handler
         )
 
     def _on_load_default(self):
-        def on_yes(is_yes):
-            if is_yes:
+        """Load the default list of supported languages."""
+        def callback_handler(is_confirmed):
+            if is_confirmed:
                 supported_languages = self.load_setting("TranslationSettings", "supported_languages", default_value=["English"], force_default=True).split(",")
                 self.scroll_list_languages.remove_all_entries()
                 self.scroll_list_languages.add_entries(supported_languages)
                 self.scroll_list_languages.sort_entries()
-        CustomPopupMessageBox(
+        self._create_PopupMessageBox(
+            self.loc("confirm_load_default_lang_msg_title"),
+            self.loc("confirm_load_default_lang_msg"),
+            callback_handler
+        )
+
+    # Helper Methods
+    def _create_PopupMessageBox(self, title, message, on_callback):
+        """Create a popup message box with yes/no buttons."""
+        buttons = [
+            {"text": self.loc("yes"), "callback": lambda: on_callback(True)},
+            {"text": self.loc("no"), "callback": lambda: on_callback(False)}
+        ]
+        return CustomPopupMessageBox(
             self,
-            title=self.loc("confirm_load_default_lang_msg_title"),
-            message=self.loc("confirm_load_default_lang_msg"),
-            interactive=True,
-            yes_button_text=self.loc("yes"),
-            no_button_text=self.loc("no"),
-            on_yes=on_yes
+            title=title,
+            message=message,
+            buttons=buttons
         )
