@@ -1,61 +1,54 @@
 import os
-import zipfile
-import subprocess
+from pathlib import Path
+from GuiFramework.utilities.executable_creator import ExecutableCreator
+from GuiFramework.utilities.project_archiver import CopyType, ProjectArchiver
 
 
-def create_executable(main_script_path, exe_name, dist_path, work_path, no_console=False):
-    pyinstaller_command = [
-        'pyinstaller',
-        '--onefile',
-        f'--distpath={dist_path}',
-        f'--workpath={work_path}',
-        f'--name={exe_name}',
-        '--hidden-import=babel.numbers',
-        '--hidden-import=customtkinter',
-        main_script_path
-    ]
-    if no_console:
-        pyinstaller_command.append('--noconsole')
-    subprocess.run(pyinstaller_command, check=True)
+base_path = Path("AutoDriveTranslationTool" if 'VSAPPIDDIR' in os.environ else "")
 
 
-def create_zip_archive(zip_name, target_dir, base_path, files_to_include):
-    zip_path = os.path.join(target_dir, zip_name)
-    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for file in files_to_include:
-            if os.path.isdir(file):
-                for root, dirs, files in os.walk(file):
-                    for file in files:
-                        file_path = os.path.join(root, file)
-                        arcname = os.path.relpath(file_path, start=base_path)
-                        zipf.write(file_path, arcname=arcname)
-            else:
-                arcname = os.path.basename(file)
-                zipf.write(file, arcname=arcname)
+def create_exe():
+    exe_creator = ExecutableCreator(
+        main_script_path=base_path / "main.py",
+        exe_name="AutoDriveTranslationTool",
+        dist_path=base_path / "dist",
+        work_path=base_path / "dist" / "build",
+        no_console=True
+    )
+    hidden_imports = ["babel.numbers", "customtkinter"]
+    for import_name in hidden_imports:
+        exe_creator.add_hidden_import(import_name)
+    exe_creator.set_icon(base_path / "resources" / "ad_icon.ico")
+    exe_creator.create_executable()
 
 
-def main():
-    dev_path = "AutoDriveTranslationTool" if 'VSAPPIDDIR' in os.environ else ""
-    main_script = os.path.join(dev_path, 'main.py')
-    exe_name = 'AutoDriveTranslationTool'
-    dist_directory = os.path.join(dev_path, 'dist')
-    work_directory = os.path.join(dev_path, 'dist', 'build')
-
-    create_executable(main_script, exe_name, dist_directory, work_directory, no_console=True)
-
-    additional_files = [
-        os.path.join(dev_path, '_dictionaries'),
-        os.path.join(dev_path, '_input'),
-        os.path.join(dev_path, '_output'),
-        os.path.join(dev_path, 'config'),
-        os.path.join(dev_path, 'locales'),
-        os.path.join(dev_path, 'resources'),
-        os.path.join(dist_directory, f'{exe_name}.exe')
-    ]
-
-    create_zip_archive(f'{exe_name}.zip', dist_directory, dev_path, additional_files)
+def create_zip():
+    files_folders = {
+        base_path / "_dictionaries": CopyType.ROOT_FOLDER,
+        base_path / "_input": CopyType.ROOT_FOLDER,
+        base_path / "_output": CopyType.ROOT_FOLDER,
+        base_path / "config": CopyType.ROOT_FOLDER,
+        base_path / "locales": CopyType.ALL,
+        base_path / "resources": CopyType.ALL,
+        base_path / "dist/AutoDriveTranslationTool.exe": CopyType.FILE
+    }
+    zip_name = "AutoDriveTranslationTool"
+    output_dir = base_path / 'dist'
+    temp_folder = output_dir / 'temp'
+    archiver = ProjectArchiver(files_folders, zip_name, temp_folder, output_dir)
+    archiver.move_files_to_temp_folder()
+    archiver.create_zip_archive()
 
 
 if __name__ == "__main__":
-    main()
-    input("Press Enter to continue...")
+    try:
+        print("Creating executable...")
+        create_exe()
+        print("Executable created successfully!")
+        print("Creating zip archive...")
+        create_zip()
+        print("Zip archive created successfully!")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    finally:
+        input("Press Enter to quit...")
