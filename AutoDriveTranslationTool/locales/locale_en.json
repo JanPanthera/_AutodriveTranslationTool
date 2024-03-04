@@ -31,7 +31,9 @@
       "confirm_load_custom_lang_msg_title": "Load Custom",
       "confirm_load_custom_lang_msg": "Are you sure you want to load the languages from the custom configuration file?",
       "confirm_load_default_lang_msg_title": "Load Default",
-      "confirm_load_default_lang_msg": "Are you sure you want to load the languages from the default configuration file?"
+      "confirm_load_default_lang_msg": "Are you sure you want to load the languages from the default configuration file?",
+      "confirm_remove_lang_msg_title": "Remove Language",
+      "confirm_remove_lang_msg": "Are you sure you want to remove the selected languages?"
    },
    "languages": {
       "english": "English",
@@ -59,7 +61,7 @@
       "btn_validate_output_files": "Validate Output Files",
       "start_translation": "Start Translation",
       "translation_process": "Translation Process",
-      "waiting_for_translation": "Waiting for translation to finish..."
+      "waiting_for_translation": "Please be patient, the translation process may take a while."
    },
    "languages_frame": {
       "btn_add_language": "Add Language",

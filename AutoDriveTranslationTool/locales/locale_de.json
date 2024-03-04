@@ -30,7 +30,9 @@
       "confirm_load_custom_lang_msg_title": "Lade benutzerdefinierte",
       "confirm_load_custom_lang_msg": "Sind Sie sicher, dass Sie die Sprachen aus der benutzerdefinierten Konfigurationsdatei laden möchten?",
       "confirm_load_default_lang_msg_title": "Lade Standard",
-      "confirm_load_default_lang_msg": "Sind Sie sicher, dass Sie die Standardsprachen laden möchten?"
+      "confirm_load_default_lang_msg": "Sind Sie sicher, dass Sie die Standardsprachen laden möchten?",
+      "confirm_remove_lang_msg_title": "Sprache entfernen",
+      "confirm_remove_lang_msg": "Sind Sie sicher, dass Sie die ausgewählten Sprachen entfernen möchten?"
    },
    "languages": {
       "english": "Englisch",
@@ -58,7 +60,7 @@
       "btn_validate_output_files": "Ausgabedateien validieren",
       "start_translation": "Starte Übersetzung",
       "translation_process": "Übersetzungsprozess",
-      "waiting_for_translation": "Warte auf Übersetzung..."
+      "waiting_for_translation": "Bitte haben Sie Geduld, der Übersetzungsprozess kann einige Zeit in Anspruch nehmen."
    },
    "languages_frame": {
       "btn_add_language": "Sprache hinzufügen",
