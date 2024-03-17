@@ -1,30 +1,30 @@
-# main.py
+# AutoDriveTranslationTool/main.py
 
-import os
+from GuiFramework.utilities.file_ops import FileOps
+from GuiFramework.utilities.logging.logger import Logger, LoggerConfig, LOG_LEVEL
 
-from GuiFramework.utilities.logger import CustomLogger, LOG_LEVEL
 from src.components.auto_drive_translation_tool import AutoDriveTranslationTool
 
 
-def main():
-    log_path = os.path.join("AutoDriveTranslationTool", "logs") if 'VSAPPIDDIR' in os.environ else "logs"
-    logger_instance = CustomLogger(
-        log_name="ADT-Tool.log",
-        log_path=log_path,
-        textbox=None,
+def main() -> None:
+    """
+    Initialize logging and run the AutoDrive Translation Tool.
+    """
+    log_dir = FileOps.resolve_development_path(__file__, "logs", "main.py")
+    logger_config = LoggerConfig(
+        logger_name="ADT_Tool",
+        log_name="adt-tool",
+        log_directory=log_dir,
         log_level=LOG_LEVEL.DEBUG,
-        max_log_size=10 << 20,
-        backup_count=5,
-        rotate_on_start=True,
-        append_datetime_to_rolled_files=True
+        module_name="ADT_Tool"
     )
+    logger = Logger(logger_config, rotate_on_init=True)
 
     try:
-        ADT_Tool = AutoDriveTranslationTool(logger_instance)
+        ADT_Tool = AutoDriveTranslationTool()
         ADT_Tool.run()
     except Exception as e:
-        logger_instance.log(LOG_LEVEL.ERROR, f"An error occurred: {str(e)}")
-        raise e
+        logger.log_error(f"An error occurred: {str(e)}", "main")
 
 
 if __name__ == "__main__":
