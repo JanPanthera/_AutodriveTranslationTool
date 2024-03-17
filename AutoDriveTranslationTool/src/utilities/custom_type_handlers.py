@@ -2,40 +2,76 @@
 
 import customtkinter as ctk
 
-
-def string_var_creator(root, value):
-    return ctk.StringVar(root, value=value)
+from GuiFramework.utilities.config.custom_type_handler_base import CustomTypeHandlerBase
 
 
-def string_var_saver(string_var):
-    return string_var.get()
+class CtkStringVarTypeHandler(CustomTypeHandlerBase):
+
+    def __init__(self, root):
+        self.root = root
+
+    def serialize(self, string_var) -> str:
+        """Convert StringVar to string."""
+        self.validate_type(string_var, ctk.StringVar, "StringVar")
+        return string_var.get()
+
+    def deserialize(self, value: str) -> ctk.StringVar:
+        """Convert string to StringVar."""
+        self.validate_type(value, str, "string")
+        return ctk.StringVar(self.root, value=value)
+
+    def get_type(self) -> type:
+        """Return the Python type this handler is responsible for."""
+        return ctk.StringVar
 
 
-def boolean_var_creator(root, value):
-    return ctk.BooleanVar(root, value=value)
+class CtkBooleanVarTypeHandler(CustomTypeHandlerBase):
+
+    def __init__(self, root):
+        self.root = root
+
+    def serialize(self, boolean_var) -> str:
+        """Convert BooleanVar to string."""
+        self.validate_type(boolean_var, ctk.BooleanVar, "BooleanVar")
+        return str(boolean_var.get())
+
+    def deserialize(self, value: str) -> ctk.BooleanVar:
+        """Convert string to BooleanVar."""
+        self.validate_type(value, str, "string")
+        return ctk.BooleanVar(self.root, value=value.lower() in ('true', '1', 't'))
+
+    def get_type(self) -> type:
+        """Return the Python type this handler is responsible for."""
+        return ctk.BooleanVar
 
 
-def boolean_var_saver(boolean_var):
-    return boolean_var.get()
+class ListTypeHandler(CustomTypeHandlerBase):
+    def serialize(self, list_value: list) -> str:
+        """Convert list to comma-separated string."""
+        self.validate_type(list_value, list, "list")
+        return ','.join([str(item) for item in list_value]) if list_value else ""
+
+    def deserialize(self, list_string: str) -> list:
+        """Convert comma-separated string to list."""
+        self.validate_type(list_string, str, "string")
+        return [item.strip() for item in list_string.split(',') if item.strip()]
+
+    def get_type(self) -> type:
+        """Return the Python type this handler is responsible for."""
+        return list
 
 
-def list_saver(list_value):
-    # Validate input is a list
-    if not isinstance(list_value, list):
-        raise ValueError("Input must be a list.")
+class TupleTypeHandler(CustomTypeHandlerBase):
+    def serialize(self, tuple_value: tuple) -> str:
+        """Convert tuple to comma-separated string."""
+        self.validate_type(tuple_value, tuple, "tuple")
+        return ",".join(map(str, tuple_value)) if tuple_value else ""
 
-    # Handle empty list
-    if not list_value:
-        return ""
+    def deserialize(self, tuple_string: str) -> tuple:
+        """Convert comma-separated string to tuple."""
+        self.validate_type(tuple_string, str, "string")
+        return tuple((int(item) if item.isdigit() else item) for item in map(str.strip, tuple_string.split(","))) if tuple_string else ()
 
-    # Convert non-string elements to strings and join with commas
-    return ','.join([str(item) for item in list_value])
-
-
-def list_creator(list_string):
-    # Validate input is a string
-    if not isinstance(list_string, str):
-        raise ValueError("Input must be a string.")
-
-    # Split by commas and trim whitespace from each element
-    return [item.strip() for item in list_string.split(',') if item.strip()]
+    def get_type(self) -> type:
+        """Return the Python type this handler is responsible for."""
+        return tuple
