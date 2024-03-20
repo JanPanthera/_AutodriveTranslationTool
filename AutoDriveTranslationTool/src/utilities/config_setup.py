@@ -39,33 +39,33 @@ class ConfigSetup:
 
     def create_config_keys(self):
         config_data = [
-            {"name": "locale_updater", "section": "AppSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=False)},
+            {"name": "locale_updater", "section": "AppSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=False)},
 
-            {"name": "locales_path", "section": "AppSettings", "type_": str, "config_name": CONFIG_NAME, "value": "locales"},
-            {"name": "resources_path", "section": "AppSettings", "type_": str, "config_name": CONFIG_NAME, "value": "resources"},
-            {"name": "input_path", "section": "AppSettings", "type_": str, "config_name": CONFIG_NAME, "value": "_input"},
-            {"name": "output_path", "section": "AppSettings", "type_": str, "config_name": CONFIG_NAME, "value": "_output"},
-            {"name": "dictionaries_path", "section": "AppSettings", "type_": str, "config_name": CONFIG_NAME, "value": "_dictionaries"},
+            {"name": "locales_path", "section": "AppSettings", "type_": str, "value": "locales"},
+            {"name": "resources_path", "section": "AppSettings", "type_": str, "value": "resources"},
+            {"name": "input_path", "section": "AppSettings", "type_": str, "value": "_input"},
+            {"name": "output_path", "section": "AppSettings", "type_": str, "value": "_output"},
+            {"name": "dictionaries_path", "section": "AppSettings", "type_": str, "value": "_dictionaries"},
 
-            {"name": "save_window_size", "section": "WindowSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
-            {"name": "save_window_pos", "section": "WindowSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
-            {"name": "center_window_on_startup", "section": "WindowSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
-            {"name": "window_size", "section": "WindowSettings", "type_": ctk.StringVar, "config_name": CONFIG_NAME, "value": ctk.StringVar(value="1366x768")},
-            {"name": "window_position", "section": "WindowSettings", "type_": ctk.StringVar, "config_name": CONFIG_NAME, "value": ctk.StringVar(value="0+0")},
-            {"name": "resizeable", "section": "WindowSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
+            {"name": "save_window_size", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "save_window_pos", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "center_window_on_startup", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "window_size", "section": "WindowSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="1366x768")},
+            {"name": "window_position", "section": "WindowSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="0+0")},
+            {"name": "resizeable", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
 
-            {"name": "use_high_dpi_scaling", "section": "AppearanceSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
-            {"name": "ui_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "config_name": CONFIG_NAME, "value": ctk.StringVar(value="System")},
-            {"name": "ui_color_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "config_name": CONFIG_NAME, "value": ctk.StringVar(value="Blue")},
-            {"name": "ui_language", "section": "AppearanceSettings", "type_": ctk.StringVar, "config_name": CONFIG_NAME, "value": ctk.StringVar(value="English")},
+            {"name": "use_high_dpi_scaling", "section": "AppearanceSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "ui_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="System")},
+            {"name": "ui_color_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="Blue")},
+            {"name": "ui_language", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="English")},
 
-            {"name": "selected_languages", "section": "TranslationSettings", "type_": list, "config_name": CONFIG_NAME, "value": [""]},
-            {"name": "supported_languages", "section": "TranslationSettings", "type_": list, "config_name": CONFIG_NAME, "value": ["English", "French", "German", "Italian", "Russian"]},
-            {"name": "whole_word_replacement", "section": "TranslationSettings", "type_": ctk.BooleanVar, "config_name": CONFIG_NAME, "value": ctk.BooleanVar(value=True)},
+            {"name": "selected_languages", "section": "TranslationSettings", "type_": list, "value": [""]},
+            {"name": "supported_languages", "section": "TranslationSettings", "type_": list, "value": ["English", "French", "German", "Italian", "Russian"]},
+            {"name": "whole_word_replacement", "section": "TranslationSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
 
-            {"name": "dropdown_ui_themes", "section": "DropdownSettings", "type_": list, "config_name": CONFIG_NAME, "value": UI_THEMES},
-            {"name": "dropdown_ui_color_themes", "section": "DropdownSettings", "type_": list, "config_name": CONFIG_NAME, "value": UI_COLOR_THEMES},
-            {"name": "dropdown_ui_languages", "section": "DropdownSettings", "type_": list, "config_name": CONFIG_NAME, "value": UI_LANGUAGES}
+            {"name": "dropdown_ui_themes", "section": "DropdownSettings", "type_": list, "value": UI_THEMES},
+            {"name": "dropdown_ui_color_themes", "section": "DropdownSettings", "type_": list, "value": UI_COLOR_THEMES},
+            {"name": "dropdown_ui_languages", "section": "DropdownSettings", "type_": list, "value": UI_LANGUAGES}
         ]
         for data in config_data:
             ConfigKeyList.add_ConfigKey(
@@ -74,7 +74,7 @@ class ConfigSetup:
                 type_=data.get("type_", None),
                 save_to_file=data.get("save_to_file", True),
                 auto_save=data.get("auto_save", True),
-                config_name=data.get("config_name", "Default")
+                config_name=data.get("config_name", CONFIG_NAME)
             )
             ConfigHandler.add_variable(
                 config_key=getattr(ConfigKeyList, data["name"].upper()),
