@@ -3,20 +3,18 @@
 from GuiFramework.utilities.file_ops import FileOps
 from GuiFramework.utilities.logging.logger import Logger, LoggerConfig, LOG_LEVEL
 
-from src.components.auto_drive_translation_tool import AutoDriveTranslationTool
+from AutoDriveTranslationTool.src.core.constants import APP_NAME, LOGGER_NAME, LOG_NAME
+from AutoDriveTranslationTool.src.components.auto_drive_translation_tool import AutoDriveTranslationTool
 
 
 def main() -> None:
-    """
-    Initialize logging and run the AutoDrive Translation Tool.
-    """
-    log_dir = FileOps.resolve_development_path(__file__, "logs", "main.py")
+    """Initialize logging and run the AutoDrive Translation Tool."""
     logger_config = LoggerConfig(
-        logger_name="ADT_Tool",
-        log_name="adt-tool",
-        log_directory=log_dir,
-        log_level=LOG_LEVEL.DEBUG,
-        module_name="ADT_Tool"
+        logger_name=LOGGER_NAME,
+        log_name=LOG_NAME,
+        log_directory=FileOps.resolve_development_path(__file__, "logs", "main.py"),
+        log_level=LOG_LEVEL.DEBUG,  # TODO: Change to INFO for production
+        module_name=APP_NAME
     )
     logger = Logger(logger_config, rotate_on_init=True)
 
