@@ -109,7 +109,7 @@ class ConfigSetup:
             },
             "TranslationSettings": {
                 "selected_languages": "English",
-                "supported_languages": "English,French,German,Italian,Russian",
+                "supported_languages": "English,French,German,Italian,Russian,Spanish",
                 "whole_word_replacement": "True"
             }
         }
