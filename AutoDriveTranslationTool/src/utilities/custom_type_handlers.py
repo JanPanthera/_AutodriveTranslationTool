@@ -1,4 +1,4 @@
-# custom_type_handlers.py
+# AutoDriveTranslationTool/src/utilities/custom_type_handlers.py
 
 import customtkinter as ctk
 
@@ -24,6 +24,17 @@ class CtkStringVarTypeHandler(CustomTypeHandlerBase):
         """Return the Python type this handler is responsible for."""
         return ctk.StringVar
 
+    def get_test_value(self):
+        """Provides a default test value suitable for testing the serialize and deserialize methods."""
+        return ctk.StringVar(self.root, value="test")
+
+    def validate_serialization(self) -> None:
+        """Validate the serialization of the test value."""
+        test_value = self.get_test_value()
+        serialized_value = self.serialize(test_value)
+        deserialized_value = self.deserialize(serialized_value)
+        assert deserialized_value.get() == test_value.get(), f"Deserialized value '{deserialized_value.get()}' does not match test value '{test_value.get()}'."
+
 
 class CtkBooleanVarTypeHandler(CustomTypeHandlerBase):
 
@@ -44,6 +55,17 @@ class CtkBooleanVarTypeHandler(CustomTypeHandlerBase):
         """Return the Python type this handler is responsible for."""
         return ctk.BooleanVar
 
+    def get_test_value(self):
+        """Provides a default test value suitable for testing the serialize and deserialize methods."""
+        return ctk.BooleanVar(self.root, value=True)
+
+    def validate_serialization(self) -> None:
+        """Validate the serialization of the test value."""
+        test_value = self.get_test_value()
+        serialized_value = self.serialize(test_value)
+        deserialized_value = self.deserialize(serialized_value)
+        assert deserialized_value.get() == test_value.get(), f"Deserialized value '{deserialized_value.get()}' does not match test value '{test_value.get()}'."
+
 
 class ListTypeHandler(CustomTypeHandlerBase):
     def serialize(self, list_value: list) -> str:
@@ -54,11 +76,19 @@ class ListTypeHandler(CustomTypeHandlerBase):
     def deserialize(self, list_string: str) -> list:
         """Convert comma-separated string to list."""
         self.validate_type(list_string, str, "string")
-        return [item.strip() for item in list_string.split(',') if item.strip()]
+        return [int(item) if item.isdigit() else float(item) if item.replace('.', '', 1).isdigit() else item for item in list_string.split(',') if item.strip()]
 
     def get_type(self) -> type:
         """Return the Python type this handler is responsible for."""
         return list
+
+    def get_test_value(self):
+        """Provides a default test value suitable for testing the serialize and deserialize methods."""
+        return [1, 2, 3]
+
+    def validate_serialization(self) -> None:
+        """Validate the serialization of the test value."""
+        super().validate_serialization()
 
 
 class TupleTypeHandler(CustomTypeHandlerBase):
@@ -75,3 +105,11 @@ class TupleTypeHandler(CustomTypeHandlerBase):
     def get_type(self) -> type:
         """Return the Python type this handler is responsible for."""
         return tuple
+
+    def get_test_value(self):
+        """Provides a default test value suitable for testing the serialize and deserialize methods."""
+        return (1, 2, 3)
+
+    def validate_serialization(self) -> None:
+        """Validate the serialization of the test value."""
+        super().validate_serialization()
