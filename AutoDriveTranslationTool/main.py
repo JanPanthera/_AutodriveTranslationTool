@@ -4,7 +4,7 @@ from GuiFramework.utilities.file_ops import FileOps
 from GuiFramework.utilities.logging.logger import Logger, LoggerConfig, LOG_LEVEL
 
 from AutoDriveTranslationTool.src.core.constants import APP_NAME, LOGGER_NAME, LOG_NAME
-from AutoDriveTranslationTool.src.components.auto_drive_translation_tool import AutoDriveTranslationTool
+from AutoDriveTranslationTool.src.core.auto_drive_translation_tool import AutoDriveTranslationTool
 
 
 def main() -> None:

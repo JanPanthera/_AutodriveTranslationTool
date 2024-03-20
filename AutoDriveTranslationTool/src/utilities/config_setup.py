@@ -24,8 +24,8 @@ class ConfigSetup:
             config_name=CONFIG_NAME,
             handler_config=ConfigFileHandlerConfig(
                 config_path=FileOps.resolve_development_path(__file__, "config", root_marker="main.py"),
-                default_config_name="default-config.ini",
-                custom_config_name="custom-config.ini",
+                default_config_name="default_config.ini",
+                custom_config_name="custom_config.ini",
             ),
             default_config=self._create_default_config(),
             custom_type_handlers=[
@@ -41,11 +41,11 @@ class ConfigSetup:
         config_data = [
             {"name": "locale_updater", "section": "AppSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=False)},
 
-            {"name": "locales_path", "section": "AppSettings", "type_": str, "value": "locales"},
-            {"name": "resources_path", "section": "AppSettings", "type_": str, "value": "resources"},
-            {"name": "input_path", "section": "AppSettings", "type_": str, "value": "_input"},
-            {"name": "output_path", "section": "AppSettings", "type_": str, "value": "_output"},
-            {"name": "dictionaries_path", "section": "AppSettings", "type_": str, "value": "_dictionaries"},
+            {"name": "locales_path", "section": "AppSettings", "type_": str, "value": "locales", "init_from_file": False, "save_to_file": False},
+            {"name": "resources_path", "section": "AppSettings", "type_": str, "value": "resources", "init_from_file": False, "save_to_file": False},
+            {"name": "input_path", "section": "AppSettings", "type_": str, "value": "_input", "init_from_file": False, "save_to_file": False},
+            {"name": "output_path", "section": "AppSettings", "type_": str, "value": "_output", "init_from_file": False, "save_to_file": False},
+            {"name": "dictionaries_path", "section": "AppSettings", "type_": str, "value": "_dictionaries", "init_from_file": False, "save_to_file": False},
 
             {"name": "save_window_size", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
             {"name": "save_window_pos", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
