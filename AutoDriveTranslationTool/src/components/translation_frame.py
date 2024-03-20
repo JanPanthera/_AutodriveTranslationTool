@@ -1,10 +1,13 @@
 # translation_frame.py ~ AutoDriveTranslationTool
 
-import os
 import customtkinter as ctk
 import GuiFramework.utilities.gui_utils as gui_utils
 
+from GuiFramework.utilities import FileOps
 from GuiFramework.widgets import CustomPopupMessageBox
+
+from GuiFramework.utilities.config import ConfigHandler as CH
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 from src.functions import (
     TranslationFinder, Validator, Translator
@@ -13,7 +16,7 @@ from src.functions import (
 
 class TranslationFrame(ctk.CTkFrame):
     GUI_COMPONENT_NAME = "translation_frame"
-    GUI_FILE_PATH = os.path.join("resources", "gui", f"{GUI_COMPONENT_NAME}.gui.json")
+    GUI_FILE_PATH = FileOps.join_paths("gui", f"{GUI_COMPONENT_NAME}.gui.json")
 
     def __init__(self, app_instance, tab_view):
         super().__init__(tab_view)
@@ -28,14 +31,10 @@ class TranslationFrame(ctk.CTkFrame):
         self.window = self.app_instance.window
         self.gui_manager = self.app_instance.gui_manager
         self.localization_manager = self.app_instance.localization_manager
-        self.config_manager = self.app_instance.config_manager
-        self.dev_path = self.app_instance.config_setup.DEV_PATH
 
-        self.add_var, self.set_var, self.get_var = self.config_manager.add_variable, self.config_manager.set_variable, self.config_manager.get_variable
-        self.load_setting, self.reset_settings = self.config_manager.load_setting, self.config_manager.reset_settings
         self.loc = self.localization_manager.localize
 
-        self.GUI_FILE_PATH = os.path.join(self.dev_path, self.GUI_FILE_PATH)
+        self.GUI_FILE_PATH = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), self.GUI_FILE_PATH)
 
     def _subscribe_to_managers(self):
         """Subscribe to GUI and Localization managers."""
@@ -76,15 +75,15 @@ class TranslationFrame(ctk.CTkFrame):
         def callback_handler(is_confirmed):
             if is_confirmed:
                 Translator(
-                    input_path=os.path.join(self.dev_path, self.get_var("input_path")),
-                    output_path=os.path.join(self.dev_path, self.get_var("output_path")),
-                    dictionaries_path=os.path.join(self.dev_path, self.get_var("dictionaries_path")),
+                    input_path=CH.get_variable_value(CKL.INPUT_PATH),
+                    output_path=CH.get_variable_value(CKL.OUTPUT_PATH),
+                    dictionaries_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
                     languages=self.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.textbox_output_console,
                     logger=self.app_instance.logger,
                     localization_manager=self.localization_manager,
                     console=False,
-                    whole_word=self.get_var("whole_word_replacement"),
+                    whole_word=CH.get_variable_value(CKL.WHOLE_WORD_REPLACEMENT),
                 )
         CustomPopupMessageBox(
             self,
@@ -99,7 +98,7 @@ class TranslationFrame(ctk.CTkFrame):
     def _on_validate_output_files(self):
         """Validate the output files."""
         Validator(
-            input_path=os.path.join(self.dev_path, self.get_var("output_path")),
+            input_path=CH.get_variable_value(CKL.OUTPUT_PATH),
             languages=self.scroll_list_language_selection.get_checked_entries(),
             output_widget=self.textbox_output_console,
             localization_manager=self.localization_manager,
@@ -113,9 +112,9 @@ class TranslationFrame(ctk.CTkFrame):
         if not checked_entries:
             return
         TranslationFinder(
-            input_path=os.path.join(self.dev_path, self.get_var("input_path")),
-            output_path=os.path.join(self.dev_path, "missing_translations.txt"),
-            dictionary_path=os.path.join(self.dev_path, self.get_var("dictionaries_path")),
+            input_path=CH.get_variable_value(CKL.INPUT_PATH),
+            output_path="missing_translations.txt",
+            dictionary_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
             languages=checked_entries,
             output_widget=self.textbox_output_console,
             logger=self.app_instance.logger,

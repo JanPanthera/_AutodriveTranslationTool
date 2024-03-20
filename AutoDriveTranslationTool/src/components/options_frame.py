@@ -1,33 +1,19 @@
 # options_frame.py ~ AutoDriveTranslationTool
 
-import os
 import customtkinter as ctk
 
 import GuiFramework.utilities.utils as utils
 import GuiFramework.utilities.gui_utils as gui_utils
 
+from GuiFramework.utilities.config import ConfigHandler as CH
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
+
+from GuiFramework.utilities import FileOps, ConfigHandler
+
 
 class OptionsFrame(ctk.CTkFrame):
     GUI_COMPONENT_NAME = "options_frame"
-    GUI_FILE_PATH = os.path.join("resources", "gui", f"{GUI_COMPONENT_NAME}.gui.json")
-
-    # Settings keys
-    SAVE_WINDOW_SIZE = "save_window_size"
-    SAVE_WINDOW_POS = "save_window_pos"
-    CENTER_WINDOW_ON_STARTUP = "center_window_on_startup"
-    WINDOW_SIZE = "window_size"
-    WINDOW_POSITION = "window_position"
-
-    USE_HIGH_DPI_SCALING = "use_high_dpi_scaling"
-    UI_THEME = "ui_theme"
-    UI_COLOR_THEME = "ui_color_theme"
-    UI_LANGUAGE = "ui_language"
-
-    WHOLE_WORD_REPLACEMENT = "whole_word_replacement"
-
-    DROPDOWN_UI_THEMES = "dropdown_ui_themes"
-    DROPDOWN_UI_COLOR_THEMES = "dropdown_ui_color_themes"
-    DROPDOWN_UI_LANGUAGES = "dropdown_ui_languages"
+    GUI_FILE_PATH = FileOps.join_paths("gui", f"{GUI_COMPONENT_NAME}.gui.json")
 
     def __init__(self, app_instance, tab_view):
         super().__init__(tab_view)
@@ -41,15 +27,10 @@ class OptionsFrame(ctk.CTkFrame):
         """Initialize essential components"""
         self.window = self.app_instance.window
         self.gui_manager = self.app_instance.gui_manager
-        self.localization_manager = self.app_instance.localization_manager
-        self.config_manager = self.app_instance.config_manager
-        self.dev_path = self.app_instance.config_setup.DEV_PATH
 
-        self.add_var, self.set_var, self.get_var = self.config_manager.add_variable, self.config_manager.set_variable, self.config_manager.get_variable
-        self.load_setting, self.reset_settings = self.config_manager.load_setting, self.config_manager.reset_settings
         self.loc = self.localization_manager.localize
 
-        self.GUI_FILE_PATH = os.path.join(self.dev_path, self.GUI_FILE_PATH)
+        self.GUI_FILE_PATH = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), self.GUI_FILE_PATH)
 
     def _subscribe_to_managers(self):
         """Subscribe to GUI and Localization managers."""
@@ -76,16 +57,16 @@ class OptionsFrame(ctk.CTkFrame):
         if event_type == "lang_update" or event_type == "init":
             gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
             self.dropdown_ui_theme.configure(
-                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_THEME).get())),
-                values=self._translate_list(self.get_var(self.DROPDOWN_UI_THEMES))
+                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_THEME))),
+                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_THEMES)))
             )
             self.dropdown_ui_color_theme.configure(
-                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_COLOR_THEME).get())),
-                values=self._translate_list(self.get_var(self.DROPDOWN_UI_COLOR_THEMES))
+                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_COLOR_THEME))),
+                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_COLOR_THEMES)))
             )
             self.dropdown_ui_language.configure(
-                variable=ctk.StringVar(self, self.loc(self.get_var(self.UI_LANGUAGE).get())),
-                values=self._translate_list(self.get_var(self.DROPDOWN_UI_LANGUAGES))
+                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_LANGUAGE))),
+                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_LANGUAGES)))
             )
 
     # Widget Event Handlers
@@ -104,24 +85,25 @@ class OptionsFrame(ctk.CTkFrame):
 
             ["TranslationSettings", self.WHOLE_WORD_REPLACEMENT]
         ]
-        self.reset_settings(settings_to_reset)
+        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
+        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
         gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
         gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
         gui_utils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
         gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
         gui_utils.update_checkbox_state(self.checkbox_whole_word_replacement, self.WHOLE_WORD_REPLACEMENT, self.config_manager)
-        self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
-        self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
-        self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
+        self.window.set_ui_theme((CH.get_variable_value(CKL.UI_THEME)).get().lower())
+        self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
+        self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
 
     def _on_center_window_on_startup_checkbox(self):
-        self.set_var(self.CENTER_WINDOW_ON_STARTUP, ctk.BooleanVar(self, self.checkbox_center_window_on_startup.get()))
+        CH.set_variable_value(CKL.CENTER_WINDOW_ON_STARTUP, ctk.BooleanVar(self, self.checkbox_center_window_on_startup.get()))
 
     def _on_save_window_size_checkbox(self):
-        self.set_var(self.SAVE_WINDOW_SIZE, ctk.BooleanVar(self, self.checkbox_save_window_size.get()))
+        CH.set_variable_value(CKL.SAVE_WINDOW_SIZE, ctk.BooleanVar(self, self.checkbox_save_window_size.get()))
 
     def _on_save_window_pos_checkbox(self):
-        self.set_var(self.SAVE_WINDOW_POS, ctk.BooleanVar(self, self.checkbox_save_window_pos.get()))
+        CH.set_variable_value(CKL.SAVE_WINDOW_POS, ctk.BooleanVar(self, self.checkbox_save_window_pos.get()))
 
     def _on_reset_window_settings_button(self):
         settings_to_reset = [
@@ -129,45 +111,51 @@ class OptionsFrame(ctk.CTkFrame):
             ["WindowSettings", self.SAVE_WINDOW_SIZE],
             ["WindowSettings", self.SAVE_WINDOW_POS],
         ]
-        self.reset_settings(settings_to_reset)
-        gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
+        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
+        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
+        # CH.reset_settings(settings_to_reset)
+        # gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
+        # gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
         gui_utils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
 
     def _on_reset_window_size_button(self):
         settings_to_reset = [
             ["WindowSettings", self.WINDOW_SIZE]
         ]
-        self.reset_settings(settings_to_reset)
-        width, height = map(int, self.load_setting("WindowSettings", self.WINDOW_SIZE).split("x"))
+        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
+        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
+        # CH.reset_settings(settings_to_reset)
+        width, height = map(int, (CH.get_variable_value(CKL.WINDOW_SIZE)).split("x"))
         self.window.set_window_size((width, height))
 
     def _on_reset_window_pos_button(self):
         settings_to_reset = [
             ["WindowSettings", self.WINDOW_POSITION]
         ]
-        self.reset_settings(settings_to_reset)
-        pos_x, pos_y = map(int, self.load_setting("WindowSettings", self.WINDOW_POSITION).split("+"))
+        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
+        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
+        # CH.reset_settings(settings_to_reset)
+        pos_x, pos_y = map(int, (CH.get_variable_value(CKL.WINDOW_POSITION)).split("+"))
         self.window.set_window_position((pos_x, pos_y))
 
     def _on_use_high_dpi_scaling_checkbox(self):
-        self.set_var(self.USE_HIGH_DPI_SCALING, ctk.BooleanVar(self, self.checkbox_use_high_dpi_scaling.get()))
-        self.window.set_high_dpi(self.get_var(self.USE_HIGH_DPI_SCALING).get())
+        CH.set_variable_value(CKL.USE_HIGH_DPI_SCALING, ctk.BooleanVar(self, self.checkbox_use_high_dpi_scaling.get()))
+        self.window.set_high_dpi(CH.get_variable_value(CKL.USE_HIGH_DPI_SCALING).get())
 
     def _on_ui_theme_dropdown(self, selected_theme=None):
         theme_key = self.localization_manager.reverse_localize(selected_theme)
-        self.set_var("ui_theme", ctk.StringVar(self, theme_key[0].upper() + theme_key[1:]))
+        CH.set_variable_value(CKL.UI_THEME, ctk.StringVar(self, theme_key[0].upper() + theme_key[1:]))
         self.window.set_ui_theme(theme_key)
 
     def _on_ui_color_theme(self, selected_color_theme=None):
         color_theme_key = self.localization_manager.reverse_localize(selected_color_theme)
-        self.set_var("ui_color_theme", ctk.StringVar(self, color_theme_key[0].upper() + color_theme_key[1:]))
-        ui_color_theme = color_theme_key if color_theme_key in ["blue", "dark-blue", "green"] else os.path.join(self.dev_path, "resources", "themes", f"{color_theme_key}.json")
+        CH.set_variable_value(CKL.UI_COLOR_THEME, ctk.StringVar(self, color_theme_key[0].upper() + color_theme_key[1:]))
+        ui_color_theme = color_theme_key if color_theme_key in ["blue", "dark-blue", "green"] else FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), "themes", f"{color_theme_key}.json")
         self.window.set_ui_color_theme(ui_color_theme)
 
     def _on_ui_language_dropdown(self, selected_language=None):
         language_key = self.localization_manager.reverse_localize(selected_language)
-        self.set_var("ui_language", ctk.StringVar(self, language_key[0].upper() + language_key[1:]))
+        CH.set_variable_value(CKL.UI_LANGUAGE, ctk.StringVar(self, language_key[0].upper() + language_key[1:]))
         self.localization_manager.set_active_language(language_key)
 
     def _on_reset_ui_appearance_settings_button(self):
@@ -177,14 +165,14 @@ class OptionsFrame(ctk.CTkFrame):
             ["AppearanceSettings", self.UI_COLOR_THEME],
             ["AppearanceSettings", self.UI_LANGUAGE]
         ]
-        self.reset_settings(settings_to_reset)
-        gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
-        self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
-        self.window.set_ui_color_theme(self.get_var(self.UI_COLOR_THEME).get().lower())
-        self.localization_manager.set_active_language(self.get_var(self.UI_LANGUAGE).get())
+        # CH.reset_settings(settings_to_reset)
+        # gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
+        # self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
+        self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
+        self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
 
     def _on_whole_word_replacement_checkbox(self):
-        self.set_var(self.WHOLE_WORD_REPLACEMENT, ctk.BooleanVar(self, self.checkbox_whole_word_replacement.get()))
+        CH.set_variable_value(CKL.WHOLE_WORD_REPLACEMENT, ctk.BooleanVar(self, self.checkbox_whole_word_replacement.get()))
 
     # Helper methods
     def _translate_list(self, list_to_translate):

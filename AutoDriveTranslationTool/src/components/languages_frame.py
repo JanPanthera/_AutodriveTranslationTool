@@ -1,15 +1,18 @@
 # languages_frame.py ~ AutoDriveTranslationTool
 
-import os
 import customtkinter as ctk
-
 import GuiFramework.utilities.gui_utils as gui_utils
+
+from GuiFramework.utilities import FileOps
 from GuiFramework.widgets import CustomPopupMessageBox
+
+from GuiFramework.utilities.config import ConfigHandler as CH
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
 class LanguagesFrame(ctk.CTkFrame):
     GUI_COMPONENT_NAME = "languages_frame"
-    GUI_FILE_PATH = os.path.join("resources", "gui", f"{GUI_COMPONENT_NAME}.gui.json")
+    GUI_FILE_PATH = FileOps.join_paths("gui", f"{GUI_COMPONENT_NAME}.gui.json")
 
     def __init__(self, app_instance, tab_view):
         super().__init__(tab_view)
@@ -24,14 +27,10 @@ class LanguagesFrame(ctk.CTkFrame):
         self.window = self.app_instance.window
         self.gui_manager = self.app_instance.gui_manager
         self.localization_manager = self.app_instance.localization_manager
-        self.config_manager = self.app_instance.config_manager
-        self.dev_path = self.app_instance.config_setup.DEV_PATH
 
-        self.add_var, self.set_var, self.get_var = self.config_manager.add_variable, self.config_manager.set_variable, self.config_manager.get_variable
-        self.load_setting, self.reset_settings = self.config_manager.load_setting, self.config_manager.reset_settings
         self.loc = self.localization_manager.localize
 
-        self.GUI_FILE_PATH = os.path.join(self.dev_path, self.GUI_FILE_PATH)
+        self.GUI_FILE_PATH = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), self.GUI_FILE_PATH)
 
     def _subscribe_to_managers(self):
         """Subscribe to GUI and Localization managers."""
@@ -92,7 +91,7 @@ class LanguagesFrame(ctk.CTkFrame):
         def callback_handler(is_confirmed):
             if is_confirmed:
                 supported_languages = self.scroll_list_languages.get_all_entries()
-                self.set_var("supported_languages", supported_languages)
+                CH.set_variable_value(CKL.SUPPORTED_LANGUAGES, supported_languages)
                 self.dropdown_language_select.configure(values=supported_languages)
                 self.scroll_list_language_selection.remove_all_entries()
                 self.scroll_list_language_selection.add_entries(supported_languages)
@@ -108,7 +107,7 @@ class LanguagesFrame(ctk.CTkFrame):
         """Load the custom list of supported languages."""
         def callback_handler(is_confirmed):
             if is_confirmed:
-                supported_languages = self.load_setting("TranslationSettings", "supported_languages", default_value=["English"]).split(",")
+                supported_languages = CH.get_setting(CKL.SUPPORTED_LANGUAGES, fallback_value=["English"]).split(",")
                 self.scroll_list_languages.remove_all_entries()
                 self.scroll_list_languages.add_entries(supported_languages)
                 self.scroll_list_languages.sort_entries()
@@ -122,7 +121,7 @@ class LanguagesFrame(ctk.CTkFrame):
         """Load the default list of supported languages."""
         def callback_handler(is_confirmed):
             if is_confirmed:
-                supported_languages = self.load_setting("TranslationSettings", "supported_languages", default_value=["English"], force_default=True).split(",")
+                supported_languages = CH.get_setting(CKL.SUPPORTED_LANGUAGES, fallback_value=["English"], force_default=True).split(",")
                 self.scroll_list_languages.remove_all_entries()
                 self.scroll_list_languages.add_entries(supported_languages)
                 self.scroll_list_languages.sort_entries()

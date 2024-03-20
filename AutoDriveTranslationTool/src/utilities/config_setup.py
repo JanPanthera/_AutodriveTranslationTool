@@ -11,7 +11,7 @@ from AutoDriveTranslationTool.src.core.constants import (
 
 from GuiFramework.utilities import FileOps, Logger
 from GuiFramework.utilities.config import ConfigHandler, ConfigFileHandlerConfig
-from GuiFramework.utilities.config.config_types import ConfigKeyList
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
 class ConfigSetup:
@@ -23,7 +23,7 @@ class ConfigSetup:
         ConfigHandler.add_config(
             config_name=CONFIG_NAME,
             handler_config=ConfigFileHandlerConfig(
-                config_path=FileOps.resolve_development_path(__file__, "config", "main.py"),
+                config_path=FileOps.resolve_development_path(__file__, "config", root_marker="main.py"),
                 default_config_name="default-config.ini",
                 custom_config_name="custom-config.ini",
             ),
@@ -68,7 +68,7 @@ class ConfigSetup:
             {"name": "dropdown_ui_languages", "section": "DropdownSettings", "type_": list, "value": UI_LANGUAGES}
         ]
         for data in config_data:
-            ConfigKeyList.add_ConfigKey(
+            CKL.add_ConfigKey(
                 name=data["name"],
                 section=data.get("section", "Default"),
                 type_=data.get("type_", None),
@@ -77,11 +77,15 @@ class ConfigSetup:
                 config_name=data.get("config_name", CONFIG_NAME)
             )
             ConfigHandler.add_variable(
-                config_key=getattr(ConfigKeyList, data["name"].upper()),
+                config_key=getattr(CKL, data["name"].upper()),
                 value=data.get("value", None),
                 default_value=data.get("default_value", None),
                 init_from_file=data.get("init_from_file", True)
             )
+        paths = [CKL.LOCALES_PATH, CKL.RESOURCES_PATH, CKL.INPUT_PATH, CKL.OUTPUT_PATH, CKL.DICTIONARIES_PATH]
+        for path in paths:
+            original_path = ConfigHandler.get_variable_value(path)
+            ConfigHandler.set_variable_value(path, FileOps.resolve_development_path(__file__, original_path, root_marker="main.py"))
 
     def _create_default_config(self):
         """Creates the default configuration."""
