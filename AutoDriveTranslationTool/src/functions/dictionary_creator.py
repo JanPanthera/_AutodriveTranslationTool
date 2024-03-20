@@ -8,13 +8,15 @@ VALID_CHARS = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ012345678
 
 
 class DictionaryCreator:
-    DIC_TEMPLATE = """
-###*
-   
-   Author: name
-   Date: 08.03.2024
-   Version: 0.0.1
-   Description: dictionary for xyz
+    DIC_TEMPLATE = """###*
+
+    Date: 08.03.2024
+    Author: name
+    Version: 0.0.1
+    Description: dictionary for xyz
+
+    AD Namen Max character 30
+    AD Group Max character 20
 
 *###
 
