@@ -1,14 +1,13 @@
 # options_frame.py ~ AutoDriveTranslationTool
 
 import customtkinter as ctk
-
 import GuiFramework.utilities.utils as utils
-import GuiFramework.utilities.gui_utils as gui_utils
+
+from GuiFramework.utilities import FileOps, ConfigHandler
+from GuiFramework.utilities.gui_utils import GuiUtils
 
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
-
-from GuiFramework.utilities import FileOps, ConfigHandler
 
 
 class OptionsFrame(ctk.CTkFrame):
@@ -27,6 +26,7 @@ class OptionsFrame(ctk.CTkFrame):
         """Initialize essential components"""
         self.window = self.app_instance.window
         self.gui_manager = self.app_instance.gui_manager
+        self.localization_manager = self.app_instance.localization_manager
 
         self.loc = self.localization_manager.localize
 
@@ -49,13 +49,13 @@ class OptionsFrame(ctk.CTkFrame):
     # Manager Event Handlers
     def on_gui_build(self):
         """Set widget references for the frame."""
-        gui_utils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
+        GuiUtils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
         self.on_language_updated(self.localization_manager.get_language(), "init")
 
     def on_language_updated(self, language_code, event_type):
         """Update the language of the widgets in the frame."""
         if event_type == "lang_update" or event_type == "init":
-            gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
+            GuiUtils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
             self.dropdown_ui_theme.configure(
                 variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_THEME))),
                 values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_THEMES)))
@@ -87,11 +87,11 @@ class OptionsFrame(ctk.CTkFrame):
         ]
         # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
         # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
-        gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_whole_word_replacement, self.WHOLE_WORD_REPLACEMENT, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_whole_word_replacement, self.WHOLE_WORD_REPLACEMENT, self.config_manager)
         self.window.set_ui_theme((CH.get_variable_value(CKL.UI_THEME)).get().lower())
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
         self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
@@ -116,7 +116,7 @@ class OptionsFrame(ctk.CTkFrame):
         # CH.reset_settings(settings_to_reset)
         # gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
         # gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
-        gui_utils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
+        GuiUtils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
 
     def _on_reset_window_size_button(self):
         settings_to_reset = [

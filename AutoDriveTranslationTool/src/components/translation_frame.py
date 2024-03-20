@@ -1,10 +1,11 @@
 # translation_frame.py ~ AutoDriveTranslationTool
 
 import customtkinter as ctk
-import GuiFramework.utilities.gui_utils as gui_utils
+
+from GuiFramework.widgets import CustomPopupMessageBox
 
 from GuiFramework.utilities import FileOps
-from GuiFramework.widgets import CustomPopupMessageBox
+from GuiFramework.utilities.gui_utils import GuiUtils
 
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
@@ -53,13 +54,13 @@ class TranslationFrame(ctk.CTkFrame):
     # Manager Event Handlers
     def on_gui_build(self):
         """Set widget references for the frame."""
-        gui_utils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
+        GuiUtils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
         self.on_language_updated(self.localization_manager.get_language(), "init")
 
     def on_language_updated(self, language_code, event_type):
         """Update the language of the widgets in the frame."""
         if event_type == "lang_update" or event_type == "init":
-            gui_utils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
+            GuiUtils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
 
     # Widget Event Handlers
     def _on_select_all(self):
