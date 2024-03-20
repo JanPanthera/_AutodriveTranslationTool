@@ -83,19 +83,18 @@ class AutoDriveTranslationTool:
     def _initialize_gui_manager(self):
         self.gui_manager = GuiManager()
         widget_builders = [
-            # TODO: Move all FrameWork builders to the initialization of the GuiManager
-            # here we are adding only custom widget builders from the application,
-            # also remove logger from parameter and made it us setup_default_logger instead
-            CtkFrameBuilder(self.config_manager),
-            CtkLabelBuilder(self.config_manager),
-            CtkEntryBuilder(self.config_manager),
-            CtkOptionMenuBuilder(self.config_manager),
-            CtkCheckBoxBuilder(self.config_manager),
-            CtkButtonBuilder(self.config_manager),
-            ScrollableSelectionFrameBuilder(self.config_manager),
-            CustomConsoleTextboxBuilder(self.config_manager),
-            CustomTextboxBuilder(self.config_manager),
-            FileTreeViewBuilder(self.config_manager)
+            # TODO: Ensure that CTK and Framework builders are initialized within the GuiManager itself.
+            # Only application-specific custom widget builders should be added here.
+            CtkFrameBuilder(),
+            CtkLabelBuilder(),
+            CtkEntryBuilder(),
+            CtkOptionMenuBuilder(),
+            CtkCheckBoxBuilder(),
+            CtkButtonBuilder(),
+            ScrollableSelectionFrameBuilder(),
+            CustomConsoleTextboxBuilder(),
+            CustomTextboxBuilder(),
+            FileTreeViewBuilder()
         ]
         for builder in widget_builders:
             self.gui_manager.register_widget_builder(builder)
