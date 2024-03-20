@@ -1,0 +1,176 @@
+###*
+
+    Datum: 04.03.2024
+    Author: unknow84
+
+    AD Namen Max character 30
+    AD Group Max character 20
+
+*###
+
+Fahrzeughändler,Negozio
+Fahrzeughändler Werkstatt,Officina del negozio
+Tankstelle,Stazione di servizio
+Zapfsäule HaGe,Pompa del carburante HaGe
+Methan Ladestelle,Rifornimento di metano
+
+Einkaufstellen,Punti di acquisto
+EK-Mist,B-Letame
+EK-Gülle,B-Liquami
+EK-Gärreste,B-Digestato
+EK-Herbizid/Flüssigdünger,B-Erbicida/Fertilizzante liquido
+EK-Kalk/Saatgut/Dünmger,B-Calce/Semi/Fertilizzante
+EK-Viehandel,B-Commerciante di bestiame
+EK-Kalkstation Nord,B-Deposito calce Nord
+EK-Kalkstation,B-Deposito calce
+EK-Kalkstation Süd,B-Deposito calce Sud
+EK-Ladestelle,Colonnina di ricarica elettrica
+EK-Methan Ladestelle,Rifornimento di metano
+EK-Zapfsäule HaGe,Pompa del carburante HaGe
+EK-Flüssigdüngerstation,B-Vendita fertilizzante liquido
+EK-Saatgut/Dünger/Kalk,B-Semi/Fertilizzante/Calce
+EK-Dünger,B-Fertilizzante
+EK-Saatgut,B-Semi
+EK-Flüssigdünger,B-Fertilizzante liquido
+EK-Mistkauf,B-Letame
+EK-Wasserkauf,B-Acqua
+
+EK-
+
+Verkaufstellen,Punti vendita
+VK-Gülle,S-Liquami
+VK-Gärreste,S-Digestato
+VK-Landhandel,S-Consorzio agrario
+VK-Viehandel,S-Commerciante di bestiame
+VK-Sägewerk,S-Segheria
+VK-Bauernmarkt,S-Negozio di prodotti agricoli
+VK-Getreidespeicher,S-Silo per cereali
+VK-Pizzeria,S-Pizzeria
+VK-Supermarkt,S-Supermercato
+VK-Johnsons Farmers Market,S-Negozio Johnsons Farmers
+VK-Gesteinsbrecher,S-Frantumatore
+VK-Feed&amp;Grain South,S-Foraggio e Cereali Sud
+VK-Restaurant,S-Ristorante
+VK-Ballen Buur Hans,S-Vendita balle Burr Hans
+VK-HAGE Zweigstelle,S-Filiale HAGE 
+VK-Handel Allerei,S-Negiozo
+VK-Station für Hühner,S-Vendita galline
+VK-Knollen Kalle,S-Vendita Tuberi Kalle
+VK-Holzhandel Gerdt WOOD,S-Vendita legame Legno
+VK-Holzhandel Gerdt CHIPS,S-Vendita legame Cippato
+VK-Großhandel,S-Negozio all'ingroso
+VK-Ballenverkauf,S-Vendita balle
+VK-Knollenverkauf,S-Vendita tuberi
+VK-Steine verkaufen,S-Vendita pietre
+VK-Mist verkaufen,S-Vendita letame
+
+VK-
+
+Produktionen,Produzioni
+Sägewerk,Segheria
+Schreinerei,Carpenteria
+Traubenproduktion,Cantina
+Molkerei,Caseificio
+Ölmühle,Frantoio
+Spinnerei,Filanda
+Bäckerei,Forno
+Getreidemühle,Mulino per cereali
+Müslifabrik,Fabbrica di cereali
+Getreidereinigung,Pulitura del grano
+Heizkraftwerk,Impianto di cogenerazione
+Komposter,Fabbrica di compost
+Kalkfabrik,Fabbrica della calce
+Düngerfabrik,Fabbrica di fertilizzanti
+Saatgutproduktion,Produzione di semi
+Getreidetrockung,Essicatoio
+
+Kuhhof,Allevamento bovini
+Kuhstall,Stalla bovini
+
+Kuhweide,Pascolo dei bovini
+Kuhweide Tiere,Pascolo dei bovini animali
+Kuhweide Wasser,Pascolo dei bovini acqua
+Kuhweide Futter,Pascolo dei bovini cibo
+Kuhweide Milch,Pascolo dei bovini latte
+
+Schweinestall,Porcile
+Schweinehof,Allevamento suini
+
+Schweineweide Futter,Pascolo dei suini cibo
+Schweineweide Wasser,Pascolo dei suini acqua
+Schweineweide Tiere,Pascolo dei suini animali
+Schweineweide,Pascolo dei suini
+
+Schafstall,Ovile
+Schafhof,Allevamento di ovini
+
+Schafweide,Pascolo degli ovini
+Schafweide Futter,Pascolo degli ovini cibo
+Schafweide Wasser,Pascolo degli ovini acqua
+Schafweide Tiere,Pascolo degli ovini animali
+
+Ziegenstall,Ovile delle capre
+
+Hühnerstall,Pollaio
+Hühnerhof,Allevamento di galline
+
+Pferdehof,Maneggio
+
+Hof Saatgutlager,Deposito del cibo
+Hof Silo,Silo della farm
+Hof Werkstatt,Officina della farm
+
+Lohnunternehmen,Agenzia contratti
+Lohnunternehmer,Agenzia contratti
+LU,Agenzia contratti
+LU Waschplatz,Stazione di lavaggio dell'Agenzia contratti
+LU Hoftankstelle,Stazione di rifornimento dell'Agenzia contratti
+
+Hofsilo,Silo della farm
+Hof,Farm
+Hof Dieseltank,Stazione di rifornimento della farm
+Hof Einfahrt,Vialetto della farm
+Hoftankstelle,Stazione di rifornimento della farm
+Flüssigdüngertank,Ricarica fertilizzante liquido
+
+Gülle,Liquami
+Gärreste,Digestato
+Hackschnitzel,Cippato
+Produkt,Prodotti
+Rohstoff,Materiali
+Felder,Campi
+Feld,Campo
+Ankauf,Acquistare
+Verkauf,Vendere
+Milch,Latte
+Tiere,Animali
+Güllebecken,Trincea letame
+Werkstatt,Officina
+Parken,Parcheggio
+Landhandel,Consorzio agrario
+Kartoffel,Patate
+Kartoffeln,Patate
+Zuckerrüben,Barbabietole
+Zuckerrübenschnitzel,Polpa di barbabietole da zucchero
+Rübenschnitzel,Polpa di barbabietole
+Dünger,Fertilizzante
+Saatgut,Semi
+Kalk,Calce
+Mist,Letame
+Stadt,Città
+Nord,Nord
+Ost,Est
+Süd,Sud
+West,Ovest
+füttern,Cibo
+Stroh,Paglia
+Ställe,Fienile
+Hallenwerkstatt,Officina
+Waschplatz,Stazione di lavaggio
+Güllebehälter,Contenitore liquami
+Futter,Cibo
+Füttern,Cibo
+Stall,Stalla
+Kühe,Mucche
+Schweineb.,Allevamento di suini
+Wiesen,Prati

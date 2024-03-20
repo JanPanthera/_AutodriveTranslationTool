@@ -1,0 +1,175 @@
+﻿###*
+
+    Datum: 21.02.2024
+    Author: The1JuanPe
+
+    AD Namen Max character 30
+    AD Group Max character 20
+
+*###
+
+Fahrzeughändler,Tienda
+Fahrzeughändler Werkstatt,Taller
+Tankstelle,Gasolinera
+Zapfsäule HaGe,Surtidor HaGe
+Methan Ladestelle,Punto de carga Metano
+
+Einkaufstellen,Puntos de compra
+EK-Mist,Estiércol
+EK-Gülle,Purín
+EK-Gärreste,Digestato
+EK-Herbizid/Flüssigdünger,Herbicida/Abono líquido
+EK-Kalk/Saatgut/Dünmger,Cal/Semillas/Abono
+EK-Viehandel,Comercio de ganado
+EK-Kalkstation Nord,Estación de Cal Norte
+EK-Kalkstation,Estación de Cal
+EK-Kalkstation Süd,Estación de Cal Sur
+EK-Ladestelle,Cargador eléctrico
+EK-Methan Ladestelle,Carga de metano
+EK-Zapfsäule HaGe,Surtidor HaGe
+EK-Flüssigdüngerstation,Estación de abono líquido
+EK-Saatgut/Dünger/Kalk,Semillas/Abono/Cal
+EK-Dünger,Abono
+EK-Saatgut,Semillas
+EK-Flüssigdünger,Abono líquido
+EK-Mistkauf,Estiercol
+EK-Wasserkauf,Agua
+
+EK-
+
+Verkaufstellen,Puntos de venta
+VK-Gülle,Purín
+VK-Gärreste,Digestato
+VK-Landhandel,Comercio agrícola
+VK-Viehandel,Comercio de ganado
+VK-Sägewerk,Aserradero
+VK-Bauernmarkt,Mercado de agricultores
+VK-Getreidespeicher,Granero
+VK-Pizzeria,Pizzería
+VK-Supermarkt,Supermercado
+VK-Johnsons Farmers Market,Mercado de agricultores Johnson
+VK-Gesteinsbrecher,Trituradora de piedras
+VK-Feed&amp;Grain South,Piensos y cereales del Sur
+VK-Restaurant,Restaurante
+VK-Ballen Buur Hans,Ballen Buur Hans 
+VK-HAGE Zweigstelle,Oficina HAGE
+VK-Handel Allerei,Venta de todo 	
+VK-Station für Hühner,Estación de Gallinas
+VK-Knollen Kalle,Tubérculos Kalle
+VK-Holzhandel Gerdt WOOD,Comercio de madera MADERA
+VK-Holzhandel Gerdt CHIPS,Comercio de madera ASTILLAS
+VK-Großhandel,Mayorista
+VK-Ballenverkauf,Venta de pacas
+VK-Knollenverkauf,Venta de tubérculos
+VK-Steine verkaufen,Venta de piedras
+VK-Mist verkaufen,Venta de estiércol
+
+VK-
+
+Produktionen,Fábricas
+Sägewerk,Aserradero
+Schreinerei,Carpintería
+Traubenproduktion,Bodega
+Molkerei,Lácteos
+Ölmühle,Molino de aceite
+Spinnerei,Fábrica textil
+Bäckerei,Panadería
+Getreidemühle,Molino de grano
+Müslifabrik,Fábrica de cereales
+Getreidereinigung,Limpieza de granos 
+Heizkraftwerk,Central térmica
+Komposter,Compostador
+Kalkfabrik,Fábrica de cal
+Düngerfabrik,Fábrica de abono
+Saatgutproduktion,Fábrica de semillas
+Getreidetrockung,Secadero de granos
+
+Kuhhof,Granja de vacas
+Kuhstall,Vaqueriza
+
+Kuhweide,Pasto para vacas
+Kuhweide Tiere,Pasto para vacas ANIMALES
+Kuhweide Wasser,Pasto para vacas AGUA
+Kuhweide Futter,Pasto para vacas COMIDA
+Kuhweide Milch,Pasto para vacas LECHE
+
+Schweinestall,Pocilga
+Schweinehof,Granja de cerdos
+
+Schweineweide Futter,Pasto para cerdos COMIDA
+Schweineweide Wasser,Pasto para cerdos AGUA
+Schweineweide Tiere,Pasto para cerdos ANIMALES
+Schweineweide,Pasto para cerdos
+
+Schafstall,Establo para ovejas
+Schafhof,Granja de ovejas
+
+Schafweide,Pasto para ovejas
+Schafweide Futter,Pasto para ovejas COMIDA
+Schafweide Wasser,Pasto para ovejas AGUA
+Schafweide Tiere,Pasto para ovejas ANIMALES
+
+Ziegenstall,Establo de cabras
+
+Hühnerstall,Gallinero
+Hühnerhof,Corral
+
+Pferdehof,Caballeriza
+
+Hof Saatgutlager,Almacén de semillas
+Hof Silo,Silo de granja
+Hof Werkstatt,Taller de granja
+
+Lohnunternehmen,Contratista
+LU,Contratista
+LU Waschplatz,Area de lavado
+LU Hoftankstelle,Gasolinera de contrato
+
+Hofsilo,Silo de granja
+Hof,Granja
+Hof Dieseltank,Tanque de diesel granja
+Hof Einfahrt,Entrada a la granja
+Hoftankstelle,Gasolinera de granja
+Flüssigdüngertank,Tanque de abono líquido
+
+Gülle,Estiércol
+Gärreste,Digestato
+Hackschnitzel,Astillas
+Produkt,Productos
+Rohstoff,Materiales
+Felder,Campos
+Feld,Campo
+Ankauf,Compra
+Verkauf,Venta
+Milch,Leche
+Tiere,Animales
+Güllebecken,Tanque de estiércol
+Werkstatt,Taller
+Parken,Aparcamiento
+Landhandel,Comercio agrícola
+Kartoffel,Patata
+Kartoffeln,Patatas
+Zuckerrüben,Remolacha azucarera
+Zuckerrübenschnitzel,Pulpa de remolacha azucarera
+Rübenschnitzel,Pulpa de remolacha
+Dünger,Abono
+Saatgut,Semillas
+Kalk,Cal
+Mist,Estiércol
+Stadt,Ciudad
+Nord,Norte
+Ost,Este
+Süd,Sur
+West,Oeste
+füttern,Alimentar
+Stroh,Paja
+Ställe,Establos
+Hallenwerkstatt,Recibidor del taller
+Waschplatz,Area de lavado
+Güllebehälter,Tanque de estiércol
+Futter,Comida 
+Füttern,Alimentar
+Stall,Establo
+Kühe,Vacas
+Schweineb.,Pocilga
+Wiesen,Prados
