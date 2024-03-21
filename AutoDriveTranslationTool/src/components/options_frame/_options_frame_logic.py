@@ -1,75 +1,21 @@
-# options_frame.py ~ AutoDriveTranslationTool
+# AutoDriveTranslationTool/src/components/options_frame/options_frame_logic.py
 
 import customtkinter as ctk
-import GuiFramework.utilities.utils as utils
 
-from GuiFramework.utilities import FileOps, ConfigHandler
+from GuiFramework.utilities import FileOps
 from GuiFramework.utilities.gui_utils import GuiUtils
-
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
-class OptionsFrame(ctk.CTkFrame):
-    GUI_COMPONENT_NAME = "options_frame"
-    GUI_FILE_PATH = FileOps.join_paths("gui", f"{GUI_COMPONENT_NAME}.gui.json")
+class OptionsFrameLogic:
 
-    def __init__(self, app_instance, tab_view):
-        super().__init__(tab_view)
+    def __init__(self, app_instance, gui_instance) -> None:
         self.app_instance = app_instance
-
-        self._initialize_components()
-        self._subscribe_to_managers()
-        self._register_gui_components()
-
-    def _initialize_components(self):
-        """Initialize essential components"""
-        self.window = self.app_instance.window
-        self.gui_manager = self.app_instance.gui_manager
+        self.gui_instance = gui_instance
         self.localization_manager = self.app_instance.localization_manager
-
         self.loc = self.localization_manager.localize
 
-        self.GUI_FILE_PATH = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), self.GUI_FILE_PATH)
-
-    def _subscribe_to_managers(self):
-        """Subscribe to GUI and Localization managers."""
-        self.localization_manager.subscribe(self, ["lang_update"])
-        self.gui_manager.subscribe(self)
-
-    def _register_gui_components(self):
-        """Register the GUI components."""
-        self.gui_manager.register_gui_file(
-            self.GUI_COMPONENT_NAME,
-            self.GUI_FILE_PATH,
-            self,
-            self
-        )
-
-    # Manager Event Handlers
-    def on_gui_build(self):
-        """Set widget references for the frame."""
-        GuiUtils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
-        self.on_language_updated(self.localization_manager.get_language(), "init")
-
-    def on_language_updated(self, language_code, event_type):
-        """Update the language of the widgets in the frame."""
-        if event_type == "lang_update" or event_type == "init":
-            GuiUtils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
-            self.dropdown_ui_theme.configure(
-                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_THEME))),
-                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_THEMES)))
-            )
-            self.dropdown_ui_color_theme.configure(
-                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_COLOR_THEME))),
-                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_COLOR_THEMES)))
-            )
-            self.dropdown_ui_language.configure(
-                variable=ctk.StringVar(self, self.loc(CH.get_variable_value(CKL.UI_LANGUAGE))),
-                values=self._translate_list((CH.get_variable_value(CKL.DROPDOWN_UI_LANGUAGES)))
-            )
-
-    # Widget Event Handlers
     def _on_reset_everything_button(self):
         settings_to_reset = [
             ["WindowSettings", self.WINDOW_SIZE],
@@ -147,7 +93,7 @@ class OptionsFrame(ctk.CTkFrame):
         CH.set_variable_value(CKL.UI_THEME, ctk.StringVar(self, theme_key[0].upper() + theme_key[1:]))
         self.window.set_ui_theme(theme_key)
 
-    def _on_ui_color_theme(self, selected_color_theme=None):
+    def _on_ui_color_theme_dropdown(self, selected_color_theme=None):
         color_theme_key = self.localization_manager.reverse_localize(selected_color_theme)
         CH.set_variable_value(CKL.UI_COLOR_THEME, ctk.StringVar(self, color_theme_key[0].upper() + color_theme_key[1:]))
         ui_color_theme = color_theme_key if color_theme_key in ["blue", "dark-blue", "green"] else FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), "themes", f"{color_theme_key}.json")

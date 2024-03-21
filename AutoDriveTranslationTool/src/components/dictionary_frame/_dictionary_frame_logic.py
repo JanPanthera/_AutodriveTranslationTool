@@ -1,12 +1,8 @@
-# dictionary_frame.py ~ AutoDriveTranslationTool
-
-import customtkinter as ctk
+# AutoDriveTranslationTool/src/components/dictionary_frame/dictionary_frame_logic.py
 
 from GuiFramework.widgets import CustomPopupMessageBox
 
 from GuiFramework.utilities import FileOps, CtkHelper
-from GuiFramework.utilities.gui_utils import GuiUtils
-
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -14,53 +10,20 @@ from AutoDriveTranslationTool.src.functions import DictionaryCreator
 from AutoDriveTranslationTool.src.functions.exceptions import InvalidFileNameError
 
 
-class DictionaryFrame(ctk.CTkFrame):
-    GUI_COMPONENT_NAME = "dictionary_frame"
-    GUI_FILE_PATH = FileOps.join_paths("gui", f"{GUI_COMPONENT_NAME}.gui.json")
+class DictionaryFrameLogic:
 
-    def __init__(self, app_instance, tab_view):
-        super().__init__(tab_view)
+    def __init__(self, app_instance, gui_instance) -> None:
+        """Initialize the dictionary frame logic."""
         self.app_instance = app_instance
-
-        self._initialize_components()
-        self._subscribe_to_managers()
-        self._register_gui_components()
-
-    def _initialize_components(self):
-        """Initialize essential components"""
-        self.window = self.app_instance.window
-        self.gui_manager = self.app_instance.gui_manager
+        self.gui_instance = gui_instance
         self.localization_manager = self.app_instance.localization_manager
-
         self.loc = self.localization_manager.localize
 
-        self.GUI_FILE_PATH = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), self.GUI_FILE_PATH)
+        self.file_tree_view = self.gui_instance.file_tree_view
+        self.custom_textbox_dictionary_edit_box = self.gui_instance.custom_textbox_dictionary_edit_box
+        self.entry_new_dictionary_file = self.gui_instance.entry_new_dictionary_file
+        self.dropdown_language_select = self.gui_instance.dropdown_language_select
 
-    def _subscribe_to_managers(self):
-        """Subscribe to GUI and Localization managers."""
-        self.localization_manager.subscribe(self, ["lang_update"])
-        self.gui_manager.subscribe(self)
-
-    def _register_gui_components(self):
-        self.gui_manager.register_gui_file(
-            self.GUI_COMPONENT_NAME,
-            self.GUI_FILE_PATH,
-            self,
-            self
-        )
-
-    # Manager Event Handlers
-    def on_gui_build(self):
-        """Set widget references for the frame and initialize gui components."""
-        GuiUtils.on_gui_build(self, self.GUI_COMPONENT_NAME, self.gui_manager)
-        self.file_tree_view.create_tree(CH.get_variable_value(CKL.DICTIONARIES_PATH), expand_root_node=True)
-        self.on_language_updated(self.localization_manager.get_language(), "init")
-
-    def on_language_updated(self, language_code, event_type):
-        if event_type in {"lang_update", "init"}:
-            GuiUtils.update_language(self.gui_manager, self.loc, self.GUI_COMPONENT_NAME)
-
-    # Widget Event Handlers
     def _on_save_dictionary_file(self):
         """Save the text in the dictionary edit box to a file."""
         selected_file = self.file_tree_view.get_selected_files()
