@@ -24,7 +24,7 @@ class TranslationFrameGui(ctk.CTkFrame):
         self._create_gui()
 
     def _create_gui(self) -> None:
-        """Create GUI components for translation options and console output."""
+        """Create GUI components for the translation frame."""
         self.grid(row=0, column=0, sticky="nsew")
 
         self.rowconfigure(0, weight=1)

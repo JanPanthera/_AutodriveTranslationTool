@@ -27,17 +27,20 @@ Tab = namedtuple('Tab', ['frame', 'name'])
 
 class AutoDriveTranslationTool:
     def __init__(self):
+        """Initialize the AutoDrive Translation Tool with default settings."""
         self.logger = Logger.get_logger(LOGGER_NAME)
         self.window = Window(lazy_init=True)
         self.config_setup = ConfigSetup(self.window)
         self._initialize()
 
     def _initialize(self):
+        """Initialize localization, window, and GUI components."""
         self._initialize_localization()
         self._initialize_window()
         self._setup_gui_components()
 
     def _initialize_localization(self):
+        """Initialize localization settings and update locales if necessary."""
         if CH.get_variable_value(CKL.LOCALE_UPDATER).get():
             self.locale_updater = LocaleUpdater(
                 locales_dir=CH.get_variable_value(CKL.LOCALES_PATH),
@@ -57,6 +60,7 @@ class AutoDriveTranslationTool:
         self.localization_manager.subscribe(self, ["before_subs_notify", "lang_update", "after_subs_notify"])
 
     def _initialize_window(self):
+        """Configure and display the application window based on user settings."""
         color_theme_key = self.localization_manager.reverse_localize(CH.get_variable_value(CKL.UI_COLOR_THEME).get()).lower()
         if color_theme_key not in ["blue", "dark-blue", "green"]:
             color_theme_key = FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), "themes", f"{color_theme_key}.json")
@@ -77,6 +81,7 @@ class AutoDriveTranslationTool:
         self.window.show()
 
     def _setup_gui_components(self):
+        """Set up GUI components and tabs for the application."""
         loc = self.localization_manager.localize
 
         self.tab_view = TabView(self.window)
@@ -98,6 +103,7 @@ class AutoDriveTranslationTool:
         self.tab_view.show_tab(self.tabs["tab_translation"].frame)
 
     def on_language_updated(self, language_code, event_type):
+        """Update GUI components to reflect the new language settings."""
         if event_type == "before_subs_notify":
             self.tab_view.hide()
         elif event_type == "lang_update":
@@ -111,9 +117,11 @@ class AutoDriveTranslationTool:
             self.window.after(1, self.tab_view.show)
 
     def run(self):
+        """Start the main application loop."""
         self.window.mainloop()
 
     def on_window_close(self):
+        """Handle window close event and save settings if necessary."""
         if CH.get_variable_value(CKL.SAVE_WINDOW_SIZE).get():
             CH.save_setting(CKL.WINDOW_SIZE, f"{self.window.winfo_width()}x{self.window.winfo_height()}")
         if CH.get_variable_value(CKL.SAVE_WINDOW_POS).get():

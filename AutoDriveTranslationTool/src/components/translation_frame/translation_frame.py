@@ -40,6 +40,6 @@ class TranslationFrame:
             widget.configure(command=lambda event=event: EventManager.notify(event))
 
     def on_language_updated(self, language_code: str, event_type: str) -> None:
-        """Handle language updates for the translation frame."""
+        """Handle language updates."""
         if event_type == "lang_update":
             pass  # TODO: Implement language update for translation frame
