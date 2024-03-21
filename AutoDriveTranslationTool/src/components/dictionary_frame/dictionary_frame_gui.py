@@ -7,27 +7,24 @@ from GuiFramework.widgets import CustomTextbox, FileTreeView
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
-from .dictionary_frame_logic import DictionaryFrameLogic
 from AutoDriveTranslationTool.src.core.constants import FONT_BIG, FONT_BIG_BOLD
 
 
 class DictionaryFrameGui(ctk.CTkFrame):
-    """Represents the GUI frame for dictionary functionalities."""
+    """Initialize the dictionary frame GUI components."""
 
     def __init__(self, app_instance, tab_view) -> None:
+        """Initialize the dictionary frame GUI components."""
         super().__init__(tab_view)
         self.app_instance = app_instance
 
-        self.logic = None
-
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
-        self.localization_manager.subscribe(self, ["lang_update"])
 
         self.create_gui()
 
     def create_gui(self) -> None:
-        """Create the GUI components."""
+        """Create GUI components for the dictionary frame."""
         self.grid(row=0, column=0, sticky="nsew")
 
         self.rowconfigure(0, weight=1)
@@ -38,6 +35,7 @@ class DictionaryFrameGui(ctk.CTkFrame):
         self.create_dictionary_files_frame()
 
     def create_dictionary_edit_box_frame(self) -> None:
+        """Create the edit box frame within the dictionary frame."""
         self.dictionary_edit_box_frame = ctk.CTkFrame(self)
         self.dictionary_edit_box_frame.grid(row=0, column=0, padx=(20, 5), pady=(20, 20), sticky="nsew")
 
@@ -66,6 +64,7 @@ class DictionaryFrameGui(ctk.CTkFrame):
         self.btn_clear_dictionary_edit_textbox.grid(row=1, column=2, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
     def create_dictionary_files_frame(self) -> None:
+        """Create the files frame within the dictionary frame."""
         self.dictionary_files_frame = ctk.CTkFrame(self)
         self.dictionary_files_frame.grid(row=0, column=1, padx=(5, 20), pady=(20, 20), sticky="nsew")
 
@@ -92,17 +91,3 @@ class DictionaryFrameGui(ctk.CTkFrame):
         self.btn_delete_dictionary_file = ctk.CTkButton(self.dictionary_files_frame, text=self.loc("btn_delete_dictionary_file"))
         self.btn_delete_dictionary_file.configure(font=FONT_BIG_BOLD)
         self.btn_delete_dictionary_file.grid(row=4, column=0, padx=(10, 10), pady=(5, 10), sticky="nsew")
-
-    def setup_logic(self) -> None:
-        """Setup the logic for the dictionary frame."""
-        self.logic = DictionaryFrameLogic(self.app_instance, self)
-
-        self.btn_save_dictionary_file.configure(command=self.logic._on_save_dictionary_file)
-        self.btn_load_dictionary_file.configure(command=self.logic._on_load_dictionary_file)
-        self.btn_clear_dictionary_edit_textbox.configure(command=self.logic._on_clear_dictionary_edit_textbox)
-        self.btn_create_dictionary_file.configure(command=self.logic._on_create_dictionary_file)
-        self.btn_delete_dictionary_file.configure(command=self.logic._on_delete_dictionary_file)
-
-    def on_language_updated(self, language_code, event_type):
-        if event_type in {"lang_update", "init"}:
-            pass

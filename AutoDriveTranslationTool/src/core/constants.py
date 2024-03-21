@@ -31,6 +31,12 @@ EVENT_ON_SAVE_CUSTOM = "on_save_custom"
 EVENT_ON_LOAD_CUSTOM = "on_load_custom"
 EVENT_ON_LOAD_DEFAULT = "on_load_default"
 
+EVENT_ON_SAVE_DICTIONARY_FILE = "on_save_dictionary_file"
+EVENT_ON_LOAD_DICTIONARY_FILE = "on_load_dictionary_file"
+EVENT_ON_CLEAR_DICTIONARY_EDIT_TEXTBOX = "on_clear_dictionary_edit_textbox"
+EVENT_ON_CREATE_DICTIONARY_FILE = "on_create_dictionary_file"
+EVENT_ON_DELETE_DICTIONARY_FILE = "on_delete_dictionary_file"
+
 EVENT_ON_SAVE_WINDOW_SIZE_CHECKBOX = "on_save_window_size_checkbox"
 EVENT_ON_SAVE_WINDOW_POS_CHECKBOX = "on_save_window_pos_checkbox"
 EVENT_ON_CENTER_WINDOW_ON_STARTUP_CHECKBOX = "on_center_window_on_startup_checkbox"
