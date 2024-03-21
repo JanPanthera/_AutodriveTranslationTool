@@ -3,24 +3,40 @@
 import customtkinter as ctk
 
 from GuiFramework.widgets import CustomPopupMessageBox
+
+from GuiFramework.utilities import EventManager
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
+from AutoDriveTranslationTool.src.core.constants import (
+    EVENT_ON_ADD_LANGUAGE, EVENT_ON_REMOVE_LANGUAGE,
+    EVENT_ON_SAVE_CUSTOM, EVENT_ON_LOAD_CUSTOM, EVENT_ON_LOAD_DEFAULT
+)
+
 
 class LanguagesFrameLogic:
+    """Initialize the languages frame logic components."""
 
     def __init__(self, app_instance, gui_instance) -> None:
+        """Initialize languages frame logic components."""
         self.app_instance = app_instance
         self.gui_instance = gui_instance
-
-        self.scroll_list_language_selection = app_instance.translation_frame.scroll_list_language_selection
-        self.dropdown_language_select = app_instance.dictionary_frame.dropdown_language_select
 
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
 
+        self._setup_event_handlers()
+
+    def _setup_event_handlers(self) -> None:
+        """Register event handlers for language actions."""
+        EventManager.subscribe(EVENT_ON_ADD_LANGUAGE, self._on_add_language)
+        EventManager.subscribe(EVENT_ON_REMOVE_LANGUAGE, self._on_remove_language)
+        EventManager.subscribe(EVENT_ON_SAVE_CUSTOM, self._on_save_custom)
+        EventManager.subscribe(EVENT_ON_LOAD_CUSTOM, self._on_load_custom)
+        EventManager.subscribe(EVENT_ON_LOAD_DEFAULT, self._on_load_default)
+
     def _on_add_language(self):
-        """Add a new language to the list of supported languages."""
+        """Add a new language to the supported languages list."""
         new_language = self.gui_instance.entry_new_language.get()
         if not new_language:
             return
@@ -35,7 +51,7 @@ class LanguagesFrameLogic:
             self.gui_instance.entry_new_language.delete(0, ctk.END)
 
     def _on_remove_language(self):
-        """Remove the selected languages from the list of supported languages."""
+        """Remove selected languages from the supported languages list."""
         def callback_handler(is_confirmed):
             if is_confirmed:
                 self.gui_instance.scroll_list_languages.remove_checked_entries()
@@ -91,7 +107,6 @@ class LanguagesFrameLogic:
             callback_handler
         )
 
-    # Helper Methods
     def _create_PopupMessageBox(self, title, message, on_callback):
         """Create a popup message box with yes/no buttons."""
         buttons = [

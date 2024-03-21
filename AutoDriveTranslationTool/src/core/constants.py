@@ -25,6 +25,12 @@ EVENT_ON_VALIDATE_OUTPUT_FILES = "on_validate_output_files"
 EVENT_ON_FIND_MISSING_TRANSLATIONS = "on_find_missing_translations"
 EVENT_ON_CLEAR_CONSOLE = "on_clear_console"
 
+EVENT_ON_ADD_LANGUAGE = "on_add_language"
+EVENT_ON_REMOVE_LANGUAGE = "on_remove_language"
+EVENT_ON_SAVE_CUSTOM = "on_save_custom"
+EVENT_ON_LOAD_CUSTOM = "on_load_custom"
+EVENT_ON_LOAD_DEFAULT = "on_load_default"
+
 EVENT_ON_SAVE_WINDOW_SIZE_CHECKBOX = "on_save_window_size_checkbox"
 EVENT_ON_SAVE_WINDOW_POS_CHECKBOX = "on_save_window_pos_checkbox"
 EVENT_ON_CENTER_WINDOW_ON_STARTUP_CHECKBOX = "on_center_window_on_startup_checkbox"
@@ -38,4 +44,3 @@ EVENT_ON_UI_LANGUAGE_DROPDOWN = "on_ui_language_dropdown"
 EVENT_ON_RESET_UI_APPEARANCE_SETTINGS_BUTTON = "on_reset_ui_appearance_settings_button"
 EVENT_ON_WHOLE_WORD_REPLACEMENT_CHECKBOX = "on_whole_word_replacement_checkbox"
 EVENT_ON_RESET_EVERYTHING_BUTTON = "on_reset_everything_button"
-
