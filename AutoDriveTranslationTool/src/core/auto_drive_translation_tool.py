@@ -7,21 +7,18 @@ from src.utilities import ConfigSetup
 
 from GuiFramework.gui import Window
 
-from GuiFramework.gui.gui_manager import GuiManager
 from GuiFramework.utilities import (
     LocalizationManager, LocaleUpdater, FileOps, Logger
 )
 from GuiFramework.widgets import (
     TabView, FileTreeView
 )
-from src.components import (
-    TranslationFrame, LanguagesFrame, DictionaryFrame, OptionsFrame
-)
-from GuiFramework.gui.gui_manager.widget_builder import (
-    CtkFrameBuilder, CtkLabelBuilder, CtkEntryBuilder, CtkOptionMenuBuilder, CtkCheckBoxBuilder,
-    CtkButtonBuilder, ScrollableSelectionFrameBuilder, CustomConsoleTextboxBuilder, CustomTextboxBuilder,
-    FileTreeViewBuilder
-)
+
+from src.components.translation_frame import TranslationFrame
+from src.components.languages_frame import LanguagesFrame
+from src.components.dictionary_frame import DictionaryFrame
+from src.components.options_frame import OptionsFrame
+
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -38,7 +35,6 @@ class AutoDriveTranslationTool:
     def _initialize(self):
         self._initialize_localization()
         self._initialize_window()
-        self._initialize_gui_manager()
         self._setup_gui_components()
 
     def _initialize_localization(self):
@@ -80,38 +76,23 @@ class AutoDriveTranslationTool:
         self.window.apply_configuration(**window_config)
         self.window.show()
 
-    def _initialize_gui_manager(self):
-        self.gui_manager = GuiManager()
-        widget_builders = [
-            # TODO: Ensure that CTK and Framework builders are initialized within the GuiManager itself.
-            # Only application-specific custom widget builders should be added here.
-            CtkFrameBuilder(),
-            CtkLabelBuilder(),
-            CtkEntryBuilder(),
-            CtkOptionMenuBuilder(),
-            CtkCheckBoxBuilder(),
-            CtkButtonBuilder(),
-            ScrollableSelectionFrameBuilder(),
-            CustomConsoleTextboxBuilder(),
-            CustomTextboxBuilder(),
-            FileTreeViewBuilder()
-        ]
-        for builder in widget_builders:
-            self.gui_manager.register_widget_builder(builder)
-
     def _setup_gui_components(self):
         loc = self.localization_manager.localize
 
         self.tab_view = TabView(self.window)
 
+        self.translation_frame = TranslationFrame(self, self.tab_view)
+        self.languages_frame = LanguagesFrame(self, self.tab_view)
+        self.dictionary_frame = DictionaryFrame(self, self.tab_view)
+        self.options_frame = OptionsFrame(self, self.tab_view)
+
         self.tabs = {
-            "tab_translation": Tab(TranslationFrame(self, self.tab_view), loc("tab_translation")),
-            "tab_languages": Tab(LanguagesFrame(self, self.tab_view), loc("tab_languages")),
-            "tab_dictionaries": Tab(DictionaryFrame(self, self.tab_view), loc("tab_dictionaries")),
-            "tab_options": Tab(OptionsFrame(self, self.tab_view), loc("tab_options")),
+            "tab_translation": Tab(self.translation_frame.gui_instance, loc("tab_translation")),
+            "tab_languages": Tab(self.languages_frame.gui_instance, loc("tab_languages")),
+            "tab_dictionaries": Tab(self.dictionary_frame.gui_instance, loc("tab_dictionaries")),
+            "tab_options": Tab(self.options_frame.gui_instance, loc("tab_options")),
         }
 
-        self.gui_manager.build()
         for _, tab in self.tabs.items():
             self.tab_view.add_tab(tab.frame, title=tab.name)
         self.tab_view.show_tab(self.tabs["tab_translation"].frame)
@@ -137,6 +118,4 @@ class AutoDriveTranslationTool:
             CH.save_setting(CKL.WINDOW_SIZE, f"{self.window.winfo_width()}x{self.window.winfo_height()}")
         if CH.get_variable_value(CKL.SAVE_WINDOW_POS).get():
             CH.save_setting(CKL.WINDOW_POSITION, f"{self.window.winfo_x()}+{self.window.winfo_y()}")
-        if CH.get_variable_value(CKL.SAVE_SELECTED_LANGUAGES).get():
-            CH.save_setting(CKL.UI_LANGUAGE, CH.get_variable_value(CKL.UI_LANGUAGE).get())
         self.logger.log_info("Application closed", "AutoDriveTranslationTool")
