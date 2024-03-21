@@ -8,8 +8,8 @@ from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 from AutoDriveTranslationTool.src.core.constants import (
-    EVENT_SELECT_ALL_LANGUAGES, EVENT_DESELECT_ALL_LANGUAGES, EVENT_TRANSLATE,
-    EVENT_VALIDATE_OUTPUT_FILES, EVENT_FIND_MISSING_TRANSLATIONS, EVENT_CLEAR_CONSOLE
+    EVENT_ON_SELECT_ALL_LANGUAGES, EVENT_ON_DESELECT_ALL_LANGUAGES, EVENT_ON_TRANSLATE,
+    EVENT_ON_VALIDATE_OUTPUT_FILES, EVENT_ON_FIND_MISSING_TRANSLATIONS, EVENT_ON_CLEAR_CONSOLE
 )
 
 from AutoDriveTranslationTool.src.functions import (
@@ -18,6 +18,7 @@ from AutoDriveTranslationTool.src.functions import (
 
 
 class TranslationFrameLogic:
+    """Initialize the translation frame logic components."""
 
     def __init__(self, app_instance, gui_instance) -> None:
         """Initialize the translation frame logic components."""
@@ -31,12 +32,12 @@ class TranslationFrameLogic:
 
     def _setup_event_handlers(self) -> None:
         """Register event handlers for translation actions."""
-        EventManager.subscribe(EVENT_SELECT_ALL_LANGUAGES, self._on_select_all)
-        EventManager.subscribe(EVENT_DESELECT_ALL_LANGUAGES, self._on_deselect_all)
-        EventManager.subscribe(EVENT_TRANSLATE, self._on_translate)
-        EventManager.subscribe(EVENT_VALIDATE_OUTPUT_FILES, self._on_validate_output_files)
-        EventManager.subscribe(EVENT_FIND_MISSING_TRANSLATIONS, self._on_find_missing_translations)
-        EventManager.subscribe(EVENT_CLEAR_CONSOLE, self._on_clear_console)
+        EventManager.subscribe(EVENT_ON_SELECT_ALL_LANGUAGES, self._on_select_all)
+        EventManager.subscribe(EVENT_ON_DESELECT_ALL_LANGUAGES, self._on_deselect_all)
+        EventManager.subscribe(EVENT_ON_TRANSLATE, self._on_translate)
+        EventManager.subscribe(EVENT_ON_VALIDATE_OUTPUT_FILES, self._on_validate_output_files)
+        EventManager.subscribe(EVENT_ON_FIND_MISSING_TRANSLATIONS, self._on_find_missing_translations)
+        EventManager.subscribe(EVENT_ON_CLEAR_CONSOLE, self._on_clear_console)
 
     def _on_select_all(self, event_type: str, *args, **kwargs) -> None:
         """Select all languages in the list."""

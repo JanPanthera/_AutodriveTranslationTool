@@ -4,8 +4,8 @@ from .translation_frame_gui import TranslationFrameGui
 from .translation_frame_logic import TranslationFrameLogic
 
 from AutoDriveTranslationTool.src.core.constants import (
-    EVENT_SELECT_ALL_LANGUAGES, EVENT_DESELECT_ALL_LANGUAGES, EVENT_TRANSLATE,
-    EVENT_VALIDATE_OUTPUT_FILES, EVENT_FIND_MISSING_TRANSLATIONS, EVENT_CLEAR_CONSOLE
+    EVENT_ON_SELECT_ALL_LANGUAGES, EVENT_ON_DESELECT_ALL_LANGUAGES, EVENT_ON_TRANSLATE,
+    EVENT_ON_VALIDATE_OUTPUT_FILES, EVENT_ON_FIND_MISSING_TRANSLATIONS, EVENT_ON_CLEAR_CONSOLE
 )
 from GuiFramework.utilities import EventManager
 
@@ -26,18 +26,18 @@ class TranslationFrame:
         self._setup_callbacks()
 
     def _setup_callbacks(self) -> None:
-        """Configure callbacks for translation frame buttons."""
-        event_button_map = {
-            EVENT_SELECT_ALL_LANGUAGES: self.gui_instance.btn_select_all,
-            EVENT_DESELECT_ALL_LANGUAGES: self.gui_instance.btn_deselect_all,
-            EVENT_TRANSLATE: self.gui_instance.btn_translate,
-            EVENT_VALIDATE_OUTPUT_FILES: self.gui_instance.btn_validate_output_files,
-            EVENT_FIND_MISSING_TRANSLATIONS: self.gui_instance.btn_find_missing_translations,
-            EVENT_CLEAR_CONSOLE: self.gui_instance.btn_clear_console
+        """Configure callbacks for translation frame widgets."""
+        event_widget_map = {
+            EVENT_ON_SELECT_ALL_LANGUAGES: self.gui_instance.btn_select_all,
+            EVENT_ON_DESELECT_ALL_LANGUAGES: self.gui_instance.btn_deselect_all,
+            EVENT_ON_TRANSLATE: self.gui_instance.btn_translate,
+            EVENT_ON_VALIDATE_OUTPUT_FILES: self.gui_instance.btn_validate_output_files,
+            EVENT_ON_FIND_MISSING_TRANSLATIONS: self.gui_instance.btn_find_missing_translations,
+            EVENT_ON_CLEAR_CONSOLE: self.gui_instance.btn_clear_console
         }
 
-        for event, button in event_button_map.items():
-            button.configure(command=lambda event=event: EventManager.notify(event))
+        for event, widget in event_widget_map.items():
+            widget.configure(command=lambda event=event: EventManager.notify(event))
 
     def on_language_updated(self, language_code: str, event_type: str) -> None:
         """Handle language updates for the translation frame."""
