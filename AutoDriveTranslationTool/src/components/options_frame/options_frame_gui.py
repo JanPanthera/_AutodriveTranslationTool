@@ -1,35 +1,28 @@
 # AutoDriveTranslationTool/src/components/options_frame/options_frame_gui.py
 
 import customtkinter as ctk
-import GuiFramework.utilities.utils as utils
-
-from GuiFramework.utilities import FileOps, ConfigHandler
-from GuiFramework.utilities.gui_utils import GuiUtils
 
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
-from .options_frame_logic import OptionsFrameLogic
 from AutoDriveTranslationTool.src.core.constants import FONT_BIG, FONT_BIG_BOLD
 
 
 class OptionsFrameGui(ctk.CTkFrame):
-    """Represents the GUI frame for translation functionalities."""
+    """Initialize the options frame GUI components."""
 
     def __init__(self, app_instance, tab_view) -> None:
-        """Initialize the translation frame GUI."""
+        """Initialize the options frame GUI components."""
         super().__init__(tab_view)
         self.app_instance = app_instance
 
-        self.logic = None
-
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
-        self.localization_manager.subscribe(self, ["lang_update"])
 
         self.create_gui()
 
     def create_gui(self) -> None:
+        """Create GUI components for options frame."""
         self.grid(row=0, column=0, sticky="nsew")
 
         self.rowconfigure(0, weight=0)
@@ -48,6 +41,7 @@ class OptionsFrameGui(ctk.CTkFrame):
         self.btn_reset_everything.grid(row=3, column=0, columnspan=2, padx=(20, 20), pady=(5, 20), sticky="nsew")
 
     def create_window_settings_frame(self) -> None:
+        """Create the frame and buttons for window settings."""
         self.window_settings_frame = ctk.CTkFrame(self)
         self.window_settings_frame.grid(row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="nsew")
 
@@ -98,6 +92,7 @@ class OptionsFrameGui(ctk.CTkFrame):
         self.btn_reset_window_position.grid(row=6, column=0, padx=(10, 10), pady=(5, 10), sticky="nsew")
 
     def create_ui_appearance_frame(self) -> None:
+        """Create the frame and buttons for UI appearance settings."""
         self.ui_appearance_frame = ctk.CTkFrame(self)
         self.ui_appearance_frame.grid(row=0, column=1, padx=(5, 10), pady=(10, 5), sticky="nsew")
 
@@ -158,6 +153,7 @@ class OptionsFrameGui(ctk.CTkFrame):
         self.btn_reset_ui_appearance_settings.grid(row=5, column=0, columnspan=2, padx=(10, 10), pady=(5, 10), sticky="nsew")
 
     def create_translation_settings_frame(self) -> None:
+        """Create the frame and buttons for translation settings."""
         self.translation_settings_frame = ctk.CTkFrame(self)
         self.translation_settings_frame.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), sticky="nsew")
 
@@ -176,29 +172,3 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_whole_word_replacement.grid(row=1, column=0, padx=(10, 10), pady=(5, 10), sticky="nsew")
-
-    def setup_logic(self):
-        """Setup the logic for the frame."""
-        self.logic = OptionsFrameLogic(self.app_instance, self)
-
-        self.checkbox_save_window_size.configure(command=self.logic._on_save_window_size_checkbox)
-        self.checkbox_save_window_pos.configure(command=self.logic._on_save_window_pos_checkbox)
-        self.checkbox_center_window_on_startup.configure(command=self.logic._on_center_window_on_startup_checkbox)
-        self.btn_reset_window_settings.configure(command=self.logic._on_reset_window_settings_button)
-        self.btn_reset_window_size.configure(command=self.logic._on_reset_window_size_button)
-        self.btn_reset_window_position.configure(command=self.logic._on_reset_window_pos_button)
-
-        self.checkbox_use_high_dpi_scaling.configure(command=self.logic._on_use_high_dpi_scaling_checkbox)
-        self.dropdown_ui_theme.configure(command=self.logic._on_ui_theme_dropdown)
-        self.dropdown_ui_color_theme.configure(command=self.logic._on_ui_color_theme_dropdown)
-        self.dropdown_ui_language.configure(command=self.logic._on_ui_language_dropdown)
-        self.btn_reset_ui_appearance_settings.configure(command=self.logic._on_reset_ui_appearance_settings_button)
-
-        self.checkbox_whole_word_replacement.configure(command=self.logic._on_whole_word_replacement_checkbox)
-
-        self.btn_reset_everything.configure(command=self.logic._on_reset_everything_button)
-
-    def on_language_updated(self, language_code, event_type):
-        """Update the language of the widgets in the frame."""
-        if event_type == "lang_update" or event_type == "init":
-            pass
