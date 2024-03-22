@@ -32,35 +32,36 @@ class TranslationFrameLogic:
 
     def _setup_event_handlers(self) -> None:
         """Register event handlers for translation actions."""
-        EventManager.subscribe(EVENT_ON_SELECT_ALL_LANGUAGES, self._on_select_all)
-        EventManager.subscribe(EVENT_ON_DESELECT_ALL_LANGUAGES, self._on_deselect_all)
         EventManager.subscribe(EVENT_ON_TRANSLATE, self._on_translate)
         EventManager.subscribe(EVENT_ON_VALIDATE_OUTPUT_FILES, self._on_validate_output_files)
         EventManager.subscribe(EVENT_ON_FIND_MISSING_TRANSLATIONS, self._on_find_missing_translations)
         EventManager.subscribe(EVENT_ON_CLEAR_CONSOLE, self._on_clear_console)
 
-    def _on_select_all(self, event_type: str, *args, **kwargs) -> None:
-        """Select all languages in the list."""
-        self.gui_instance.scroll_list_language_selection.set_all_entries_state(True)
-
-    def _on_deselect_all(self, event_type: str, *args, **kwargs) -> None:
-        """Deselect all languages in the list."""
-        self.gui_instance.scroll_list_language_selection.set_all_entries_state(False)
-
     def _on_translate(self, event_type: str, *args, **kwargs) -> None:
         """Start the translation process for selected languages."""
         def callback_handler(is_confirmed: bool) -> None:
             if is_confirmed:
+                # new system uses:
+                # input_files_tree_view, dictionaries_tree_view
                 Translator(
-                    input_path=CH.get_variable_value(CKL.INPUT_PATH),
+                    input_files=self.gui_instance.input_files_tree_view.get_selected_files(),
+                    dictionaries=self.gui_instance.dictionaries_tree_view.get_selected_files(),
                     output_path=CH.get_variable_value(CKL.OUTPUT_PATH),
-                    dictionaries_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
-                    languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
                     output_widget=self.gui_instance.textbox_output_console,
-                    localization_manager=self.localization_manager,
-                    console=False,
+                    progress_bar=self.gui_instance.progress_bar,
                     whole_word=CH.get_variable_value(CKL.WHOLE_WORD_REPLACEMENT),
+                    localization_manager=self.localization_manager
                 )
+                # Translator(
+                #     input_path=CH.get_variable_value(CKL.INPUT_PATH),
+                #     output_path=CH.get_variable_value(CKL.OUTPUT_PATH),
+                #     dictionaries_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
+                #     languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
+                #     output_widget=self.gui_instance.textbox_output_console,
+                #     localization_manager=self.localization_manager,
+                #     console=False,
+                #     whole_word=CH.get_variable_value(CKL.WHOLE_WORD_REPLACEMENT),
+                # )
         CustomPopupMessageBox(
             self.gui_instance,
             title=self.loc("translation_process"),

@@ -9,7 +9,7 @@ LOG_NAME = APP_NAME.lower()
 
 UI_THEMES = ["light", "dark", "system"]
 UI_COLOR_THEMES = ["blue", "dark-blue", "green", "ad-green"]
-UI_LANGUAGES = ["english", "german", "french", "italian", "russian"]
+UI_LANGUAGES = ["english", "german", "french", "italian", "russian", "spanish"]
 
 FONT_SMALL = ("Arial", 12)
 FONT_SMALL_BOLD = ("Arial", 12, "bold")

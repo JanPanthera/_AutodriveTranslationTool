@@ -2,7 +2,7 @@
 
 import customtkinter as ctk
 
-from GuiFramework.widgets import ScrollableSelectionFrame, CustomConsoleTextbox
+from GuiFramework.widgets import FileTreeView, CustomConsoleTextbox
 
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
@@ -28,8 +28,8 @@ class TranslationFrameGui(ctk.CTkFrame):
         self.grid(row=0, column=0, sticky="nsew")
 
         self.rowconfigure(0, weight=1)
-        self.columnconfigure(0, weight=0)
-        self.columnconfigure(1, weight=1)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(1, weight=14)
 
         self._create_translation_frame()
         self._create_console_output_frame()
@@ -39,28 +39,16 @@ class TranslationFrameGui(ctk.CTkFrame):
         self.translation_frame = ctk.CTkFrame(self)
         self.translation_frame.grid(row=0, column=0, padx=(20, 10), pady=(20, 20), sticky="nsew")
 
-        self.translation_frame.rowconfigure(0, weight=0)
+        self.translation_frame.rowconfigure(0, weight=1)
         self.translation_frame.rowconfigure(1, weight=1)
-        self.translation_frame.columnconfigure(0, weight=0)
-        self.translation_frame.columnconfigure(1, weight=0)
+        self.translation_frame.columnconfigure(0, weight=1)
+        self.translation_frame.columnconfigure(1, weight=1)
 
-        self.btn_select_all = ctk.CTkButton(self.translation_frame, text=self.loc("btn_select_all"))
-        self.btn_select_all.configure(font=FONT_BIG_BOLD)
-        self.btn_select_all.grid(row=0, column=0, padx=(10, 10), pady=(10, 5), sticky="nsew")
+        self.input_files_tree_view = FileTreeView(self.translation_frame, CH.get_variable_value(CKL.INPUT_PATH), multi_select=True, expand_root_node=True)
+        self.input_files_tree_view.grid(row=0, column=0, columnspan=2, padx=(10, 10), pady=(10, 5), sticky="nsew")
 
-        self.btn_deselect_all = ctk.CTkButton(self.translation_frame, text=self.loc("btn_deselect_all"))
-        self.btn_deselect_all.configure(font=FONT_BIG_BOLD)
-        self.btn_deselect_all.grid(row=0, column=1, padx=(5, 10), pady=(10, 5), sticky="nsew")
-
-        self.scroll_list_language_selection = ScrollableSelectionFrame(
-            master=self.translation_frame,
-            variable=CH.get_variable_value(CKL.SUPPORTED_LANGUAGES),
-            values=CH.get_variable_value(CKL.SELECTED_LANGUAGES),
-            widget_type="checkbox",
-            single_select=False,
-            font=FONT_BIG_BOLD,
-        )
-        self.scroll_list_language_selection.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        self.dictionaries_tree_view = FileTreeView(self.translation_frame, CH.get_variable_value(CKL.DICTIONARIES_PATH), multi_select=True, expand_root_node=True)
+        self.dictionaries_tree_view.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(5, 5), sticky="nsew")
 
         self.btn_translate = ctk.CTkButton(self.translation_frame, text=self.loc("btn_translate"))
         self.btn_translate.configure(font=FONT_BIG_BOLD)
@@ -92,4 +80,8 @@ class TranslationFrameGui(ctk.CTkFrame):
 
         self.btn_clear_console = ctk.CTkButton(self.console_output_frame, text=self.loc("btn_clear_console"))
         self.btn_clear_console.configure(font=FONT_BIG_BOLD)
-        self.btn_clear_console.grid(row=1, column=0, padx=(10, 10), pady=(5, 10), sticky="nsew")
+        self.btn_clear_console.grid(row=1, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+
+        self.progress_bar = ctk.CTkProgressBar(self.translation_frame)
+        self.progress_bar.set(0)
+        self.progress_bar.grid(row=5, column=0, columnspan=2, padx=(10, 10), pady=(5, 10), sticky="nsew")

@@ -11,7 +11,7 @@ def output(message, message_type="", loc_func=None, output_widget=None, console=
 
     if logger:
         message = message.replace("\n", "")
-        log_func = getattr(logger, message_type, logger.info)
+        log_func = getattr(logger, message_type, logger.log_info)
         log_func(message)
 
     final_message = f"{prefix}: {message}\n" if prefix else f"{message}\n"

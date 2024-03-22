@@ -2,6 +2,7 @@
 
 import customtkinter as ctk
 
+from GuiFramework.widgets.custom_tooltip import CustomTooltip
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -60,6 +61,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_save_window_size.grid(row=1, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.checkbox_save_window_size, self.loc("tooltip_save_window_size"))
 
         self.checkbox_save_window_pos = ctk.CTkCheckBox(
             master=self.window_settings_frame,
@@ -69,6 +71,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_save_window_pos.grid(row=2, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.checkbox_save_window_pos, self.loc("tooltip_save_window_pos"))
 
         self.checkbox_center_window_on_startup = ctk.CTkCheckBox(
             master=self.window_settings_frame,
@@ -78,6 +81,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_center_window_on_startup.grid(row=3, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.checkbox_center_window_on_startup, self.loc("tooltip_center_window_on_startup"))
 
         self.btn_reset_window_settings = ctk.CTkButton(self.window_settings_frame, text=self.loc("btn_reset_window_settings"))
         self.btn_reset_window_settings.configure(font=FONT_BIG_BOLD)
@@ -111,6 +115,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_use_high_dpi_scaling.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.checkbox_use_high_dpi_scaling, self.loc("tooltip_use_high_dpi_scaling"))
 
         self.label_ui_theme = ctk.CTkLabel(self.ui_appearance_frame, text=self.loc("label_ui_theme"))
         self.label_ui_theme.configure(font=FONT_BIG)
@@ -123,6 +128,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             font=FONT_BIG_BOLD
         )
         self.dropdown_ui_theme.grid(row=2, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.dropdown_ui_theme, self.loc("tooltip_ui_theme"))
 
         self.label_ui_color_theme = ctk.CTkLabel(self.ui_appearance_frame, text=self.loc("label_ui_color_theme"))
         self.label_ui_color_theme.configure(font=FONT_BIG)
@@ -135,6 +141,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             font=FONT_BIG_BOLD
         )
         self.dropdown_ui_color_theme.grid(row=3, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.dropdown_ui_color_theme, self.loc("tooltip_ui_color_theme"))
 
         self.label_ui_language = ctk.CTkLabel(self.ui_appearance_frame, text=self.loc("label_ui_language"))
         self.label_ui_language.configure(font=FONT_BIG)
@@ -147,6 +154,7 @@ class OptionsFrameGui(ctk.CTkFrame):
             font=FONT_BIG_BOLD
         )
         self.dropdown_ui_language.grid(row=4, column=1, padx=(5, 10), pady=(5, 5), sticky="nsew")
+        CustomTooltip(self.dropdown_ui_language, self.loc("tooltip_ui_language"))
 
         self.btn_reset_ui_appearance_settings = ctk.CTkButton(self.ui_appearance_frame, text=self.loc("btn_reset_ui_appearance_settings"))
         self.btn_reset_ui_appearance_settings.configure(font=FONT_BIG_BOLD)
@@ -172,3 +180,4 @@ class OptionsFrameGui(ctk.CTkFrame):
             offvalue=False
         )
         self.checkbox_whole_word_replacement.grid(row=1, column=0, padx=(10, 10), pady=(5, 10), sticky="nsew")
+        CustomTooltip(self.checkbox_whole_word_replacement, self.loc("tooltip_whole_word_replacement"))

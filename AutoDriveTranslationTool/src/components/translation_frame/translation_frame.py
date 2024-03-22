@@ -28,8 +28,6 @@ class TranslationFrame:
     def _setup_callbacks(self) -> None:
         """Configure callbacks for translation frame widgets."""
         event_widget_map = {
-            EVENT_ON_SELECT_ALL_LANGUAGES: self.gui_instance.btn_select_all,
-            EVENT_ON_DESELECT_ALL_LANGUAGES: self.gui_instance.btn_deselect_all,
             EVENT_ON_TRANSLATE: self.gui_instance.btn_translate,
             EVENT_ON_VALIDATE_OUTPUT_FILES: self.gui_instance.btn_validate_output_files,
             EVENT_ON_FIND_MISSING_TRANSLATIONS: self.gui_instance.btn_find_missing_translations,
