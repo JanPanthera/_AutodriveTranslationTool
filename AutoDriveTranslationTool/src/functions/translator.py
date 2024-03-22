@@ -58,14 +58,29 @@ class Translator:
 
     def _translate_files(self):
         self.stats.total_files = len(self.input_files)
-        estimated_translatable_elements = sum(len(dictionary) for _, dictionary in self.dictionaries.items())
-        
-        for file_index, (file_name, input_file_path) in enumerate(self.input_files):
-            self._translate_file(file_name, input_file_path, estimated_translatable_elements)
+        estimated_translatable_elements = sum(len(dictionary) for _, dictionary in self.dictionaries.items()) * 0.66  # 66% of total elements for progress bar
+        total_major_steps = self.stats.total_files * len(self.dictionaries)  # Files * dictionaries
+        major_step_increment = 1 / total_major_steps if total_major_steps != 0 else 0
 
-    def _translate_file(self, file_name, input_file_path, estimated_translatable_elements):
+        current_progress = 0  # Initialize current progress
+        if self.progress_bar:
+            self.progress_bar.set(0)
+
+        for file_index, (file_name, input_file_path) in enumerate(self.input_files):
+            self._translate_file(file_name, input_file_path, estimated_translatable_elements, major_step_increment, current_progress)
+            current_progress += major_step_increment * len(self.dictionaries)  # Increment progress after each file
+            if self.progress_bar:
+                self.progress_bar.set(min(current_progress, 1))  # Ensure progress does not exceed 100%
+                self.progress_bar.update()
+
+        if self.progress_bar:
+            self.progress_bar.set(1)  # Ensure progress bar is full at the end
+
+    def _translate_file(self, file_name, input_file_path, estimated_translatable_elements, major_step_increment, current_progress):
+        minor_step_increment = major_step_increment / estimated_translatable_elements
+
         for language, dictionary in self.dictionaries.items():
-            output_dir_path = os.path.join(self.output_path, language, os.path.dirname(os.path.relpath(input_file_path, os.path.dirname(input_file_path))))
+            output_dir_path = os.path.join(self.output_path, language, os.path.dirname(input_file_path))
             os.makedirs(output_dir_path, exist_ok=True)
             output_file_path = os.path.join(output_dir_path, file_name)
 
@@ -82,13 +97,20 @@ class Translator:
                                 element.text = source_text.sub(target_text, element.text)
                                 if element.text != original_text:
                                     self.stats.increment_translations()
+                                    current_progress += minor_step_increment  # Increment minor step
                                     if self.progress_bar:
-                                        progress = self.stats.total_translations / estimated_translatable_elements
-                                        self.progress_bar.set(progress)
+                                        self.progress_bar.set(min(current_progress, 1))  # Ensure progress does not exceed 100%
                                         self.progress_bar.update()
 
+            # Major step sync after completing translations for each dictionary
+            current_progress += major_step_increment - (len(dictionary) * minor_step_increment)
+            if self.progress_bar:
+                self.progress_bar.set(min(current_progress, 1))  # Ensure progress does not exceed 100%
+                self.progress_bar.update()
+
             tree.write(output_file_path, encoding='utf-8')
-            self._output(f"File '{file_name}' translated for '{language}' language.", message_type="info")
+            _file_name = os.path.join(os.path.dirname(input_file_path), file_name) # FIX: file_name and its parent not the entire path
+            self._output(f"File '{_file_name}' translated for '{language}' language.", message_type="info")
 
     def _show_stats(self):
         self._output(f"Total files: {self.stats.total_files}")
