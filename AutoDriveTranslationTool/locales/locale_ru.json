@@ -1,5 +1,6 @@
 {
-   "default": {},
+   "default": {
+   },
    "generic": {
       "no": "No",
       "yes": "Yes",
@@ -33,6 +34,16 @@
       "confirm_load_default_lang_msg": "Are you sure you want to load the languages from the default configuration file?",
       "confirm_remove_lang_msg_title": "Remove Language",
       "confirm_remove_lang_msg": "Are you sure you want to remove the selected languages?"
+   },
+   "tooltip": {
+      "tooltip_save_window_size": "Save the window size on application exit?",
+      "tooltip_save_window_pos": "Save the window position on application exit?",
+      "tooltip_center_window_on_startup": "Center the window on startup?",
+      "tooltip_use_high_dpi_scaling": "Use high DPI scaling for the application?",
+      "tooltip_ui_theme": "Select the UI theme.",
+      "tooltip_ui_color_theme": "Select the UI Color theme. Application restart required.",
+      "tooltip_ui_language": "Select the UI language.",
+      "tooltip_whole_word_replacement": "Enable whole word replacement for translations?\n\nExample: 'test' will not be replaced in 'testing'."
    },
    "languages": {
       "english": "English",
@@ -99,21 +110,22 @@
       "btn_reset_everything": "Reset everything"
    },
    "trn_script": {
-      "trn_error_translating_file": "An error occurred while translating file '{0}': {1}",
-      "trn_starting_translation": "--- Starting {0} Translation ---\n",
-      "trn_translating_files": "Translating files...",
-      "trn_file_translated": "File translated: {0}",
-      "trn_file_skipped": "File skipped: {0}",
-      "trn_translation_finished": "\n{0} translation results:",
-      "trn_translation_count": "  Translation Counts: {0}",
-      "trn_translation_summary": "    {0} --> {1}: {2} replacements",
-      "trn_starting_translation_process": "Starting translation process for {0} languages: {1}.\n",
-      "trn_input": "Input: {0}",
-      "trn_output": "Output: {0}\n",
-      "trn_whole_word_enabled": "Whole word replacement is enabled.\n",
-      "trn_whole_word_disabled": "Whole word replacement is disabled.\n",
-      "trn_dictionary_not_found": "Dictionary file '{0}' not found. Skipping translation for {1}.\n",
-      "trn_translation_process_finished": "Translation process finished.\n\n"
+      "trn_translation_summary": "Translation Summary:",
+      "trn_total_files_translated": "- Total files translated: {0}",
+      "trn_total_translations_made": "- Total translations made: {0}",
+      "trn_avg_translations_per_file": "- Average translations per file: {0:.2f}",
+      "trn_unique_words_translated": "- Unique words translated: {0}",
+      "trn_total_time_taken": "- Total time taken: {0}",
+      "trn_file_based_statistics": "\nFile-based Statistics:",
+      "trn_file_translations": "{0}:",
+      "trn_file_language_translations": "- {0} translations in {1}",
+      "trn_translation_based_statistics": "\nTranslation-based Statistics (Top 5):",
+      "trn_word_translation_count": "- {0}: {1} times",
+      "trn_language_based_statistics": "\nLanguage-based Statistics:",
+      "trn_language_translation_count": "- {0}: {1} translations",
+      "trn_error_invalid_input_file": "Input file '{0}' is not an XML file.",
+      "trn_error_parsing_xml_file": "Error parsing XML file '{0}': {1}.",
+      "trn_error_invalid_dictionary": "Dictionary '{0}' is not a .dic file."
    },
    "fmt_script": {
       "fmt_dictionary_not_found": "Dictionary file for {0} not found.",
@@ -134,5 +146,6 @@
       "vof_validation_finished_info": "\nReview the errors above and adjust your XML content to meet the length requirements for <name> and <group> tags.\n",
       "vof_validation_finished": "Validation process finished."
    },
-   "unused": {}
+   "unused": {
+   }
 }

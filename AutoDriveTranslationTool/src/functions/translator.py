@@ -175,21 +175,26 @@ class Translator:
         """Validate the input files to ensure they are XML files."""
         for file_name, input_file_path in self.input_files:
             if not input_file_path.endswith('.xml'):
-                raise ValueError(f"Input file '{input_file_path}' is not an XML file.")
+                self.input_files.remove((file_name, input_file_path))
+                self.logger.log_error(f"Input file '{input_file_path}' is not an XML file.", module_name='Translator')
+                # Translation key: "trn_error_invalid_input_file": "Input file '{0}' is not an XML file."
+                self._output("trn_error_invalid_input_file", input_file_path)
             try:
                 ET.parse(input_file_path)
             except ET.ParseError as e:
                 self.input_files.remove((file_name, input_file_path))
                 self.logger.log_error(f"Error parsing XML file '{input_file_path}': {e}", module_name='Translator')
-                self._output(f"Error parsing XML file '{input_file_path}': {e}")
+                # Translation key: "trn_error_parsing_xml_file": "Error parsing XML file '{0}': {1}"
+                self._output("trn_error_parsing_xml_file", input_file_path, e)
                 
     def _validate_dictionaries(self):
-        """Validate the dictionaries to ensure they are dic files."""
+        """Validate the dictionaries to ensure they are .dic files."""
         for dictionary_name, dictionary_path in self.dictionaries_path:
             if not dictionary_path.endswith('.dic'):
                 self.dictionaries_path.remove((dictionary_name, dictionary_path))
                 self.logger.log_error(f"Dictionary '{dictionary_path}' is not a .dic file.", module_name='Translator')
-                self._output(f"Dictionary '{dictionary_path}' is not a .dic file.")
+                # Translation key: "trn_error_invalid_dictionary": "Dictionary '{0}' is not a .dic file."
+                self._output("trn_error_invalid_dictionary", dictionary_path)
 
     def _create_merged_dictionaries(self):
         """Merge dictionaries from provided paths into a single dictionary."""
