@@ -31,16 +31,19 @@ class Translator:
             self.translations_per_word[source_text] = self.translations_per_word.get(source_text, 0) + 1
             self.unique_words_translated.add(source_text)
 
-    def __init__(self, input_files, dictionaries, output_path, output_widget=None, progress_bar=None, whole_word=False, localization_manager=None):
-        """Initialize the translator with given parameters and start the translation process."""
+    def __init__(self, input_files, dictionaries, output_path, output_widget=None, console_output=False, progress_bar=None, whole_word=False, localization_manager=None):
+        """Initialize the translator and start the translation process."""
         start_time = time.time()
         self.logger = Logger.get_logger(LOGGER_NAME)
         self.input_files = input_files
         self.dictionaries_path = dictionaries
+        self._validate_input_files()
+        self._validate_dictionaries()
         self.output_path = output_path
         self.output_widget = output_widget
         if self.output_widget:
             self.output_widget.clear_console()
+        self.console_output = console_output
         self.progress_bar = progress_bar
         if self.progress_bar:
             self.progress_bar.set(0)
@@ -113,7 +116,7 @@ class Translator:
         return translations_this_file
 
     def _show_stats(self):
-        """Display translation statistics in the output widget."""
+        """Display translation statistics."""
         # Translation key: "trn_translation_summary": "Translation Summary:"
         self._output("trn_translation_summary")
         # Translation key: "trn_total_files_translated": "- Total files translated: {0}"
@@ -154,7 +157,6 @@ class Translator:
 
     def _output(self, message, *args, **kwargs):
         """Output a message to the console or the output widget."""
-        console = kwargs.get('console', False)
         auto_new_line = kwargs.get('auto_new_line', True)
         prefix = kwargs.get('prefix', '')
 
@@ -166,8 +168,28 @@ class Translator:
         if self.output_widget:
             self.output_widget.write_console(final_message)
 
-        if console:
+        if self.console_output:
             print(final_message, end='')
+            
+    def _validate_input_files(self):
+        """Validate the input files to ensure they are XML files."""
+        for file_name, input_file_path in self.input_files:
+            if not input_file_path.endswith('.xml'):
+                raise ValueError(f"Input file '{input_file_path}' is not an XML file.")
+            try:
+                ET.parse(input_file_path)
+            except ET.ParseError as e:
+                self.input_files.remove((file_name, input_file_path))
+                self.logger.log_error(f"Error parsing XML file '{input_file_path}': {e}", module_name='Translator')
+                self._output(f"Error parsing XML file '{input_file_path}': {e}")
+                
+    def _validate_dictionaries(self):
+        """Validate the dictionaries to ensure they are dic files."""
+        for dictionary_name, dictionary_path in self.dictionaries_path:
+            if not dictionary_path.endswith('.dic'):
+                self.dictionaries_path.remove((dictionary_name, dictionary_path))
+                self.logger.log_error(f"Dictionary '{dictionary_path}' is not a .dic file.", module_name='Translator')
+                self._output(f"Dictionary '{dictionary_path}' is not a .dic file.")
 
     def _create_merged_dictionaries(self):
         """Merge dictionaries from provided paths into a single dictionary."""
