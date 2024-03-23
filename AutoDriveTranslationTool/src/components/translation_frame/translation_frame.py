@@ -1,13 +1,12 @@
-# AutoDriveTranslationTool/src/components/dictionary_frame/_dictionary_frame_gui.py
+# AutoDriveTranslationTool/src/components/translation_frame/translation_frame.py
+
+import os
 
 from .translation_frame_gui import TranslationFrameGui
 from .translation_frame_logic import TranslationFrameLogic
 
-from AutoDriveTranslationTool.src.core.constants import (
-    EVENT_ON_SELECT_ALL_LANGUAGES, EVENT_ON_DESELECT_ALL_LANGUAGES, EVENT_ON_TRANSLATE,
-    EVENT_ON_VALIDATE_OUTPUT_FILES, EVENT_ON_FIND_MISSING_TRANSLATIONS, EVENT_ON_CLEAR_CONSOLE
-)
-from GuiFramework.utilities import EventManager
+from GuiFramework.utilities.config import ConfigHandler as CH
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
 class TranslationFrame:
@@ -27,15 +26,32 @@ class TranslationFrame:
 
     def _setup_callbacks(self) -> None:
         """Configure callbacks for translation frame widgets."""
-        event_widget_map = {
-            EVENT_ON_TRANSLATE: self.gui_instance.btn_translate,
-            EVENT_ON_VALIDATE_OUTPUT_FILES: self.gui_instance.btn_validate_output_files,
-            EVENT_ON_FIND_MISSING_TRANSLATIONS: self.gui_instance.btn_find_missing_translations,
-            EVENT_ON_CLEAR_CONSOLE: self.gui_instance.btn_clear_console
+
+        input_files_tree_view = self.gui_instance.input_files_tree_view
+        dictionaries_tree_view = self.gui_instance.dictionaries_tree_view
+
+        input_controls = self.gui_instance.input_files_tree_view_controls
+        dict_controls = self.gui_instance.dictionaries_tree_view_controls
+
+        button_command_map = {
+            self.gui_instance.btn_translate: self.logic_instance._on_translate,
+            self.gui_instance.btn_clear_console: lambda: self.gui_instance.textbox_output_console.clear_console(),
+            input_controls['btn_collapse_all']: lambda: input_files_tree_view.collapse_all(),
+            input_controls['btn_expand_all']: lambda: input_files_tree_view.expand_all(),
+            input_controls['btn_select_all']: lambda: input_files_tree_view.select_all(),
+            input_controls['btn_deselect_all']: lambda: input_files_tree_view.deselect_all(),
+            input_controls['btn_open_explorer']: lambda: os.startfile(CH.get_variable_value(CKL.INPUT_PATH)),
+            input_controls['btn_refresh']: lambda: input_files_tree_view.recreate_tree(expand_root_node=True),
+            dict_controls['btn_collapse_all']: lambda: dictionaries_tree_view.collapse_all(),
+            dict_controls['btn_expand_all']: lambda: dictionaries_tree_view.expand_all(),
+            dict_controls['btn_select_all']: lambda: dictionaries_tree_view.select_all(),
+            dict_controls['btn_deselect_all']: lambda: dictionaries_tree_view.deselect_all(),
+            dict_controls['btn_open_explorer']: lambda: os.startfile(CH.get_variable_value(CKL.DICTIONARIES_PATH)),
+            dict_controls['btn_refresh']: lambda: dictionaries_tree_view.recreate_tree(expand_root_node=True)
         }
 
-        for event, widget in event_widget_map.items():
-            widget.configure(command=lambda event=event: EventManager.notify(event))
+        for button, callback in button_command_map.items():
+            button.configure(command=callback)
 
     def on_language_updated(self, language_code: str, event_type: str) -> None:
         """Handle language updates."""
