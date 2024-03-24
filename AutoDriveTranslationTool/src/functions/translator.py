@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 
 # Logger for debugging
 from AutoDriveTranslationTool.src.core.constants import LOGGER_NAME
+
 from GuiFramework.utilities.logging import Logger
 
 
@@ -31,7 +32,7 @@ class Translator:
             self.translations_per_word[source_text] = self.translations_per_word.get(source_text, 0) + 1
             self.unique_words_translated.add(source_text)
 
-    def __init__(self, input_files, dictionaries, output_path, output_widget=None, console_output=False, progress_bar=None, whole_word=False, localization_manager=None):
+    def __init__(self, input_files, dictionaries, input_path, output_path, output_widget=None, console_output=False, progress_bar=None, whole_word=False, localization_manager=None):
         """Initialize the translator and start the translation process."""
         start_time = time.time()
         self.logger = Logger.get_logger(LOGGER_NAME)
@@ -39,6 +40,7 @@ class Translator:
         self.dictionaries_path = dictionaries
         self._validate_input_files()
         self._validate_dictionaries()
+        self.input_path = input_path
         self.output_path = output_path
         self.output_widget = output_widget
         if self.output_widget:
@@ -89,9 +91,10 @@ class Translator:
         """Translate a single file and return the number of translations made."""
         translations_this_file = 0
 
-        output_dir_path = os.path.join(self.output_path, language, os.path.basename(os.path.dirname(input_file_path)))
+        relative_path = os.path.relpath(input_file_path, start=self.input_path)
+        output_dir_path = os.path.join(self.output_path, language, os.path.dirname(relative_path))
         os.makedirs(output_dir_path, exist_ok=True)
-        output_file_path = os.path.join(output_dir_path, file_name)
+        output_file_path = os.path.join(output_dir_path, os.path.basename(input_file_path))
 
         tree = ET.parse(input_file_path)
         root = tree.getroot()
@@ -170,7 +173,7 @@ class Translator:
 
         if self.console_output:
             print(final_message, end='')
-            
+
     def _validate_input_files(self):
         """Validate the input files to ensure they are XML files."""
         for file_name, input_file_path in self.input_files:
@@ -186,7 +189,7 @@ class Translator:
                 self.logger.log_error(f"Error parsing XML file '{input_file_path}': {e}", module_name='Translator')
                 # Translation key: "trn_error_parsing_xml_file": "Error parsing XML file '{0}': {1}"
                 self._output("trn_error_parsing_xml_file", input_file_path, e)
-                
+
     def _validate_dictionaries(self):
         """Validate the dictionaries to ensure they are .dic files."""
         for dictionary_name, dictionary_path in self.dictionaries_path:

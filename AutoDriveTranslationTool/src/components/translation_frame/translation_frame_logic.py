@@ -30,6 +30,7 @@ class TranslationFrameLogic:
                 Translator(
                     input_files=self.gui_instance.input_files_tree_view.get_selected_files(),
                     dictionaries=self.gui_instance.dictionaries_tree_view.get_selected_files(),
+                    input_path=CH.get_variable_value(CKL.INPUT_PATH),
                     output_path=CH.get_variable_value(CKL.OUTPUT_PATH),
                     output_widget=self.gui_instance.textbox_output_console,
                     progress_bar=self.gui_instance.progress_bar,
