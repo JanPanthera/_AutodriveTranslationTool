@@ -5,9 +5,7 @@ from GuiFramework.widgets import CustomPopupMessageBox
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
-from AutoDriveTranslationTool.src.functions import (
-    TranslationFinder, Validator, Translator
-)
+from AutoDriveTranslationTool.src.functions import Translator
 
 
 class TranslationFrameLogic:
@@ -24,9 +22,8 @@ class TranslationFrameLogic:
     def _on_translate(self) -> None:
         """Start the translation process for selected languages."""
         def callback_handler(is_confirmed: bool) -> None:
+            """Handle the confirmation callback for translation."""
             if is_confirmed:
-                # new system uses:
-                # input_files_tree_view, dictionaries_tree_view
                 Translator(
                     input_files=self.gui_instance.input_files_tree_view.get_selected_files(),
                     dictionaries=self.gui_instance.dictionaries_tree_view.get_selected_files(),
@@ -47,27 +44,40 @@ class TranslationFrameLogic:
             ]
         )
 
-    def _on_validate_output_files(self) -> None:
-        """Check the output files for errors."""
-        Validator(
-            input_path=CH.get_variable_value(CKL.OUTPUT_PATH),
-            languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
-            output_widget=self.gui_instance.textbox_output_console,
-            localization_manager=self.localization_manager,
-            console=False,
-        )
+    def _on_language_updated(self) -> None:
+        """Update the localization for language-related components."""
+        self.gui_instance.btn_translate.update_localization()
+        self.gui_instance.tmp_test_translation_1.update_localization()
+        self.gui_instance.tmp_test_translation_2.update_localization()
+        for button in self.gui_instance.input_files_tree_view_controls.values():
+            button.update_localization()
+        for button in self.gui_instance.dictionaries_tree_view_controls.values():
+            button.update_localization()
+        self.gui_instance.btn_clear_console.update_localization()
 
-    def _on_find_missing_translations(self) -> None:
-        """Look for translations missing in the input files."""
-        checked_entries = self.gui_instance.scroll_list_language_selection.get_checked_entries()
-        if not checked_entries:
-            return
-        TranslationFinder(
-            input_path=CH.get_variable_value(CKL.INPUT_PATH),
-            output_path="missing_translations.txt",
-            dictionary_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
-            languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
-            output_widget=self.gui_instance.textbox_output_console,
-            localization_manager=self.localization_manager,
-            console=False,
-        )
+    # TODO: own module or merged in to another
+    # def _on_validate_output_files(self) -> None:
+    #    """Check the output files for errors."""
+    #    Validator(
+    #        input_path=CH.get_variable_value(CKL.OUTPUT_PATH),
+    #        languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
+    #        output_widget=self.gui_instance.textbox_output_console,
+    #        localization_manager=self.localization_manager,
+    #        console=False,
+    #    )
+
+    # TODO: own module or merged in to another
+    # def _on_find_missing_translations(self) -> None:
+    #    """Look for translations missing in the input files."""
+    #    checked_entries = self.gui_instance.scroll_list_language_selection.get_checked_entries()
+    #    if not checked_entries:
+    #        return
+    #    TranslationFinder(
+    #        input_path=CH.get_variable_value(CKL.INPUT_PATH),
+    #        output_path="missing_translations.txt",
+    #        dictionary_path=CH.get_variable_value(CKL.DICTIONARIES_PATH),
+    #        languages=self.gui_instance.scroll_list_language_selection.get_checked_entries(),
+    #        output_widget=self.gui_instance.textbox_output_console,
+    #        localization_manager=self.localization_manager,
+    #        console=False,
+    #    )

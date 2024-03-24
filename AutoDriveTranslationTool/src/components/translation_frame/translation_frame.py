@@ -33,9 +33,11 @@ class TranslationFrame:
         input_controls = self.gui_instance.input_files_tree_view_controls
         dict_controls = self.gui_instance.dictionaries_tree_view_controls
 
-        button_command_map = {
+        widget_command_map = {
             self.gui_instance.btn_translate: self.logic_instance._on_translate,
             self.gui_instance.btn_clear_console: lambda: self.gui_instance.textbox_output_console.clear_console(),
+            self.gui_instance.tmp_test_translation_1: lambda: self.localization_manager.set_active_language("en"),
+            self.gui_instance.tmp_test_translation_2: lambda: self.localization_manager.set_active_language("de"),
             input_controls['btn_collapse_all']: lambda: input_files_tree_view.collapse_all(),
             input_controls['btn_expand_all']: lambda: input_files_tree_view.expand_all(),
             input_controls['btn_select_all']: lambda: input_files_tree_view.select_all(),
@@ -50,10 +52,10 @@ class TranslationFrame:
             dict_controls['btn_refresh']: lambda: dictionaries_tree_view.recreate_tree(expand_root_node=True)
         }
 
-        for button, callback in button_command_map.items():
-            button.configure(command=callback)
+        for widget, callback in widget_command_map.items():
+            widget.configure(command=callback)
 
     def on_language_updated(self, language_code: str, event_type: str) -> None:
         """Handle language updates."""
         if event_type == "lang_update":
-            pass  # TODO: Implement language update for translation frame
+            self.logic_instance._on_language_updated()
