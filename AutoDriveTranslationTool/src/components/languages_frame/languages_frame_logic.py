@@ -8,11 +8,6 @@ from GuiFramework.utilities import EventManager
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
-from AutoDriveTranslationTool.src.core.constants import (
-    EVENT_ON_ADD_LANGUAGE, EVENT_ON_REMOVE_LANGUAGE,
-    EVENT_ON_SAVE_CUSTOM, EVENT_ON_LOAD_CUSTOM, EVENT_ON_LOAD_DEFAULT
-)
-
 
 class LanguagesFrameLogic:
     """Initialize the languages frame logic components."""
@@ -24,16 +19,6 @@ class LanguagesFrameLogic:
 
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
-
-        self._setup_event_handlers()
-
-    def _setup_event_handlers(self) -> None:
-        """Register event handlers for language actions."""
-        EventManager.subscribe(EVENT_ON_ADD_LANGUAGE, self._on_add_language)
-        EventManager.subscribe(EVENT_ON_REMOVE_LANGUAGE, self._on_remove_language)
-        EventManager.subscribe(EVENT_ON_SAVE_CUSTOM, self._on_save_custom)
-        EventManager.subscribe(EVENT_ON_LOAD_CUSTOM, self._on_load_custom)
-        EventManager.subscribe(EVENT_ON_LOAD_DEFAULT, self._on_load_default)
 
     def _on_add_language(self):
         """Add a new language to the supported languages list."""

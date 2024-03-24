@@ -6,11 +6,6 @@ from GuiFramework.utilities import EventManager, FileOps, CtkHelper
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
-from AutoDriveTranslationTool.src.core.constants import (
-    EVENT_ON_SAVE_DICTIONARY_FILE, EVENT_ON_LOAD_DICTIONARY_FILE, EVENT_ON_CLEAR_DICTIONARY_EDIT_TEXTBOX,
-    EVENT_ON_CREATE_DICTIONARY_FILE, EVENT_ON_DELETE_DICTIONARY_FILE
-)
-
 from AutoDriveTranslationTool.src.functions import DictionaryCreator
 from AutoDriveTranslationTool.src.functions.exceptions import InvalidFileNameError
 
@@ -30,16 +25,6 @@ class DictionaryFrameLogic:
         self.custom_textbox_dictionary_edit_box = self.gui_instance.custom_textbox_dictionary_edit_box
         self.entry_new_dictionary_file = self.gui_instance.entry_new_dictionary_file
         self.dropdown_language_select = self.gui_instance.dropdown_language_select
-
-        self._setup_event_handlers()
-
-    def _setup_event_handlers(self) -> None:
-        """Register event handlers for dictionary actions."""
-        EventManager.subscribe(EVENT_ON_SAVE_DICTIONARY_FILE, self._on_save_dictionary_file)
-        EventManager.subscribe(EVENT_ON_LOAD_DICTIONARY_FILE, self._on_load_dictionary_file)
-        EventManager.subscribe(EVENT_ON_CLEAR_DICTIONARY_EDIT_TEXTBOX, self._on_clear_dictionary_edit_textbox)
-        EventManager.subscribe(EVENT_ON_CREATE_DICTIONARY_FILE, self._on_create_dictionary_file)
-        EventManager.subscribe(EVENT_ON_DELETE_DICTIONARY_FILE, self._on_delete_dictionary_file)
 
     def _on_save_dictionary_file(self):
         """Save the text in the dictionary edit box to a file."""
