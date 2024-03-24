@@ -1,5 +1,9 @@
 {
    "default": {
+      "test_btn_1": "To English",
+      "test_tooltip_1_tt": "Translate to English",
+      "test_btn_2": "To German",
+      "test_tooltip_2_tt": "Translate to German"
    },
    "generic": {
       "no": "No",
@@ -98,22 +102,41 @@
    },
    "options_frame": {
       "tab_options": "Options",
-      "label_window_settings": "Window Settings",
-      "checkbox_save_window_size": "Save window size",
-      "checkbox_save_window_pos": "Save window position",
-      "checkbox_center_window_on_startup": "Center window on startup",
-      "btn_reset_window_settings": "Reset window Settings",
-      "btn_reset_window_size": "Reset window size",
-      "btn_reset_window_pos": "Reset window position",
-      "label_appearance_settings": "Appearance Settings",
-      "checkbox_use_high_dpi_scaling": "Use high DPI scaling",
-      "label_ui_theme": "UI Theme",
-      "label_ui_color_theme": "UI Color Theme",
-      "label_ui_language": "UI Language",
-      "btn_reset_ui_appearance_settings": "Reset UI Appearance Settings",
-      "label_translation_settings": "Translation Settings",
-      "checkbox_whole_word_replacement": "Whole word replacement",
-      "btn_reset_everything": "Reset everything"
+      "of_btn_reset_everything": "Reset everything",
+      "of_btn_reset_everything_tt": "Reset all settings to their default values?",
+
+      "of_lbl_window_settings": "Window Settings",
+      "of_checkbox_save_window_size": "Save window size",
+      "of_checkbox_save_window_size_tt": "Save the window size on application exit?",
+      "of_checkbox_save_window_pos": "Save window position",
+      "of_checkbox_save_window_pos_tt": "Save the window position on application exit?",
+      "of_checkbox_center_window": "Center window",
+      "of_checkbox_center_window_tt": "Center the window on startup?",
+      "of_btn_reset_window_settings": "Reset Window Settings",
+      "of_btn_reset_window_settings_tt": "Reset all window settings to their default values?",
+      "of_btn_reset_window_size": "Reset Window Size",
+      "of_btn_reset_window_size_tt": "Reset the window size to its default value?",
+      "of_btn_reset_window_pos": "Reset Window Position",
+      "of_btn_reset_window_pos_tt": "Reset the window position to its default value?",
+
+      "of_lbl_appearance_settings": "Appearance Settings",
+      "of_checkbox_use_high_dpi_scaling": "Use high DPI scaling",
+      "of_checkbox_use_high_dpi_scaling_tt": "Use high DPI scaling for the application?",
+      "of_lbl_ui_theme": "UI Theme",
+      "of_dropdown_ui_theme_placeholder": "Select UI Theme",
+      "of_dropdown_ui_theme_tt": "Select the UI theme.",
+      "of_lbl_ui_color_theme": "UI Color Theme",
+      "of_dropdown_ui_color_theme_placeholder": "Select UI Color Theme",
+      "of_dropdown_ui_color_theme_tt": "Select the UI color theme. Application restart required.",
+      "of_lbl_ui_language": "UI Language",
+      "of_dropdown_ui_language_placeholder": "Select UI Language",
+      "of_dropdown_ui_language_tt": "Select the UI language.",
+      "of_btn_reset_ui_appearance_settings": "Reset UI Appearance Settings",
+      "of_btn_reset_ui_appearance_settings_tt": "Reset all UI appearance settings to their default values?",
+
+      "of_lbl_translation_settings": "Translation Settings",
+      "of_checkbox_whole_word_replacement": "Whole Word Replacement",
+      "of_checkbox_whole_word_replacement_tt": "Enable whole word replacement for translations?\n\nExample: 'test' will not be replaced in 'testing'."
    },
    "trn_script": {
       "trn_translation_summary": "Translation Summary:",

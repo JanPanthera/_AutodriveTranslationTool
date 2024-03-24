@@ -63,9 +63,9 @@ class ConfigSetup:
             {"name": "supported_languages", "section": "TranslationSettings", "type_": list, "value": ["English", "French", "German", "Italian", "Russian"]},
             {"name": "whole_word_replacement", "section": "TranslationSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
 
-            {"name": "dropdown_ui_themes", "section": "DropdownSettings", "type_": list, "value": UI_THEMES},
-            {"name": "dropdown_ui_color_themes", "section": "DropdownSettings", "type_": list, "value": UI_COLOR_THEMES},
-            {"name": "dropdown_ui_languages", "section": "DropdownSettings", "type_": list, "value": UI_LANGUAGES}
+            {"name": "dropdown_ui_themes", "section": "AppearanceSettings", "type_": list, "value": UI_THEMES, "init_from_file": False, "save_to_file": False},
+            {"name": "dropdown_ui_color_themes", "section": "AppearanceSettings", "type_": list, "value": UI_COLOR_THEMES, "init_from_file": False, "save_to_file": False},
+            {"name": "dropdown_ui_languages", "section": "AppearanceSettings", "type_": list, "value": UI_LANGUAGES, "init_from_file": False, "save_to_file": False}
         ]
         for data in config_data:
             CKL.add_ConfigKey(

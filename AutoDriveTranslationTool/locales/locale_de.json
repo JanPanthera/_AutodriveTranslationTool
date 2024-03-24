@@ -1,5 +1,10 @@
 {
-   "default": {},
+   "default": {
+      "test_btn_1": "Zu Englisch",
+      "test_tooltip_1_tt": "Zu Englisch übersetzen",
+      "test_btn_2": "Zu Deutsch",
+      "test_tooltip_2_tt": "Zu Deutsch übersetzen"
+   },
    "generic": {
       "no": "Nein",
       "yes": "Ja",
@@ -34,6 +39,16 @@
       "confirm_remove_lang_msg_title": "Sprache entfernen",
       "confirm_remove_lang_msg": "Sind Sie sicher, dass Sie die ausgewählten Sprachen entfernen möchten?"
    },
+   "tooltip": {
+      "tooltip_save_window_size": "Fenstergröße beim Beenden der Anwendung speichern?",
+      "tooltip_save_window_pos": "Fensterposition beim Beenden der Anwendung speichern?",
+      "tooltip_center_window_on_startup": "Fenster beim Start zentrieren?",
+      "tooltip_use_high_dpi_scaling": "Hohe DPI-Skalierung für die Anwendung verwenden?",
+      "tooltip_ui_theme": "Das UI-Theme auswählen.",
+      "tooltip_ui_color_theme": "Das UI-Farbthema auswählen. Neustart der Anwendung erforderlich.",
+      "tooltip_ui_language": "Die UI-Sprache auswählen.",
+      "tooltip_whole_word_replacement": "Ganze Wortersetzung für Übersetzungen aktivieren?\n\nBeispiel: 'test' wird nicht in 'testing' ersetzt."
+   },
    "languages": {
       "english": "Englisch",
       "french": "Französisch",
@@ -52,15 +67,21 @@
    },
    "translation_frame": {
       "tab_translation": "Übersetzung",
-      "btn_clear_console": "Konsole leeren",
-      "btn_deselect_all": "Alles abwählen",
-      "btn_find_missing_translations": "Fehlende Übersetzungen finden",
-      "btn_select_all": "Alles auswählen",
-      "btn_translate": "Übersetzen",
-      "btn_validate_output_files": "Ausgabedateien validieren",
-      "start_translation": "Starte Übersetzung",
-      "translation_process": "Übersetzungsprozess",
-      "waiting_for_translation": "Bitte haben Sie Geduld, der Übersetzungsprozess kann einige Zeit in Anspruch nehmen."
+      "tf_btn_translate": "Übersetzung starten",
+      "tf_btn_translate_tt": "Starte den Übersetzungsprozess.",
+      "tf_btn_validate": "Validieren",
+      "tf_btn_validate_tt": "Starte den Validierungsprozess.",
+      "tf_btn_collapse_all_tt": "Alle Ordner einklappen.",
+      "tf_btn_expand_all_tt": "Alle Ordner ausklappen.",
+      "tf_btn_select_all_tt": "Alle Dateien auswählen.",
+      "tf_btn_deselect_all_tt": "Alle Dateien abwählen.",
+      "tf_btn_open_explorer_tt": "Den Datei-Explorer öffnen.",
+      "tf_btn_refresh_tt": "Die Baumansicht aktualisieren.",
+      "tf_btn_clear_console_tt": "Die Konsole leeren.",
+      "tf_cpm_start_translation_title": "Übersetzung starten",
+      "tf_cpm_start_translation_message": "Dies kann eine Weile dauern...",
+      "tf_cpm_start_translation_confirm": "Starten",
+      "tf_cpm_start_translation_cancel": "Abbrechen"
    },
    "languages_frame": {
       "btn_add_language": "Sprache hinzufügen",
@@ -81,22 +102,41 @@
    },
    "options_frame": {
       "tab_options": "Optionen",
-      "label_window_settings": "Fenster Einstellungen",
-      "checkbox_save_window_size": "Speichere Fenstergröße",
-      "checkbox_save_window_pos": "Speichere Fensterposition",
-      "checkbox_center_window_on_startup": "Zentriere Fenster beim Start",
-      "btn_reset_window_settings": "Zurücksetzen",
-      "btn_reset_window_size": "Fenstergröße zurücksetzen",
-      "btn_reset_window_pos": "Fensterposition zurücksetzen",
-      "label_appearance_settings": "Erscheinungsbild Einstellungen",
-      "checkbox_use_high_dpi_scaling": "Benutze High-DPI Skalierung",
-      "label_ui_theme": "UI Theme",
-      "label_ui_color_theme": "UI Farbtheme",
-      "label_ui_language": "UI Sprache",
-      "btn_reset_ui_appearance_settings": "Zurücksetzen",
-      "label_translation_settings": "Übersetzungs Einstellungen",
-      "checkbox_whole_word_replacement": "Ganze Wortersetzung",
-      "btn_reset_everything": "Alles zurücksetzen"
+      "of_btn_reset_everything": "Alles zurücksetzen",
+      "of_btn_reset_everything_tt": "Alle Einstellungen auf ihre Standardwerte zurücksetzen?",
+
+      "of_lbl_window_settings": "Fenstereinstellungen",
+      "of_checkbox_save_window_size": "Fenstergröße speichern",
+      "of_checkbox_save_window_size_tt": "Die Fenstergröße beim Beenden der Anwendung speichern?",
+      "of_checkbox_save_window_pos": "Fensterposition speichern",
+      "of_checkbox_save_window_pos_tt": "Die Fensterposition beim Beenden der Anwendung speichern?",
+      "of_checkbox_center_window": "Fenster zentrieren",
+      "of_checkbox_center_window_tt": "Das Fenster beim Start zentrieren?",
+      "of_btn_reset_window_settings": "Fenstereinstellungen zurücksetzen",
+      "of_btn_reset_window_settings_tt": "Alle Fenstereinstellungen auf ihre Standardwerte zurücksetzen?",
+      "of_btn_reset_window_size": "Fenstergröße zurücksetzen",
+      "of_btn_reset_window_size_tt": "Die Fenstergröße auf ihren Standardwert zurücksetzen?",
+      "of_btn_reset_window_pos": "Fensterposition zurücksetzen",
+      "of_btn_reset_window_pos_tt": "Die Fensterposition auf ihren Standardwert zurücksetzen?",
+
+      "of_lbl_appearance_settings": "Erscheinungsbildeinstellungen",
+      "of_checkbox_use_high_dpi_scaling": "High DPI-Skalierung verwenden",
+      "of_checkbox_use_high_dpi_scaling_tt": "High DPI-Skalierung für die Anwendung verwenden?",
+      "of_lbl_ui_theme": "UI-Theme",
+      "of_dropdown_ui_theme_placeholder": "UI-Theme auswählen",
+      "of_dropdown_ui_theme_tt": "Das UI-Theme auswählen.",
+      "of_lbl_ui_color_theme": "UI-Farbthema",
+      "of_dropdown_ui_color_theme_placeholder": "UI-Farbthema auswählen",
+      "of_dropdown_ui_color_theme_tt": "Das UI-Farbthema auswählen. Neustart der Anwendung erforderlich.",
+      "of_lbl_ui_language": "UI-Sprache",
+      "of_dropdown_ui_language_placeholder": "UI-Sprache auswählen",
+      "of_dropdown_ui_language_tt": "Die UI-Sprache auswählen.",
+      "of_btn_reset_ui_appearance_settings": "UI-Erscheinungsbildeinstellungen zurücksetzen",
+      "of_btn_reset_ui_appearance_settings_tt": "Alle UI-Erscheinungsbildeinstellungen auf ihre Standardwerte zurücksetzen?",
+
+      "of_lbl_translation_settings": "Übersetzungseinstellungen",
+      "of_checkbox_whole_word_replacement": "Ganze Wörter ersetzen",
+      "of_checkbox_whole_word_replacement_tt": "Ganze Wörter bei Übersetzungen ersetzen?\n\nBeispiel: 'test' wird nicht in 'testing' ersetzt."
    },
    "trn_script": {
       "trn_translation_summary": "Zusammenfassung der Übersetzung:",
