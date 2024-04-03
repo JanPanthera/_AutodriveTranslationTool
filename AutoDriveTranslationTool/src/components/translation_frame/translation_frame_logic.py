@@ -37,10 +37,10 @@ class TranslationFrameLogic:
         CustomPopupMessageBox(
             self.gui_instance,
             title=self.loc("tf_cpm_start_translation_title"),
-            message=self.loc("tf_cpm_start_translation_message"),
+            message=self.loc("tf_cpm_start_translation_msg"),
             buttons=[
-                {"text": self.loc("tf_cpm_start_translation_confirm"), "callback": lambda: callback_handler(True)},
-                {"text": self.loc("tf_cpm_start_translation_cancel"), "callback": lambda: callback_handler(False)}
+                {"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
+                {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}
             ]
         )
 

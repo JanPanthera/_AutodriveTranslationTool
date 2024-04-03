@@ -36,22 +36,19 @@ class TranslationFrame:
         widget_command_map = {
             self.gui_instance.btn_translate: self.logic_instance._on_translate,
             self.gui_instance.btn_clear_console: lambda: self.gui_instance.textbox_output_console.clear_console(),
-            self.gui_instance.tmp_test_translation_1: lambda: self.localization_manager.set_active_language("en"),
-            self.gui_instance.tmp_test_translation_2: lambda: self.localization_manager.set_active_language("de"),
             input_controls['btn_collapse_all']: lambda: input_files_tree_view.collapse_all(),
             input_controls['btn_expand_all']: lambda: input_files_tree_view.expand_all(),
-            input_controls['btn_select_all']: lambda: input_files_tree_view.select_all(),
-            input_controls['btn_deselect_all']: lambda: input_files_tree_view.deselect_all(),
+            input_controls['btn_select_all']: lambda: input_files_tree_view.select_all_file_nodes(),
+            input_controls['btn_deselect_all']: lambda: input_files_tree_view.deselect_all_file_nodes(),
             input_controls['btn_open_explorer']: lambda: os.startfile(CH.get_variable_value(CKL.INPUT_PATH)),
             input_controls['btn_refresh']: lambda: input_files_tree_view.recreate_tree(expand_root_node=True),
             dict_controls['btn_collapse_all']: lambda: dictionaries_tree_view.collapse_all(),
             dict_controls['btn_expand_all']: lambda: dictionaries_tree_view.expand_all(),
-            dict_controls['btn_select_all']: lambda: dictionaries_tree_view.select_all(),
-            dict_controls['btn_deselect_all']: lambda: dictionaries_tree_view.deselect_all(),
+            dict_controls['btn_select_all']: lambda: dictionaries_tree_view.select_all_file_nodes(),
+            dict_controls['btn_deselect_all']: lambda: dictionaries_tree_view.deselect_all_file_nodes(),
             dict_controls['btn_open_explorer']: lambda: os.startfile(CH.get_variable_value(CKL.DICTIONARIES_PATH)),
             dict_controls['btn_refresh']: lambda: dictionaries_tree_view.recreate_tree(expand_root_node=True)
         }
-
         for widget, callback in widget_command_map.items():
             widget.configure(command=callback)
 

@@ -61,7 +61,7 @@ class TranslationFrameGui(ctk.CTkFrame):
         self._configure_grid(self.input_files_frame, [(0, 0), (1, 1)], [(0, 1)])
         self.input_files_tree_view_controls = self._create_tree_view_controls(self.input_files_frame)
 
-        self.input_files_tree_view = FileTreeView(self.input_files_frame, CH.get_variable_value(CKL.INPUT_PATH), multi_select=True, expand_root_node=True)
+        self.input_files_tree_view = FileTreeView(parent_container=self.input_files_frame, root_path=CH.get_variable_value(CKL.INPUT_PATH), single_selection=False, expand_root_node=True)
         self.input_files_tree_view.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(0, 10), sticky="nsew")
 
     def _create_dictionaries_frame(self) -> None:
@@ -69,7 +69,7 @@ class TranslationFrameGui(ctk.CTkFrame):
         self._configure_grid(self.dictionaries_frame, [(0, 0), (1, 1)], [(0, 1)])
         self.dictionaries_tree_view_controls = self._create_tree_view_controls(self.dictionaries_frame)
 
-        self.dictionaries_tree_view = FileTreeView(self.dictionaries_frame, CH.get_variable_value(CKL.DICTIONARIES_PATH), multi_select=True, expand_root_node=True)
+        self.dictionaries_tree_view = FileTreeView(parent_container=self.dictionaries_frame, root_path=CH.get_variable_value(CKL.DICTIONARIES_PATH), single_selection=False, expand_root_node=True)
         self.dictionaries_tree_view.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(0, 10), sticky="nsew")
 
     def _create_console_output_frame(self) -> None:
@@ -85,22 +85,6 @@ class TranslationFrameGui(ctk.CTkFrame):
             tooltip_text="tf_btn_translate_tt",
             loc_func=self.localization_manager.localize
         )
-
-        # do not remove, yet !!!!
-        # temporary buttons for testing
-        self.tmp_test_translation_1 = CustomCTKButton(
-            btn_text="test_btn_1", btn_properties={"master": btn_frame, **btn_properties},
-            pack_type="pack", pack_properties={"side": "left", "padx": (5, 0)},
-            tooltip_text="test_tooltip_1_tt",
-            loc_func=self.localization_manager.localize
-        )
-        self.tmp_test_translation_2 = CustomCTKButton(
-            btn_text="test_btn_2", btn_properties={"master": btn_frame, **btn_properties},
-            pack_type="pack", pack_properties={"side": "left", "padx": (5, 0)},
-            tooltip_text="test_tooltip_2_tt",
-            loc_func=self.localization_manager.localize
-        )
-        # temporary buttons for testing
 
         self.btn_clear_console = CustomCTKButton(
             btn_text="↻", btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
