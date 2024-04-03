@@ -1,6 +1,7 @@
 # AutoDriveTranslationTool/src/core/auto_drive_translation_tool.py
 
 from collections import namedtuple
+from time import sleep
 
 from src.core.constants import LOGGER_NAME
 from src.utilities import ConfigSetup
@@ -87,19 +88,24 @@ class AutoDriveTranslationTool:
         self.tab_view = TabView(self.window)
 
         self.translation_frame = TranslationFrame(self, self.tab_view)
-        self.languages_frame = LanguagesFrame(self, self.tab_view)
+        #self.languages_frame = LanguagesFrame(self, self.tab_view)
         self.dictionary_frame = DictionaryFrame(self, self.tab_view)
         self.options_frame = OptionsFrame(self, self.tab_view)
 
         self.tabs = {
             "tab_translation": Tab(self.translation_frame.gui_instance, loc("tab_translation")),
-            "tab_languages": Tab(self.languages_frame.gui_instance, loc("tab_languages")),
+            #"tab_languages": Tab(self.languages_frame.gui_instance, loc("tab_languages")),
             "tab_dictionaries": Tab(self.dictionary_frame.gui_instance, loc("tab_dictionaries")),
             "tab_options": Tab(self.options_frame.gui_instance, loc("tab_options")),
         }
 
         for _, tab in self.tabs.items():
             self.tab_view.add_tab(tab.frame, title=tab.name)
+
+        self.window.update_idletasks()
+        self.translation_frame.gui_instance.update_idletasks()
+        
+        sleep(1)
         self.tab_view.show_tab(self.tabs["tab_translation"].frame)
 
     def on_language_updated(self, language_code, event_type):
