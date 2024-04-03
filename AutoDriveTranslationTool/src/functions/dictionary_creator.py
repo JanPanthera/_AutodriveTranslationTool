@@ -4,7 +4,7 @@ from GuiFramework.utilities import FileOps
 from AutoDriveTranslationTool.src.functions.exceptions import InvalidFileNameError
 
 
-VALID_CHARS = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-")
+VALID_CHARS = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-.")
 
 
 class DictionaryCreator:
@@ -31,16 +31,29 @@ original7,translation7
 original8,translation8
 """
 
-    @classmethod
-    def create(cls, dictionaries_path, selected_language, file_name):
-        file_name = cls._validate_file_name(file_name)
-        file_path = FileOps.join_paths(selected_language, file_name)
-        cls(dictionaries_path, file_path)
+    @staticmethod
+    def create_dic_from_file(input_file_path, output_file_path):
+        file_name = FileOps.get_file_name(input_file_path)
+        file_name = DictionaryCreator._validate_file_name(file_name)
+        file_path = FileOps.join_paths(output_file_path, file_name)
+        FileOps.copy_file(input_file_path, file_path)
+
+    @staticmethod
+    def create_dic_from_text(input_text, output_path, file_name):
+        file_name = DictionaryCreator._validate_file_name(file_name)
+        file_path = FileOps.join_paths(output_path, file_name)
+        FileOps.write_file(file_path, input_text)
+
+    @staticmethod
+    def create_default_dic(output_path, file_name):
+        file_name = DictionaryCreator._validate_file_name(file_name)
+        file_path = FileOps.join_paths(output_path, file_name)
+        FileOps.write_file(file_path, DictionaryCreator.DIC_TEMPLATE)
 
     @staticmethod
     def _validate_file_name(file_name):
-        invalid_chars = FileOps.get_invalid_file_name_chars(file_name, VALID_CHARS)
-        if invalid_chars:
+        invalid_chars = FileOps.validate_file_name(file_name)
+        if invalid_chars and not invalid_chars == file_name:
             raise InvalidFileNameError(invalid_chars)
         if FileOps.get_file_extension(file_name) != ".dic":
             file_name += ".dic"
