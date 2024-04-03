@@ -1,5 +1,8 @@
 # AutoDriveTranslationTool/main.py
 
+# import cProfile
+# import pstats
+
 from GuiFramework.utilities.file_ops import FileOps
 from GuiFramework.utilities.logging.logger import Logger, LoggerConfig, LOG_LEVEL
 
@@ -18,12 +21,20 @@ def main() -> None:
     )
     logger = Logger(logger_config, rotate_on_init=True)
 
+    ADT_Tool = AutoDriveTranslationTool()
+    ADT_Tool.run()
     try:
-        ADT_Tool = AutoDriveTranslationTool()
-        ADT_Tool.run()
+        pass
     except Exception as e:
         logger.log_error(f"An error occurred: {str(e)}", "main")
 
 
 if __name__ == "__main__":
+    #with cProfile.Profile() as pr:
     main()
+
+    # stats = pstats.Stats(pr)
+    # stats.sort_stats(pstats.SortKey.CUMULATIVE)
+
+    # stats.print_stats()
+    # stats.dump_stats(filename='profiling_stats.prof')
