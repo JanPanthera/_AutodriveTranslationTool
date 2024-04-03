@@ -21,7 +21,17 @@ class DictionaryFrame:
 
     def _setup_callbacks(self) -> None:
         """Configure callbacks for dictionary frame widgets."""
-        pass
+        widget_command_map = {
+            self.gui_instance.btn_save_dic_file: self.logic_instance._on_save_to_dic_file,
+            self.gui_instance.btn_load_dic_file: self.logic_instance._on_load_from_dic_file,
+            self.gui_instance.btn_delete_dic_file: self.logic_instance._on_delete_dic_file,
+            self.gui_instance.btn_load_template: self.logic_instance._on_load_dic_template,
+            self.gui_instance.btn_clear_textbox: self.logic_instance._on_clear_textbox,
+            self.gui_instance.btn_add_language: self.logic_instance._on_add_language,
+            self.gui_instance.btn_remove_language: self.logic_instance._on_remove_language,
+        }
+        for widget, callback in widget_command_map.items():
+            widget.configure(command=callback)
 
     def on_language_updated(self, language_code: str, event_type: str) -> None:
         """Handle language updates."""

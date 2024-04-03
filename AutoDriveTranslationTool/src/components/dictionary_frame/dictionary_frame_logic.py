@@ -20,77 +20,157 @@ class DictionaryFrameLogic:
 
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
+        self.loc_param = self.localization_manager.localize_with_params
 
-        self.file_tree_view = self.gui_instance.file_tree_view
-        self.custom_textbox_dictionary_edit_box = self.gui_instance.custom_textbox_dictionary_edit_box
-        self.entry_new_dictionary_file = self.gui_instance.entry_new_dictionary_file
-        self.dropdown_language_select = self.gui_instance.dropdown_language_select
+    def _on_save_to_dic_file(self):
+        def save_to_dic_file_callback_handler(is_confirmed: bool) -> None:
+            if is_confirmed:
+                selected_files = self.gui_instance.file_tree_view.get_selected_files()
+                if selected_files:
+                    file_name = selected_files[0][0]
+                    file_path = FileOps.get_directory_name(selected_files[0][1])
+                    DictionaryCreator.create_dic_from_text(self.gui_instance.custom_textbox.get_text(), file_path, file_name)
 
-    def _on_save_dictionary_file(self):
-        """Save the text in the dictionary edit box to a file."""
-        selected_file = self.file_tree_view.get_selected_files()
-        if selected_file:
-            file_path = next(iter(selected_file.values()))
-            self._create_popup_message_box(
-                self.loc("confirm_save_dic_title"), self.loc("confirm_save_dic_msg"),
-                lambda is_confirmed: CtkHelper.save_textbox_to_file(self.custom_textbox_dictionary_edit_box, file_path) if is_confirmed else None
+        def save_as_dic_file_callback_handler(is_confirmed: bool, file_name: str) -> None:
+            if is_confirmed:
+                selected_folder = self.gui_instance.file_tree_view.get_selected_folders()
+                if selected_folder:
+                    file_path = selected_folder[0][1]
+                    try:
+                        DictionaryCreator.create_dic_from_text(self.gui_instance.custom_textbox.get_text(), file_path, file_name)
+                    except InvalidFileNameError as e:
+                        CustomPopupMessageBox(
+                            self.gui_instance,
+                            title=self.loc("df_cpm_invalid_filename_title"),
+                            message=self.loc_param("df_cpm_invalid_filename_msg", e.invalid_chars),
+                            buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                        )
+
+        selected_files = self.gui_instance.file_tree_view.get_selected_files()
+        selected_folder = self.gui_instance.file_tree_view.get_selected_folders()
+
+        if selected_files:
+            CustomPopupMessageBox(
+                self.gui_instance,
+                title=self.loc("df_cpm_save_to_dic_file_title"),
+                message=self.loc("df_cpm_save_to_dic_file_msg"),
+                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: save_to_dic_file_callback_handler(True)}]
+            )
+        elif selected_folder:
+            CustomPopupMessageBox(
+                self.gui_instance,
+                title=self.loc("df_cpm_save_as_dic_file_title"),
+                message=self.loc("df_cpm_save_as_dic_file_msg"),
+                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda entry_value: save_as_dic_file_callback_handler(True, entry_value)}],
+                show_entry=True
             )
 
-    def _on_load_dictionary_file(self):
-        """Load the text from a dictionary file to the dictionary edit box."""
-        selected_file = self.file_tree_view.get_selected_files()
-        if selected_file:
-            file_path = next(iter(selected_file.values()))
-            if self.custom_textbox_dictionary_edit_box.is_empty() or self._confirm_action(self.loc("confirm_load_dic_title"), self.loc("confirm_load_dic_msg")):
-                CtkHelper.load_file_to_textbox(self.custom_textbox_dictionary_edit_box, file_path, overwrite=True)
+    def _on_load_from_dic_file(self):
+        def callback_handler(is_confirmed: bool) -> None:
+            if is_confirmed:
+                CtkHelper.load_file_to_textbox(self.gui_instance.custom_textbox, file_path, overwrite=True)
 
-    def _on_clear_dictionary_edit_textbox(self):
-        """Clear the text in the dictionary edit box."""
-        if not self.custom_textbox_dictionary_edit_box.is_empty() and self._confirm_action(self.loc("confirm_clear_editbox_title"), self.loc("confirm_clear_editbox_msg")):
-            self.custom_textbox_dictionary_edit_box.clear_text()
+        selected_files = self.gui_instance.file_tree_view.get_selected_files()
+        if selected_files:
+            file_path = selected_files[0][1]
 
-    def _on_create_dictionary_file(self):
-        """Create a new dictionary file."""
-        file_name = self.entry_new_dictionary_file.get()
-        if file_name:
-            selected_language = self.dropdown_language_select.get()
-            dictionaries_path = CH.get_variable_value(CKL.DICTIONARIES_PATH)
-            try:
-                DictionaryCreator.create(dictionaries_path, selected_language, file_name)
-                self.file_tree_view.recreate_tree(dictionaries_path, expand_root_node=True)
-            except InvalidFileNameError as e:
-                buttons = [{"text": self.loc("ok"), "callback": lambda: None}]
-                CustomPopupMessageBox(
-                    self,
-                    title=self.loc("invalid_input"),
-                    message=f"{self.loc('invalid_characters')}{e.invalid_chars}",
-                    buttons=buttons
-                )
+            if self.gui_instance.custom_textbox.is_empty():
+                callback_handler(True)
+                return
 
-    def _on_delete_dictionary_file(self):
-        """Delete the selected dictionary file."""
-        selected_file = self.file_tree_view.get_selected_files()
-        if selected_file and self._confirm_action(self.loc("confirm_del_dic_title"), self.loc("confirm_del_dic_msg")):
-            file_path = next(iter(selected_file.values()))
-            FileOps.delete_file(file_path)
-            dir_name = FileOps.get_directory_name(file_path)
-            if FileOps.is_directory_empty(dir_name):
-                FileOps.delete_directory(dir_name)
-            self.file_tree_view.recreate_tree(CH.get_variable_value(CKL.DICTIONARIES_PATH), expand_root_node=True)
+            self._show_confirmation_dialog(
+                title="df_cpm_load_from_dic_file_title",
+                message="df_cpm_load_from_dic_file_msg",
+                callback=callback_handler
+            )
 
-    def _create_popup_message_box(self, title, message, on_callback):
-        """Create a popup message box with yes/no buttons."""
-        buttons = [
-            {"text": self.loc("yes"), "callback": lambda: on_callback(True)},
-            {"text": self.loc("no"), "callback": lambda: on_callback(False)}
-        ]
-        return CustomPopupMessageBox(
-            self,
-            title=title,
-            message=message,
-            buttons=buttons
+    def _on_delete_dic_file(self):
+        def callback_handler(is_confirmed: bool) -> None:
+            if is_confirmed:
+                FileOps.delete_file(file_path)
+
+        selected_files = self.gui_instance.file_tree_view.get_selected_files()
+        if selected_files:
+            file_path = selected_files[0][1]
+            CustomPopupMessageBox(
+                self.gui_instance,
+                title=self.loc("df_cpm_delete_dic_file_title"),
+                message=self.loc_param("df_cpm_delete_dic_file_msg", selected_files[0][0]),
+                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
+                         {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}]
+            )
+
+    def _on_load_dic_template(self):
+        def callback_handler(is_confirmed: bool) -> None:
+            if is_confirmed:
+                self.gui_instance.custom_textbox.insert_text(DictionaryCreator.DIC_TEMPLATE, overwrite=True)
+
+        if self.gui_instance.custom_textbox.is_empty():
+            callback_handler(True)
+            return
+
+        self._show_confirmation_dialog(
+            title="df_cpm_load_dic_template_title",
+            message="df_cpm_load_dic_template_msg",
+            callback=callback_handler
         )
 
-    def _confirm_action(self, title, message):
-        """Confirm an action with a popup message box."""
-        return self._create_popup_message_box(title, message, lambda is_confirmed: is_confirmed)
+    def _on_clear_textbox(self):
+        if self.gui_instance.custom_textbox.is_empty():
+            return
+        self._show_confirmation_dialog(
+            title="df_cpm_clear_textbox_title",
+            message="df_cpm_clear_textbox_msg",
+            callback=lambda is_confirmed: self.gui_instance.custom_textbox.clear_text() if is_confirmed else None
+        )
+
+    def _on_add_language(self):
+        new_language = self.gui_instance.entry_new_language.get()
+        if new_language:
+            result = FileOps.validate_directory_name(new_language)
+            if result == new_language:
+                dictionaries_path = CH.get_variable_value(CKL.DICTIONARIES_PATH)
+                new_language_path = FileOps.join_paths(dictionaries_path, new_language)
+                if FileOps.directory_exists(new_language_path):
+                    CustomPopupMessageBox(
+                        self.gui_instance,
+                        title=self.loc("df_cpm_language_exists_title"),
+                        message=self.loc_param("df_cpm_language_exists_msg", new_language),
+                        buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                    )
+                FileOps.create_directory(new_language_path)
+            else:
+                CustomPopupMessageBox(
+                    self.gui_instance,
+                    title=self.loc("df_cpm_invalid_language_title"),
+                    message=self.loc_param("df_cpm_invalid_language_msg", result),
+                    buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                )
+
+    def _on_remove_language(self):
+        def callback_handler(is_confirmed: bool) -> None:
+            if is_confirmed:
+                FileOps.delete_directory(language_path)
+
+        selected_folders = self.gui_instance.file_tree_view.get_selected_folders()
+        if selected_folders:
+            language_path = selected_folders[0][1]
+            CustomPopupMessageBox(
+                self.gui_instance,
+                title=self.loc("df_cpm_remove_language_title"),
+                message=self.loc_param("df_cpm_remove_language_msg", selected_folders[0][0]),
+                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
+                         {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}]
+            )
+
+    def _show_confirmation_dialog(self, title, message, callback, confirm_btn_text="cpm_btn_confirm", cancel_btn_text="cpm_btn_cancel", show_entry=False):
+        CustomPopupMessageBox(
+            self.gui_instance,
+            title=self.loc(title),
+            message=self.loc(message),
+            buttons=[
+                {"text": self.loc(confirm_btn_text), "callback": lambda: callback(True)},
+                {"text": self.loc(cancel_btn_text), "callback": lambda: callback(False)}
+            ],
+            show_entry=show_entry
+        )
