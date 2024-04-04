@@ -1,0 +1,176 @@
+###*
+
+    Datum: 14.03.2024
+    Author: Lactic
+
+    AD Namen Max character 30
+    AD Group Max character 20
+
+*###
+
+Fahrzeughändler,Concessionnaire
+Fahrzeughändler Werkstatt,Concess. atelier
+Tankstelle,Station essence
+Zapfsäule HaGe,Pompe à essence
+Methan Ladestelle,Pompe à méthane
+
+Einkaufstellen,Points d'achat
+EK-Mist,PA-Fumier
+EK-Gülle,PA-Lisier
+EK-Gärreste,PA-Digestat
+EK-Herbizid/Flüssigdünger,PA-Herbicide/Ferti liquide
+EK-Kalk/Saatgut/Dünmger,PA-Chaux/Semences/Ferti
+EK-Viehandel,PA-Bestiaux
+EK-Kalkstation Nord,PA-Station chaux Nord
+EK-Kalkstation,PA-Station Chaux
+EK-Kalkstation Süd,PA-Station chaux Sud
+EK-Ladestelle,PA-Recharge électrique
+EK-Methan Ladestelle,PA-Méthane
+EK-Zapfsäule HaGe,PA-Pompe à essence
+EK-Flüssigdüngerstation,PA-Station ferti liquide
+EK-Saatgut/Dünger/Kalk,PA-Semences/Ferti/Chaux
+EK-Dünger,PA-Fertilisant
+EK-Saatgut,PA-Semences
+EK-Flüssigdünger,PA-Ferti liquide
+EK-Mistkauf,PA-Fumier
+EK-Wasserkauf,PA-Eau
+
+EK-,PA
+
+Verkaufstellen,Points de vente
+VK-Gülle,PV-Lisier
+VK-Gärreste,PV-Digestat
+VK-Landhandel,PV-Coopérative agricole
+VK-Viehandel,PV-Bestiaux
+VK-Sägewerk,PV-Scierie
+VK-Bauernmarkt,PV-Marché
+VK-Getreidespeicher,PV-Silo à grains
+VK-Pizzeria,PV-Pizzeria
+VK-Supermarkt,PV-Supermarché
+VK-Johnsons Farmers Market,PV-Marché S-Johnsons
+VK-Gesteinsbrecher,PV-Broyeur de pierres
+VK-Feed&amp;Grain South,PV-Feed&amp;Grain Sud
+VK-Restaurant,PV-Restaurant
+VK-Ballen Buur Hans,PV-Balles Buur Hans
+VK-HAGE Zweigstelle,PV-Bureaux HAGE
+VK-Handel Allerei,PV-Toutes ventes
+VK-Station für Hühner,PV-Volailles
+VK-Knollen Kalle,PV-Fruits de la terre Kalle
+VK-Holzhandel Gerdt WOOD,PV-Gerdt Bois et grumes
+VK-Holzhandel Gerdt CHIPS,PV-Gerdt copeaux de bois
+VK-Großhandel,PV-Ventes en gros
+VK-Ballenverkauf,PV-Ventes de balles
+VK-Knollenverkauf,PV-Fruits de la terre
+VK-Steine verkaufen,PV-Pierres
+VK-Mist verkaufen,PV-Fumier
+
+VK-,PV
+
+Produktionen,Productions
+Sägewerk,Scierie
+Schreinerei,Menuiserie
+Traubenproduktion,Traitement du raisin
+Molkerei,Laiterie
+Ölmühle,Moulin à huile
+Spinnerei,Filature
+Bäckerei,Boulangerie
+Getreidemühle,Moulin à grains
+Müslifabrik,Fabrique de Muesli
+Getreidereinigung,Nettoyage des céréales
+Heizkraftwerk,Usine de cogénération
+Komposter,Composteur
+Kalkfabrik,Usine de chaux
+Düngerfabrik,Usine de fertilisants
+Saatgutproduktion,Usine de semences
+Getreidetrockung,Séchoir à grains
+
+Kuhhof,Elevage bovin
+Kuhstall,Stabulation pour bovin
+
+Kuhweide,Pâturage (Bovins)
+Kuhweide Tiere,Bovins en Pâturage
+Kuhweide Wasser,Eau du Pâturage (Bovins)
+Kuhweide Futter,Nourriture du Pâturage (Bovins)
+Kuhweide Milch,Lait du Pâturage (Bovins)
+
+Schweinestall,Stabulation pour cochons
+Schweinehof,Porcherie
+
+Schweineweide Futter,Nourriture du Pâturage (Porcin)
+Schweineweide Wasser,Eau du Pâturage (Porcin)
+Schweineweide Tiere,Porcs en Pâturage
+Schweineweide,Pâturage (Porcins)
+
+Schafstall,Stabulation pour moutons
+Schafhof,Ferme des moutons
+
+Schafweide,Pâturage pour moutons
+Schafweide Futter,Pâturage pour moutons (nourriture)
+Schafweide Wasser,Pâturage pour moutons (eau)
+Schafweide Tiere,Pâturage pour moutons (moutons)
+
+Ziegenstall,Stabulation pour chèvres
+
+Hühnerstall,Poulailler
+Hühnerhof,Elevage de volailles
+
+Pferdehof,Ferme équestre
+
+Hof Saatgutlager,Stockage de semences (ferme)
+Hof Silo,Silo (ferme)
+Hof Werkstatt,Atelier (ferme)
+
+Lohnunternehmen,Sous-traitant
+Lohnunternehmer,Sous-traitant
+LU,Sous-traitant
+LU Waschplatz,Sous-traitant (lavage)
+LU Hoftankstelle,Sous-traitant (station essence)
+
+Hofsilo,Silo (ferme)
+Hof,Ferme
+Hof Dieseltank,Station essence (ferme)
+Hof Einfahrt,Entrée (ferme)
+Hoftankstelle,Pompe à essence (ferme)
+Flüssigdüngertank,Citerne de fertilisant liquide
+
+Gülle,Lisier
+Gärreste,Digestat
+Hackschnitzel,Copeaux bois
+Produkt,Produit
+Rohstoff,Matériaux
+Felder,Champs
+Feld,Champ
+Ankauf,achat
+Verkauf,vente
+Milch,Lait
+Tiere,Animaux
+Güllebecken,Fosse à lisier
+Werkstatt,Atelier
+Parken,Parking
+Landhandel,Coopérative agricole
+Kartoffel,Pommes de terre
+Kartoffeln,Pommes de terre
+Zuckerrüben,Betteraves
+Zuckerrübenschnitzel,Pulpes de betteraves
+Rübenschnitzel,Pulpes de betteraves
+Dünger,Fertilisant
+Saatgut,Semences
+Kalk,Chaux
+Mist,Fumier
+Stadt,Ville
+Nord,Nord
+Ost,Est
+Süd,Sud
+West,Ouest
+füttern,Fourrage
+Stroh,Paille
+Ställe,Stabulations
+Hallenwerkstatt,Atelier
+Waschplatz,Station de lavage
+Güllebehälter,Fosse à lisier
+Futter,Fourrage
+Füttern,Fourrage
+Stall,Stabulation
+Kühe,Vaches
+Schweineb.,Porcherie
+Wiesen,Prairies

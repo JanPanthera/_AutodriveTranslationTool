@@ -1,79 +1,96 @@
-# config_setup.py
+# AutoDriveTranslationTool/src/utilities/config_setup.py
 
-import os
 import customtkinter as ctk
 
-import src.utilities as utils
-from GuiFramework.utilities import ConfigManager, file_ops
+from AutoDriveTranslationTool.src.utilities.custom_type_handlers import (
+    CtkStringVarTypeHandler, CtkBooleanVarTypeHandler, ListTypeHandler, TupleTypeHandler
+)
+from AutoDriveTranslationTool.src.core.constants import (
+    LOGGER_NAME, CONFIG_NAME, UI_THEMES, UI_COLOR_THEMES, UI_LANGUAGES
+)
+
+from GuiFramework.utilities import FileOps, Logger
+from GuiFramework.utilities.config import ConfigHandler, ConfigFileHandlerConfig
+from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
 class ConfigSetup:
-    UI_THEMES = ["light", "dark", "system"]
-    UI_COLOR_THEMES = ["blue", "dark-blue", "green", "ad-green"]
-    UI_LANGUAGES = ["english", "german", "french", "italian", "russian"]
-    DEV_PATH = "AutoDriveTranslationTool" if 'VSAPPIDDIR' in os.environ else ""
 
-    def __init__(self, window, logger):
+    def __init__(self, window):
         self.window = window
-        self.logger = logger
-        self.config_manager = None
-        self.setup_configuration()
+        self.logger = Logger.get_logger(LOGGER_NAME)
 
-    def setup_configuration(self):
-        """Sets up the configuration for the application."""
-        config_path = os.path.join(self.DEV_PATH, "config")
-        self.config_manager = ConfigManager(
-            default_config_creator_func=self._create_default_config,
-            config_path=config_path,
-            default_config_name='default_config.ini',
-            custom_config_name='custom_config.ini',
-            logger=self.logger
+        ConfigHandler.add_config(
+            config_name=CONFIG_NAME,
+            handler_config=ConfigFileHandlerConfig(
+                config_path=FileOps.resolve_development_path(__file__, "config", root_marker="main.py"),
+                default_config_name="default_config.ini",
+                custom_config_name="custom_config.ini",
+            ),
+            default_config=self._create_default_config(),
+            custom_type_handlers=[
+                ListTypeHandler(),
+                TupleTypeHandler(),
+                CtkStringVarTypeHandler(self.window),
+                CtkBooleanVarTypeHandler(self.window),
+            ]
         )
-        self.config_manager.load_config()
-        self._register_config_variables()
-        self._load_settings()
+        self.create_config_keys()
 
-    def _register_config_variables(self):
-        """Registers custom variable types and their respective creators and savers."""
-        self.config_manager.register_variable_type(ctk.StringVar, lambda value: ctk.StringVar(self.window, value), utils.string_var_saver)
-        self.config_manager.register_variable_type(ctk.BooleanVar, lambda value: ctk.BooleanVar(self.window, value), utils.boolean_var_saver)
-        self.config_manager.register_variable_type(list, utils.list_creator, utils.list_saver)
+    def create_config_keys(self):
+        config_data = [
+            {"name": "locale_updater", "section": "AppSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=False)},
 
-    def _load_settings(self):
-        """Loads the settings from the configuration and stores them in the ConfigManager."""
-        add_var = self.config_manager.add_variable
+            {"name": "locales_path", "section": "AppSettings", "type_": str, "value": "locales", "init_from_file": False, "save_to_file": False},
+            {"name": "resources_path", "section": "AppSettings", "type_": str, "value": "resources", "init_from_file": False, "save_to_file": False},
+            {"name": "input_path", "section": "AppSettings", "type_": str, "value": "_input", "init_from_file": False, "save_to_file": False},
+            {"name": "output_path", "section": "AppSettings", "type_": str, "value": "_output", "init_from_file": False, "save_to_file": False},
+            {"name": "dictionaries_path", "section": "AppSettings", "type_": str, "value": "_dictionaries", "init_from_file": False, "save_to_file": False},
 
-        add_var(name="locales_dir", value=ctk.StringVar(self.window, "locales"), section="AppSettings")
-        add_var(name="locale_updater", value=ctk.BooleanVar(self.window, True), section="AppSettings")
+            {"name": "save_window_size", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "save_window_pos", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "center_window_on_startup", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "window_size", "section": "WindowSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="1366x768")},
+            {"name": "window_position", "section": "WindowSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="0+0")},
+            {"name": "resizeable", "section": "WindowSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
 
-        add_var(name="save_window_size", value=ctk.BooleanVar(self.window, True), section="WindowSettings")
-        add_var(name="save_window_pos", value=ctk.BooleanVar(self.window, True), section="WindowSettings")
-        add_var(name="center_window_on_startup", value=ctk.BooleanVar(self.window, True), section="WindowSettings")
-        add_var(name="window_size", value=ctk.StringVar(self.window, "1366x768"), section="WindowSettings")
-        add_var(name="window_position", value=ctk.StringVar(self.window, "0+0"), section="WindowSettings")
-        add_var(name="resizeable", value=ctk.BooleanVar(self.window, True), section="WindowSettings")
+            {"name": "use_high_dpi_scaling", "section": "AppearanceSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
+            {"name": "ui_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="System")},
+            {"name": "ui_color_theme", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="Blue")},
+            {"name": "ui_language", "section": "AppearanceSettings", "type_": ctk.StringVar, "value": ctk.StringVar(value="English")},
 
-        add_var(name="use_high_dpi_scaling", value=ctk.BooleanVar(self.window, True), section="AppearanceSettings")
-        add_var(name="ui_theme", value=ctk.StringVar(self.window, "System"), section="AppearanceSettings")
-        add_var(name="ui_color_theme", value=ctk.StringVar(self.window, "Blue"), section="AppearanceSettings")
-        add_var(name="ui_language", value=ctk.StringVar(self.window, "English"), section="AppearanceSettings")
+            {"name": "selected_languages", "section": "TranslationSettings", "type_": list, "value": [""]},
+            {"name": "supported_languages", "section": "TranslationSettings", "type_": list, "value": ["English", "French", "German", "Italian", "Russian"]},
+            {"name": "whole_word_replacement", "section": "TranslationSettings", "type_": ctk.BooleanVar, "value": ctk.BooleanVar(value=True)},
 
-        add_var(name="selected_languages", value=[""], section="TranslationSettings")
-        add_var(name="supported_languages", value=["English"], section="TranslationSettings")
-        add_var(name="input_path", value="_input", section="TranslationSettings")
-        add_var(name="output_path", value="_output", section="TranslationSettings")
-        add_var(name="dictionaries_path", value="_dictionaries", section="TranslationSettings")
-        add_var(name="whole_word_replacement", value=ctk.BooleanVar(self.window, True), section="TranslationSettings")
-
-        add_var(name="dropdown_ui_themes", value=self.UI_THEMES)
-        add_var(name="dropdown_ui_color_themes", value=self.UI_COLOR_THEMES)
-        add_var(name="dropdown_ui_languages", value=self.UI_LANGUAGES)
+            {"name": "dropdown_ui_themes", "section": "AppearanceSettings", "type_": list, "value": UI_THEMES, "init_from_file": False, "save_to_file": False},
+            {"name": "dropdown_ui_color_themes", "section": "AppearanceSettings", "type_": list, "value": UI_COLOR_THEMES, "init_from_file": False, "save_to_file": False},
+            {"name": "dropdown_ui_languages", "section": "AppearanceSettings", "type_": list, "value": UI_LANGUAGES, "init_from_file": False, "save_to_file": False}
+        ]
+        for data in config_data:
+            CKL.add_ConfigKey(
+                name=data["name"],
+                section=data.get("section", "Default"),
+                type_=data.get("type_", None),
+                save_to_file=data.get("save_to_file", True),
+                auto_save=data.get("auto_save", True),
+                config_name=data.get("config_name", CONFIG_NAME)
+            )
+            ConfigHandler.add_variable(
+                config_key=getattr(CKL, data["name"].upper()),
+                value=data.get("value", None),
+                default_value=data.get("default_value", None),
+                init_from_file=data.get("init_from_file", True)
+            )
+        paths = [CKL.LOCALES_PATH, CKL.RESOURCES_PATH, CKL.INPUT_PATH, CKL.OUTPUT_PATH, CKL.DICTIONARIES_PATH]
+        for path in paths:
+            original_path = ConfigHandler.get_variable_value(path)
+            ConfigHandler.set_variable_value(path, FileOps.resolve_development_path(__file__, original_path, root_marker="main.py"))
 
     def _create_default_config(self):
         """Creates the default configuration."""
         return {
             "AppSettings": {
-                "locales_dir": "locales",
                 "locale_updater": "False"
             },
             "WindowSettings": {
@@ -92,10 +109,7 @@ class ConfigSetup:
             },
             "TranslationSettings": {
                 "selected_languages": "English",
-                "supported_languages": "English,French,German,Italian,Russian",
-                "input_path": "_input",
-                "output_path": "_output",
-                "dictionaries_path": "_dictionaries",
+                "supported_languages": "English,French,German,Italian,Russian,Spanish",
                 "whole_word_replacement": "True"
             }
         }
