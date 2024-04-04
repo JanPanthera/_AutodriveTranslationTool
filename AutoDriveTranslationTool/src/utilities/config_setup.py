@@ -23,7 +23,7 @@ class ConfigSetup:
         ConfigHandler.add_config(
             config_name=CONFIG_NAME,
             handler_config=ConfigFileHandlerConfig(
-                config_path=FileOps.resolve_development_path(__file__, "config", root_marker="main.py"),
+                config_path=FileOps.resolve_development_path(__file__, "config", root_marker="AutoDriveTranslationTool"),
                 default_config_name="default_config.ini",
                 custom_config_name="custom_config.ini",
             ),
@@ -85,7 +85,7 @@ class ConfigSetup:
         paths = [CKL.LOCALES_PATH, CKL.RESOURCES_PATH, CKL.INPUT_PATH, CKL.OUTPUT_PATH, CKL.DICTIONARIES_PATH]
         for path in paths:
             original_path = ConfigHandler.get_variable_value(path)
-            ConfigHandler.set_variable_value(path, FileOps.resolve_development_path(__file__, original_path, root_marker="main.py"))
+            ConfigHandler.set_variable_value(path, FileOps.resolve_development_path(__file__, original_path, root_marker="AutoDriveTranslationTool"))
 
     def _create_default_config(self):
         """Creates the default configuration."""
