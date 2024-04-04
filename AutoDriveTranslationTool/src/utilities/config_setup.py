@@ -104,7 +104,7 @@ class ConfigSetup:
             "AppearanceSettings": {
                 "use_high_dpi_scaling": "True",
                 "ui_theme": "System",
-                "ui_color_theme": "Blue",
+                "ui_color_theme": "Ad-green",
                 "ui_language": "English"
             },
             "TranslationSettings": {

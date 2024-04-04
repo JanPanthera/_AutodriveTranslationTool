@@ -78,9 +78,15 @@ class TranslationFrameGui(ctk.CTkFrame):
 
         btn_frame = self._construct_frame(self.console_output_frame, row=0, column=0, padx=(10, 10), pady=(10, 0), sticky="nsew")
 
-        btn_properties = {"font": FONT_BIG, "height": 20, "corner_radius": 0}
+        self.btn_open_output_dir = CustomCTKButton(
+            btn_text="📁", btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
+            pack_type="pack", pack_properties={"side": "left"},
+            tooltip_text="tf_btn_open_output_dir_tt",
+            loc_func=self.localization_manager.localize
+        )
+
         self.btn_translate = CustomCTKButton(
-            btn_text="tf_btn_translate", btn_properties={"master": btn_frame, **btn_properties},
+            btn_text="tf_btn_translate", btn_properties={"master": btn_frame, "font": FONT_BIG, "height": 20, "corner_radius": 0},
             pack_type="pack", pack_properties={"side": "left"},
             tooltip_text="tf_btn_translate_tt",
             loc_func=self.localization_manager.localize
