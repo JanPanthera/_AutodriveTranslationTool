@@ -1,5 +1,8 @@
 import os
+
 from pathlib import Path
+from PyInstaller.utils.hooks import collect_dynamic_libs
+
 from GuiFramework.utilities.executable_creator import ExecutableCreator
 from GuiFramework.utilities.project_archiver import CopyType, ProjectArchiver
 
@@ -8,6 +11,8 @@ base_path = Path("AutoDriveTranslationTool" if 'VSAPPIDDIR' in os.environ else "
 
 
 def create_exe():
+    binary_dependencies = collect_dynamic_libs("glfw")
+
     exe_creator = ExecutableCreator(
         main_script_path=base_path / "main.py",
         exe_name="AutoDriveTranslationTool",
@@ -15,10 +20,17 @@ def create_exe():
         work_path=base_path / "dist" / "build",
         no_console=True
     )
+
     hidden_imports = ["babel.numbers", "customtkinter"]
     for import_name in hidden_imports:
         exe_creator.add_hidden_import(import_name)
+
     exe_creator.set_icon(base_path / "resources" / "ad_icon.ico")
+
+    # Include the collected binary dependencies
+    for binary_path, binary in binary_dependencies:
+        exe_creator.add_data_file(binary_path, binary)  # Adjust the destination if needed
+
     exe_creator.create_executable()
 
 
