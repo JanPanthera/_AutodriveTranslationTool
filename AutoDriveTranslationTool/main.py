@@ -22,9 +22,8 @@ def main() -> None:
     logger = Logger(logger_config, rotate_on_init=True)
 
     ADT_Tool = AutoDriveTranslationTool()
-    ADT_Tool.run()
     try:
-        pass
+        ADT_Tool.run()
     except Exception as e:
         logger.log_error(f"An error occurred: {str(e)}", "main")
 

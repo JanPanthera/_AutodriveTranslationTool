@@ -47,8 +47,6 @@ class TranslationFrameLogic:
     def _on_language_updated(self) -> None:
         """Update the localization for language-related components."""
         self.gui_instance.btn_translate.update_localization()
-        self.gui_instance.tmp_test_translation_1.update_localization()
-        self.gui_instance.tmp_test_translation_2.update_localization()
         for button in self.gui_instance.input_files_tree_view_controls.values():
             button.update_localization()
         for button in self.gui_instance.dictionaries_tree_view_controls.values():

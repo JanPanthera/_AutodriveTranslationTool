@@ -2,7 +2,7 @@
 
 from GuiFramework.widgets import CustomPopupMessageBox
 
-from GuiFramework.utilities import EventManager, FileOps, CtkHelper
+from GuiFramework.utilities import FileOps, CtkHelper
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -174,3 +174,12 @@ class DictionaryFrameLogic:
             ],
             show_entry=show_entry
         )
+
+    def _on_language_updated(self):
+        self.gui_instance.btn_save_dic_file.update_localization()
+        self.gui_instance.btn_load_dic_file.update_localization()
+        self.gui_instance.btn_delete_dic_file.update_localization()
+        self.gui_instance.btn_load_template.update_localization()
+        self.gui_instance.btn_clear_textbox.update_localization()
+        self.gui_instance.btn_add_language.update_localization()
+        self.gui_instance.btn_remove_language.update_localization()

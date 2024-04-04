@@ -36,4 +36,4 @@ class DictionaryFrame:
     def on_language_updated(self, language_code: str, event_type: str) -> None:
         """Handle language updates."""
         if event_type == "lang_update":
-            pass  # TODO: Implement language update for dictionary frame
+            self.logic_instance._on_language_updated()

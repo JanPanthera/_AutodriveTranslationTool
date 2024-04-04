@@ -8,16 +8,15 @@ from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
 
-
 class OptionsFrameLogic:
 
     def __init__(self, app_instance, gui_instance) -> None:
         self.app_instance = app_instance
         self.gui_instance = gui_instance
+        self.window = self.app_instance.window
 
         self.localization_manager = self.app_instance.localization_manager
         self.loc = self.localization_manager.localize
-
 
     def _on_center_window_on_startup_checkbox(self) -> None:
         """Toggle centering the window on startup."""
@@ -33,37 +32,26 @@ class OptionsFrameLogic:
 
     def _on_reset_window_settings_button(self) -> None:
         """Reset window settings to default."""
-        settings_to_reset = [
-            ["WindowSettings", self.CENTER_WINDOW_ON_STARTUP],
-            ["WindowSettings", self.SAVE_WINDOW_SIZE],
-            ["WindowSettings", self.SAVE_WINDOW_POS],
-        ]
-        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
-        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
-        # CH.reset_settings(settings_to_reset)
-        # gui_utils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
-        # gui_utils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
-        GuiUtils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
+        CH.reset_settings([
+            CKL.CENTER_WINDOW_ON_STARTUP,
+            CKL.SAVE_WINDOW_SIZE,
+            CKL.SAVE_WINDOW_POS
+        ])
+        self._update_checkboxes({
+            CKL.CENTER_WINDOW_ON_STARTUP: self.gui_instance.checkbox_center_window_on_startup,
+            CKL.SAVE_WINDOW_SIZE: self.gui_instance.checkbox_save_window_size,
+            CKL.SAVE_WINDOW_POS: self.gui_instance.checkbox_save_window_pos
+        })
 
     def _on_reset_window_size_button(self) -> None:
         """Reset window size to default."""
-        settings_to_reset = [
-            ["WindowSettings", self.WINDOW_SIZE]
-        ]
-        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
-        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
-        # CH.reset_settings(settings_to_reset)
+        CH.reset_setting(CKL.WINDOW_SIZE)
         width, height = map(int, (CH.get_variable_value(CKL.WINDOW_SIZE)).split("x"))
         self.window.set_window_size((width, height))
 
     def _on_reset_window_pos_button(self) -> None:
         """Reset window position to default."""
-        settings_to_reset = [
-            ["WindowSettings", self.WINDOW_POSITION]
-        ]
-        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
-        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
-        # CH.reset_settings(settings_to_reset)
+        CH.reset_setting(CKL.WINDOW_POSITION)
         pos_x, pos_y = map(int, (CH.get_variable_value(CKL.WINDOW_POSITION)).split("+"))
         self.window.set_window_position((pos_x, pos_y))
 
@@ -93,15 +81,16 @@ class OptionsFrameLogic:
 
     def _on_reset_ui_appearance_settings_button(self) -> None:
         """Reset UI appearance settings to default."""
-        settings_to_reset = [
-            ["AppearanceSettings", self.USE_HIGH_DPI_SCALING],
-            ["AppearanceSettings", self.UI_THEME],
-            ["AppearanceSettings", self.UI_COLOR_THEME],
-            ["AppearanceSettings", self.UI_LANGUAGE]
-        ]
-        # CH.reset_settings(settings_to_reset)
-        # gui_utils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
-        # self.window.set_ui_theme(self.get_var(self.UI_THEME).get().lower())
+        CH.reset_settings([
+            CKL.USE_HIGH_DPI_SCALING,
+            CKL.UI_THEME,
+            CKL.UI_COLOR_THEME,
+            CKL.UI_LANGUAGE
+        ])
+        self._update_checkboxes({
+            CKL.USE_HIGH_DPI_SCALING: self.gui_instance.checkbox_use_high_dpi_scaling
+        })
+        self.window.set_ui_theme(CH.get_variable_value(CKL.UI_THEME).get().lower())
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
         self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
 
@@ -111,35 +100,29 @@ class OptionsFrameLogic:
 
     def _on_reset_everything_button(self) -> None:
         """Reset all settings to default."""
-        settings_to_reset = [
-            ["WindowSettings", self.WINDOW_SIZE],
-            ["WindowSettings", self.WINDOW_POSITION],
-            ["WindowSettings", self.CENTER_WINDOW_ON_STARTUP],
-            ["WindowSettings", self.SAVE_WINDOW_SIZE],
-            ["WindowSettings", self.SAVE_WINDOW_POS],
+        CH.reset_settings([
+            CKL.WINDOW_SIZE,
+            CKL.WINDOW_POSITION,
+            CKL.CENTER_WINDOW_ON_STARTUP,
+            CKL.SAVE_WINDOW_SIZE,
+            CKL.SAVE_WINDOW_POS,
+            CKL.USE_HIGH_DPI_SCALING,
+            CKL.UI_THEME,
+            CKL.UI_COLOR_THEME,
+            CKL.UI_LANGUAGE,
+            CKL.WHOLE_WORD_REPLACEMENT
+        ])
+        self._update_checkboxes({
+            CKL.CENTER_WINDOW_ON_STARTUP: self.gui_instance.checkbox_center_window_on_startup,
+            CKL.SAVE_WINDOW_SIZE: self.gui_instance.checkbox_save_window_size,
+            CKL.SAVE_WINDOW_POS: self.gui_instance.checkbox_save_window_pos,
+            CKL.USE_HIGH_DPI_SCALING: self.gui_instance.checkbox_use_high_dpi_scaling,
+            CKL.WHOLE_WORD_REPLACEMENT: self.gui_instance.checkbox_whole_word_replacement
+        })
 
-            ["AppearanceSettings", self.USE_HIGH_DPI_SCALING],
-            ["AppearanceSettings", self.UI_THEME],
-            ["AppearanceSettings", self.UI_COLOR_THEME],
-            ["AppearanceSettings", self.UI_LANGUAGE],
-
-            ["TranslationSettings", self.WHOLE_WORD_REPLACEMENT]
-        ]
-        # TODO: Adapt to new system here, as well make sure the ConfigHandler uses the ConfigKeys as well
-        # def reset_settings(config_name: str, settings: Dict[str, List[str]], auto_save: bool = True) -> None:
-        GuiUtils.update_checkbox_state(self.checkbox_save_window_size, self.SAVE_WINDOW_SIZE, self.config_manager)
-        GuiUtils.update_checkbox_state(self.checkbox_save_window_pos, self.SAVE_WINDOW_POS, self.config_manager)
-        GuiUtils.update_checkbox_state(self.checkbox_center_window_on_startup, self.CENTER_WINDOW_ON_STARTUP, self.config_manager)
-        GuiUtils.update_checkbox_state(self.checkbox_use_high_dpi_scaling, self.USE_HIGH_DPI_SCALING, self.config_manager)
-        GuiUtils.update_checkbox_state(self.checkbox_whole_word_replacement, self.WHOLE_WORD_REPLACEMENT, self.config_manager)
         self.window.set_ui_theme((CH.get_variable_value(CKL.UI_THEME)).get().lower())
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
         self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
-
-    # Helper methods
-    def _translate_list(self, list_to_translate: list) -> list:
-        """Translate a list of strings."""
-        return [self.loc(item) for item in list_to_translate]
 
     def _on_language_updated(self) -> None:
         """Update the localization for the options frame."""
@@ -162,10 +145,21 @@ class OptionsFrameLogic:
         self.gui_instance.lbl_ui_language.update_localization()
         self.gui_instance.dropdown_ui_language.update_localization()
         self.gui_instance.btn_reset_ui_appearance_settings.update_localization()
-        
+
         self.gui_instance.lbl_translation_settings.update_localization()
         self.gui_instance.checkbox_whole_word_replacement.update_localization()
 
+    # Helper methods
+    def _translate_list(self, list_to_translate: list) -> list:
+        """Translate a list of strings."""
+        return [self.loc(item) for item in list_to_translate]
 
-
-
+    def _update_checkboxes(self, checkbox_map: dict) -> None:
+        """Update the checkboxes based on the current settings."""
+        for setting in checkbox_map:
+            checkbox = checkbox_map[setting]
+            value = CH.get_variable_value(setting).get()
+            if value:
+                checkbox.select()
+            else:
+                checkbox.deselect()
