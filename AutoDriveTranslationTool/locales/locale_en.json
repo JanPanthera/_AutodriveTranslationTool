@@ -88,6 +88,7 @@
    },
    "translation_frame": {
       "tab_translation": "Translation",
+      "tf_btn_open_output_dir_tt": "Open the output directory.",
       "tf_btn_translate": "Start Translation",
       "tf_btn_translate_tt": "Start the translation process.",
       "tf_btn_validate": "Validate",

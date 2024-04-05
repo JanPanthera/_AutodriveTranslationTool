@@ -88,6 +88,7 @@
    },
    "translation_frame": {
       "tab_translation": "Übersetzung",
+      "tf_btn_open_output_dir_tt": "Den Ausgabeordner öffnen.",
       "tf_btn_translate": "Übersetzung starten",
       "tf_btn_translate_tt": "Den Übersetzungsprozess starten.",
       "tf_btn_validate": "Validieren",
