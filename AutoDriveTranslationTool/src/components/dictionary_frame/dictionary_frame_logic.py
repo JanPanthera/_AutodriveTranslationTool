@@ -25,7 +25,7 @@ class DictionaryFrameLogic:
     def _on_save_to_dic_file(self):
         def save_to_dic_file_callback_handler(is_confirmed: bool) -> None:
             if is_confirmed:
-                selected_files = self.gui_instance.file_tree_view.get_selected_files()
+                selected_files = self.gui_instance.dictionaries_file_tree_view .get_selected_files()
                 if selected_files:
                     file_name = selected_files[0][0]
                     file_path = FileOps.get_directory_name(selected_files[0][1])
@@ -33,7 +33,7 @@ class DictionaryFrameLogic:
 
         def save_as_dic_file_callback_handler(is_confirmed: bool, file_name: str) -> None:
             if is_confirmed:
-                selected_folder = self.gui_instance.file_tree_view.get_selected_folders()
+                selected_folder = self.gui_instance.dictionaries_file_tree_view .get_selected_folders()
                 if selected_folder:
                     file_path = selected_folder[0][1]
                     try:
@@ -46,8 +46,8 @@ class DictionaryFrameLogic:
                             buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
                         )
 
-        selected_files = self.gui_instance.file_tree_view.get_selected_files()
-        selected_folder = self.gui_instance.file_tree_view.get_selected_folders()
+        selected_files = self.gui_instance.dictionaries_file_tree_view .get_selected_files()
+        selected_folder = self.gui_instance.dictionaries_file_tree_view .get_selected_folders()
 
         if selected_files:
             CustomPopupMessageBox(
@@ -70,7 +70,7 @@ class DictionaryFrameLogic:
             if is_confirmed:
                 CtkHelper.load_file_to_textbox(self.gui_instance.custom_textbox, file_path, overwrite=True)
 
-        selected_files = self.gui_instance.file_tree_view.get_selected_files()
+        selected_files = self.gui_instance.dictionaries_file_tree_view .get_selected_files()
         if selected_files:
             file_path = selected_files[0][1]
 
@@ -89,7 +89,7 @@ class DictionaryFrameLogic:
             if is_confirmed:
                 FileOps.delete_file(file_path)
 
-        selected_files = self.gui_instance.file_tree_view.get_selected_files()
+        selected_files = self.gui_instance.dictionaries_file_tree_view .get_selected_files()
         if selected_files:
             file_path = selected_files[0][1]
             CustomPopupMessageBox(
@@ -152,7 +152,7 @@ class DictionaryFrameLogic:
             if is_confirmed:
                 FileOps.delete_directory(language_path)
 
-        selected_folders = self.gui_instance.file_tree_view.get_selected_folders()
+        selected_folders = self.gui_instance.dictionaries_file_tree_view .get_selected_folders()
         if selected_folders:
             language_path = selected_folders[0][1]
             CustomPopupMessageBox(

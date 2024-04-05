@@ -38,7 +38,7 @@ class DictionaryFrameGui(ctk.CTkFrame):
 
     def _create_dictionary_edit_frame(self) -> None:
         """Create the edit box frame within the dictionary frame."""
-        self._configure_grid(self.dictionary_edit_frame, row_weights=[(0, 1)], column_weights=[(0, 1), (1, 1), (2, 1)])
+        self._configure_grid(self.dictionary_edit_frame, row_weights=[(0, 1)], column_weights=[(0, 1), (1, 1), (2, 1), (3, 1), (4, 1)])
 
         self.custom_textbox = CustomTextbox(
             master=self.dictionary_edit_frame,
@@ -84,13 +84,14 @@ class DictionaryFrameGui(ctk.CTkFrame):
 
     def _create_dictionary_files_frame(self) -> None:
         """Create the files frame within the dictionary frame."""
-        self._configure_grid(self.dictionary_files_frame, row_weights=[(0, 1)], column_weights=[(0, 1)])
+        self._configure_grid(self.dictionary_files_frame, row_weights=[(0, 0), (1, 1)], column_weights=[(0, 1)])
 
-        self.file_tree_view = FileTreeView(parent_container=self.dictionary_files_frame, root_path=CH.get_variable_value(CKL.DICTIONARIES_PATH), single_selection=True, expand_root_node=True)
-        self.file_tree_view.grid(row=0, column=0, padx=(10, 10), pady=(10, 5), sticky="nsew")
+        self.dictionaries_file_tree_view_controls = self._create_tree_view_controls(self.dictionary_files_frame)
+        self.dictionaries_file_tree_view = FileTreeView(parent_container=self.dictionary_files_frame, root_path=CH.get_variable_value(CKL.DICTIONARIES_PATH), single_selection=True, expand_root_node=True)
+        self.dictionaries_file_tree_view.grid(row=1, column=0, padx=(10, 10), pady=(10, 5), sticky="nsew")
 
         self.entry_new_language = ctk.CTkEntry(self.dictionary_files_frame, font=FONT_BIG_BOLD)
-        self.entry_new_language.grid(row=1, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
+        self.entry_new_language.grid(row=2, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
         CustomTooltip(self.entry_new_language, text=self.loc("df_entry_new_language_tt"))
 
         self.btn_add_language = CustomCTKButton(
@@ -107,20 +108,29 @@ class DictionaryFrameGui(ctk.CTkFrame):
             loc_func=self.localization_manager.localize
         )
 
-    def _construct_frame(self, parent, **grid_options):
-        """Create and grid a CTkFrame within the given parent."""
-        frame = ctk.CTkFrame(parent)
-        frame.grid(**grid_options)
-        return frame
+    def _create_tree_view_controls(self, parent_frame: ctk.CTkFrame) -> dict:
+        """Generate and return a dictionary of tree view control buttons."""
+        btn_frame = self._construct_frame(parent_frame, row=0, column=0, padx=(10, 10), pady=(10, 0), sticky="nsew")
+        self._configure_grid(btn_frame, column_weights=[(0, 1)])
 
-    def _configure_grid(self, frame: ctk.CTkFrame, row_weights: Optional[list[tuple[int, int]]] = None, column_weights: Optional[list[tuple[int, int]]] = None) -> None:
-        """Configure grid weights for rows and columns in the given frame."""
-        if row_weights:
-            for row, weight in row_weights:
-                frame.rowconfigure(row, weight=weight)
-        if column_weights:
-            for column, weight in column_weights:
-                frame.columnconfigure(column, weight=weight)
+        button_configurations = [
+            ("btn_collapse_all", "▶", "tf_btn_collapse_all_tt", {"side": "left"}),
+            ("btn_expand_all", "▼", "tf_btn_expand_all_tt", {"side": "left"}),
+            ("btn_select_all", "☑", "tf_btn_select_all_tt", {"side": "left"}),
+            ("btn_deselect_all", "☒", "tf_btn_deselect_all_tt", {"side": "left"}),
+            ("btn_refresh", "↻", "tf_btn_refresh_tt", {"side": "right"}),
+            ("btn_open_explorer", "📁", "tf_btn_open_explorer_tt", {"side": "right"})
+        ]
+
+        return {
+            btn_name: CustomCTKButton(
+                btn_text=btn_text, btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
+                tooltip_text=btn_tooltip_text,
+                pack_type="pack", pack_properties=btn_pack_properties,
+                loc_func=self.localization_manager.localize
+            )
+            for btn_name, btn_text, btn_tooltip_text, btn_pack_properties in button_configurations
+        }
 
     def _construct_frame(self, parent, **grid_options):
         """Create and grid a CTkFrame within the given parent."""
