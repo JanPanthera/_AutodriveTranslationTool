@@ -46,13 +46,13 @@ class OptionsFrameLogic:
     def _on_reset_window_size_button(self) -> None:
         """Reset window size to default."""
         CH.reset_setting(CKL.WINDOW_SIZE)
-        width, height = map(int, (CH.get_variable_value(CKL.WINDOW_SIZE)).split("x"))
+        width, height = map(int, (CH.get_variable_value(CKL.WINDOW_SIZE)).get().split("x"))
         self.window.set_window_size((width, height))
 
     def _on_reset_window_pos_button(self) -> None:
         """Reset window position to default."""
         CH.reset_setting(CKL.WINDOW_POSITION)
-        pos_x, pos_y = map(int, (CH.get_variable_value(CKL.WINDOW_POSITION)).split("+"))
+        pos_x, pos_y = map(int, (CH.get_variable_value(CKL.WINDOW_POSITION)).get().split("+"))
         self.window.set_window_position((pos_x, pos_y))
 
     def _on_use_high_dpi_scaling_checkbox(self) -> None:

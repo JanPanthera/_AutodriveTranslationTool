@@ -34,6 +34,7 @@ class TranslationFrame:
         dict_controls = self.gui_instance.dictionaries_tree_view_controls
 
         widget_command_map = {
+            self.gui_instance.btn_open_output_dir: lambda: os.startfile(CH.get_variable_value(CKL.OUTPUT_PATH)),
             self.gui_instance.btn_translate: self.logic_instance._on_translate,
             self.gui_instance.btn_clear_console: lambda: self.gui_instance.textbox_output_console.clear_console(),
             input_controls['btn_collapse_all']: lambda: input_files_tree_view.collapse_all(),
