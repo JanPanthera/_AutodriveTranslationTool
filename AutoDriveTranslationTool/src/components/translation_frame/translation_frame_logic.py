@@ -44,10 +44,6 @@ class TranslationFrameLogic:
             ]
         )
 
-    def _on_language_updated(self) -> None:
-        """Update the localization for language-related components."""
-        pass
-
     # TODO: own module or merged in to another
     # def _on_validate_output_files(self) -> None:
     #    """Check the output files for errors."""

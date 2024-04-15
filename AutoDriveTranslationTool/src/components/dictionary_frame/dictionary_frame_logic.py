@@ -175,6 +175,3 @@ class DictionaryFrameLogic:
             ],
             show_entry=show_entry
         )
-
-    def _on_language_updated(self):
-        pass

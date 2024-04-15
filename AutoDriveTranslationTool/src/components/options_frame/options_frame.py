@@ -38,7 +38,3 @@ class OptionsFrame:
 
         for widget, callback in widget_command_map.items():
             widget.configure(command=callback)
-
-    def on_language_updated(self) -> None:
-        """Handle language updates."""
-        self.logic_instance._on_language_updated()

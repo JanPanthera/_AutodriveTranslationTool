@@ -154,8 +154,6 @@ class AutoDriveTranslationTool:
         if event_type == Localizer.EVENT_LANGUAGE_CHANGED:
             for frame_id, (_, loc_key) in self.frame_tabs.items():
                 self.tab_view.rename_tab(frame_id, loc_key.get_localized_string())
-            for frame, _ in self.frame_tabs.values():
-                frame.on_language_updated()
 
     def show_initial_tab(self):
         self.tab_view.grid(row=0, column=0, sticky="nsew")

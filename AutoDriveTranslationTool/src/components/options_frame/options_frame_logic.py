@@ -129,10 +129,6 @@ class OptionsFrameLogic:
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
         Localizer.set_active_locale(Locales.get_locale((CH.get_variable_value(CKL.UI_LANGUAGE)).get()))
 
-    def _on_language_updated(self) -> None:
-        """Update the localization for the options frame."""
-        pass
-
     # Helper methods
     def _translate_list(self, list_to_translate: list) -> list:
         """Translate a list of strings."""
