@@ -3,18 +3,14 @@
 from .options_frame_gui import OptionsFrameGui
 from .options_frame_logic import OptionsFrameLogic
 
+
 class OptionsFrame:
     """Initialize options frame components."""
 
     def __init__(self, app_instance, tab_view) -> None:
         """Initialize GUI and logic instances for the options frame."""
-        self.app_instance = app_instance
-        self.gui_instance = OptionsFrameGui(self.app_instance, tab_view)
-        self.logic_instance = OptionsFrameLogic(self.app_instance, self.gui_instance)
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
-        self.localization_manager.subscribe(self, ["lang_update"])
+        self.gui_instance = OptionsFrameGui(tab_view)
+        self.logic_instance = OptionsFrameLogic(app_instance, self.gui_instance)
 
         self._setup_callbacks()
 
@@ -43,7 +39,6 @@ class OptionsFrame:
         for widget, callback in widget_command_map.items():
             widget.configure(command=callback)
 
-    def on_language_updated(self, language_code: str, event_type: str) -> None:
+    def on_language_updated(self) -> None:
         """Handle language updates."""
-        if event_type == "lang_update":
-            self.logic_instance._on_language_updated()
+        self.logic_instance._on_language_updated()

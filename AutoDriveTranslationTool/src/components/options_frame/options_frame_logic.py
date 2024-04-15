@@ -2,10 +2,15 @@
 
 import customtkinter as ctk
 
+from src.core.constants import (
+    ColorThemes, UI_THEMES, UI_COLOR_THEMES, UI_LANGUAGES
+)
+
 from GuiFramework.utilities import FileOps
 from GuiFramework.utilities.gui_utils import GuiUtils
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
+from GuiFramework.utilities.localization import Localizer, Locales
 
 
 class OptionsFrameLogic:
@@ -14,9 +19,6 @@ class OptionsFrameLogic:
         self.app_instance = app_instance
         self.gui_instance = gui_instance
         self.window = self.app_instance.window
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
 
     def _on_center_window_on_startup_checkbox(self) -> None:
         """Toggle centering the window on startup."""
@@ -62,22 +64,25 @@ class OptionsFrameLogic:
 
     def _on_ui_theme_dropdown(self, selected_theme=None) -> None:
         """Set the UI theme."""
-        theme_key = self.localization_manager.reverse_localize(selected_theme)
-        CH.set_variable_value(CKL.UI_THEME, ctk.StringVar(self.gui_instance, theme_key[0].upper() + theme_key[1:]))
-        self.app_instance.window.set_ui_theme(theme_key)
+        theme_key = Localizer.get_localization_key_for_string(selected_theme)
+        theme_to_save = Localizer.get_localized_string_for_locale(Locales.ENGLISH, theme_key)
+        CH.set_variable_value(CKL.UI_THEME, ctk.StringVar(self.gui_instance, theme_to_save))
+        self.app_instance.window.set_ui_theme(theme_to_save.lower())
 
     def _on_ui_color_theme_dropdown(self, selected_color_theme=None) -> None:
         """Set the UI color theme."""
-        color_theme_key = self.localization_manager.reverse_localize(selected_color_theme)
-        CH.set_variable_value(CKL.UI_COLOR_THEME, ctk.StringVar(self.gui_instance, color_theme_key[0].upper() + color_theme_key[1:]))
-        ui_color_theme = color_theme_key if color_theme_key in ["blue", "dark-blue", "green"] else FileOps.join_paths(CH.get_variable_value(CKL.RESOURCES_PATH), "themes", f"{color_theme_key}.json")
-        self.app_instance.window.set_ui_color_theme(ui_color_theme)
+        color_theme_key = Localizer.get_localization_key_for_string(selected_color_theme)
+        CH.set_variable_value(CKL.UI_COLOR_THEME, ctk.StringVar(self.gui_instance, Localizer.get_localized_string_for_locale(Locales.ENGLISH, color_theme_key)))
+        color_theme = ColorThemes.get_color_theme(color_theme_key)
+        self.app_instance.window.set_ui_color_theme(color_theme)
 
     def _on_ui_language_dropdown(self, selected_language=None) -> None:
         """Set the UI language."""
-        language_key = self.localization_manager.reverse_localize(selected_language)
-        CH.set_variable_value(CKL.UI_LANGUAGE, ctk.StringVar(self.gui_instance, language_key[0].upper() + language_key[1:]))
-        self.localization_manager.set_active_language(language_key)
+        language_key = Localizer.get_localization_key_for_string(selected_language)
+        if selected_language == language_key:
+            raise ValueError(f"Could not find localization key for language '{selected_language}'.")
+        CH.set_variable_value(CKL.UI_LANGUAGE, ctk.StringVar(self.gui_instance, Localizer.get_localized_string_for_locale(Locales.ENGLISH, language_key)))
+        Localizer.set_active_locale(Locales.get_locale(language_key))
 
     def _on_reset_ui_appearance_settings_button(self) -> None:
         """Reset UI appearance settings to default."""
@@ -92,7 +97,7 @@ class OptionsFrameLogic:
         })
         self.window.set_ui_theme(CH.get_variable_value(CKL.UI_THEME).get().lower())
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
-        self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
+        Localizer.set_active_locale(Locales.get_locale((CH.get_variable_value(CKL.UI_LANGUAGE)).get()))
 
     def _on_whole_word_replacement_checkbox(self) -> None:
         """Toggle whole word replacement."""
@@ -122,32 +127,11 @@ class OptionsFrameLogic:
 
         self.window.set_ui_theme((CH.get_variable_value(CKL.UI_THEME)).get().lower())
         self.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
-        self.localization_manager.set_active_language((CH.get_variable_value(CKL.UI_LANGUAGE)).get())
+        Localizer.set_active_locale(Locales.get_locale((CH.get_variable_value(CKL.UI_LANGUAGE)).get()))
 
     def _on_language_updated(self) -> None:
         """Update the localization for the options frame."""
-        self.gui_instance.btn_reset_everything.update_localization()
-
-        self.gui_instance.lbl_window_settings.update_localization()
-        self.gui_instance.checkbox_save_window_size.update_localization()
-        self.gui_instance.checkbox_save_window_pos.update_localization()
-        self.gui_instance.checkbox_center_window_on_startup.update_localization()
-        self.gui_instance.btn_reset_window_size.update_localization()
-        self.gui_instance.btn_reset_window_pos.update_localization()
-        self.gui_instance.btn_reset_window_settings.update_localization()
-
-        self.gui_instance.lbl_ui_appearance_settings.update_localization()
-        self.gui_instance.checkbox_use_high_dpi_scaling.update_localization()
-        self.gui_instance.lbl_ui_theme.update_localization()
-        self.gui_instance.dropdown_ui_theme.update_localization()
-        self.gui_instance.lbl_ui_color_theme.update_localization()
-        self.gui_instance.dropdown_ui_color_theme.update_localization()
-        self.gui_instance.lbl_ui_language.update_localization()
-        self.gui_instance.dropdown_ui_language.update_localization()
-        self.gui_instance.btn_reset_ui_appearance_settings.update_localization()
-
-        self.gui_instance.lbl_translation_settings.update_localization()
-        self.gui_instance.checkbox_whole_word_replacement.update_localization()
+        pass
 
     # Helper methods
     def _translate_list(self, list_to_translate: list) -> list:
