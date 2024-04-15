@@ -4,8 +4,12 @@ import customtkinter as ctk
 
 from typing import Optional
 
+from src.core.loc_keys import LocKeys
+from src.components.tree_view_controls import TreeViewControls
+
 from GuiFramework.widgets import CustomCTKButton, CustomTextbox, FileTreeView, CustomTooltip
 
+from GuiFramework.utilities.localization import Localizer
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -15,13 +19,9 @@ from AutoDriveTranslationTool.src.core.constants import FONT_BIG, FONT_BIG_BOLD,
 class DictionaryFrameGui(ctk.CTkFrame):
     """Initialize the dictionary frame GUI components."""
 
-    def __init__(self, app_instance, tab_view) -> None:
+    def __init__(self, tab_view) -> None:
         """Initialize the dictionary frame GUI components."""
         super().__init__(tab_view)
-        self.app_instance = app_instance
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
 
         self.create_gui()
 
@@ -47,90 +47,81 @@ class DictionaryFrameGui(ctk.CTkFrame):
         )
         self.custom_textbox.grid(row=0, column=0, columnspan=5, padx=(10, 10), pady=(10, 5), sticky="nsew")
 
+        DfBtnsLoc = LocKeys.DictionariesFrame.Widgets.Buttons
+
         self.btn_save_dic_file = CustomCTKButton(
-            btn_text="df_btn_save_to_file", btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.save_dic_file.TEXT,
+            btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 1, "column": 0, "padx": (10, 5), "pady": (5, 10), "sticky": "nsew"},
-            tooltip_text="df_btn_save_to_file_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.save_dic_file.TOOLTIP
         )
 
         self.btn_load_dic_file = CustomCTKButton(
-            btn_text="df_btn_load_from_file", btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.load_dic_file.TEXT,
+            btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 1, "column": 1, "padx": (5, 5), "pady": (5, 10), "sticky": "nsew"},
-            tooltip_text="df_btn_load_from_file_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.load_dic_file.TOOLTIP
         )
 
         self.btn_delete_dic_file = CustomCTKButton(
-            btn_text="df_btn_delete_file", btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.delete_dic_file.TEXT,
+            btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 1, "column": 2, "padx": (5, 5), "pady": (5, 10), "sticky": "nsew"},
-            tooltip_text="df_btn_delete_file_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.delete_dic_file.TOOLTIP
         )
 
         self.btn_load_template = CustomCTKButton(
-            btn_text="df_btn_load_template", btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.load_template.TEXT,
+            btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 1, "column": 3, "padx": (5, 5), "pady": (5, 10), "sticky": "nsew"},
-            tooltip_text="df_btn_load_template_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.load_template.TOOLTIP
         )
 
         self.btn_clear_textbox = CustomCTKButton(
-            btn_text="df_btn_clear_editbox", btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.clear_edit_box.TEXT,
+            btn_properties={"master": self.dictionary_edit_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 1, "column": 4, "padx": (5, 10), "pady": (5, 10), "sticky": "nsew"},
-            tooltip_text="df_btn_clear_editbox_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.clear_edit_box.TOOLTIP
         )
 
     def _create_dictionary_files_frame(self) -> None:
         """Create the files frame within the dictionary frame."""
         self._configure_grid(self.dictionary_files_frame, row_weights=[(0, 0), (1, 1)], column_weights=[(0, 1)])
 
-        self.dictionaries_file_tree_view_controls = self._create_tree_view_controls(self.dictionary_files_frame)
+        TreeBtnsLoc = LocKeys.Generic.Widgets.TreeView.Buttons
+        DictioTreeBtnsLoc = LocKeys.TranslationFrame.Widgets.TreeView.dictionaries.Buttons
+        self.dictionaries_file_tree_view_controls = TreeViewControls(
+            parent_frame=self.dictionary_files_frame,
+            button_configurations={
+                "btn_collapse_all": {"text": TreeBtnsLoc.collapse_all.ICON, "tooltip": TreeBtnsLoc.collapse_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_expand_all": {"text": TreeBtnsLoc.expand_all.ICON, "tooltip": TreeBtnsLoc.expand_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_refresh": {"text": TreeBtnsLoc.refresh.ICON, "tooltip": TreeBtnsLoc.refresh.TOOLTIP, "pack_properties": {"side": "right"}},
+                "btn_open_explorer": {"text": TreeBtnsLoc.open_explorer.ICON, "tooltip": DictioTreeBtnsLoc.open_explorer.TOOLTIP, "pack_properties": {"side": "right"}}
+            }
+        )
+
         self.dictionaries_file_tree_view = FileTreeView(parent_container=self.dictionary_files_frame, root_path=CH.get_variable_value(CKL.DICTIONARIES_PATH), single_selection=True, expand_root_node=True)
         self.dictionaries_file_tree_view.grid(row=1, column=0, padx=(10, 10), pady=(10, 5), sticky="nsew")
 
-        self.entry_new_language = ctk.CTkEntry(self.dictionary_files_frame, font=FONT_BIG_BOLD)
+        DfEntriesLoc = LocKeys.DictionariesFrame.Widgets.Entries
+        self.entry_new_language = ctk.CTkEntry(self.dictionary_files_frame, font=FONT_BIG_BOLD, placeholder_text=DfEntriesLoc.new_language.PLACEHOLDER.get_localized_string())
         self.entry_new_language.grid(row=2, column=0, padx=(10, 10), pady=(5, 5), sticky="nsew")
-        CustomTooltip(self.entry_new_language, text=self.loc("df_entry_new_language_tt"))
+        CustomTooltip(self.entry_new_language, text=DfEntriesLoc.new_language.TOOLTIP.get_localized_string())
 
+        DfBtnsLoc = LocKeys.DictionariesFrame.Widgets.Buttons
         self.btn_add_language = CustomCTKButton(
-            btn_text="df_btn_add_language", btn_properties={"master": self.dictionary_files_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+            btn_text=DfBtnsLoc.add_language.TEXT,
+            btn_properties={"master": self.dictionary_files_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 2, "column": 0, "padx": (10, 10), "pady": (5, 5), "sticky": "nsew"},
-            tooltip_text="df_btn_add_language_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.add_language.TOOLTIP
         )
 
-        self.btn_remove_language = CustomCTKButton(
-            btn_text="df_btn_remove_language", btn_properties={"master": self.dictionary_files_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
+        self.btn_delete_language = CustomCTKButton(
+            btn_text=DfBtnsLoc.delete_language.TEXT,
+            btn_properties={"master": self.dictionary_files_frame, "font": FONT_BIG_BOLD, "corner_radius": 0},
             pack_type="grid", pack_properties={"row": 3, "column": 0, "padx": (10, 10), "pady": (5, 5), "sticky": "nsew"},
-            tooltip_text="df_btn_remove_language_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=DfBtnsLoc.delete_language.TOOLTIP
         )
-
-    def _create_tree_view_controls(self, parent_frame: ctk.CTkFrame) -> dict:
-        """Generate and return a dictionary of tree view control buttons."""
-        btn_frame = self._construct_frame(parent_frame, row=0, column=0, padx=(10, 10), pady=(10, 0), sticky="nsew")
-        self._configure_grid(btn_frame, column_weights=[(0, 1)])
-
-        button_configurations = [
-            ("btn_collapse_all", "▶", "tf_btn_collapse_all_tt", {"side": "left"}),
-            ("btn_expand_all", "▼", "tf_btn_expand_all_tt", {"side": "left"}),
-            ("btn_select_all", "☑", "tf_btn_select_all_tt", {"side": "left"}),
-            ("btn_deselect_all", "☒", "tf_btn_deselect_all_tt", {"side": "left"}),
-            ("btn_refresh", "↻", "tf_btn_refresh_tt", {"side": "right"}),
-            ("btn_open_explorer", "📁", "tf_btn_open_explorer_tt", {"side": "right"})
-        ]
-
-        return {
-            btn_name: CustomCTKButton(
-                btn_text=btn_text, btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
-                tooltip_text=btn_tooltip_text,
-                pack_type="pack", pack_properties=btn_pack_properties,
-                loc_func=self.localization_manager.localize
-            )
-            for btn_name, btn_text, btn_tooltip_text, btn_pack_properties in button_configurations
-        }
 
     def _construct_frame(self, parent, **grid_options):
         """Create and grid a CTkFrame within the given parent."""

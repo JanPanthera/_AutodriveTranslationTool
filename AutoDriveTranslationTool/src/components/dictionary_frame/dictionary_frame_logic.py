@@ -1,5 +1,7 @@
 # AutoDriveTranslationTool/src/components/dictionary_frame/dictionary_frame_logic.py
 
+from src.core.loc_keys import LocKeys
+
 from GuiFramework.widgets import CustomPopupMessageBox
 
 from GuiFramework.utilities import FileOps, CtkHelper
@@ -9,18 +11,15 @@ from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 from AutoDriveTranslationTool.src.functions import DictionaryCreator
 from AutoDriveTranslationTool.src.functions.exceptions import InvalidFileNameError
 
+PopupBtns = LocKeys.Generic.Widgets.Popup.Buttons
+DfPopups = LocKeys.DictionariesFrame.Widgets.Popups
 
 class DictionaryFrameLogic:
     """Initialize the dictionary frame logic components."""
 
-    def __init__(self, app_instance, gui_instance) -> None:
+    def __init__(self, gui_instance) -> None:
         """Initialize the dictionary frame logic components."""
-        self.app_instance = app_instance
         self.gui_instance = gui_instance
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
-        self.loc_param = self.localization_manager.localize_with_params
 
     def _on_save_to_dic_file(self):
         def save_to_dic_file_callback_handler(is_confirmed: bool) -> None:
@@ -41,9 +40,9 @@ class DictionaryFrameLogic:
                     except InvalidFileNameError as e:
                         CustomPopupMessageBox(
                             self.gui_instance,
-                            title=self.loc("df_cpm_invalid_filename_title"),
-                            message=self.loc_param("df_cpm_invalid_filename_msg", e.invalid_chars),
-                            buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                            title=DfPopups.InvalidFileName.TITLE.get_localized_string(),
+                            message=DfPopups.InvalidFileName.MESSAGE.get_localized_string(e.invalid_chars),
+                            buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: None}]
                         )
 
         selected_files = self.gui_instance.dictionaries_file_tree_view .get_selected_files()
@@ -52,16 +51,16 @@ class DictionaryFrameLogic:
         if selected_files:
             CustomPopupMessageBox(
                 self.gui_instance,
-                title=self.loc("df_cpm_save_to_dic_file_title"),
-                message=self.loc("df_cpm_save_to_dic_file_msg"),
-                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: save_to_dic_file_callback_handler(True)}]
+                title=DfPopups.SaveToDicFile.TITLE.get_localized_string(),
+                message=DfPopups.SaveToDicFile.MESSAGE.get_localized_string(),
+                buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: save_to_dic_file_callback_handler(True)}]
             )
         elif selected_folder:
             CustomPopupMessageBox(
                 self.gui_instance,
-                title=self.loc("df_cpm_save_as_dic_file_title"),
-                message=self.loc("df_cpm_save_as_dic_file_msg"),
-                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda entry_value: save_as_dic_file_callback_handler(True, entry_value)}],
+                title=DfPopups.SaveAsNewDicFile.TITLE.get_localized_string(),
+                message=DfPopups.SaveAsNewDicFile.MESSAGE.get_localized_string(),
+                buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda entry_value: save_as_dic_file_callback_handler(True, entry_value)}],
                 show_entry=True
             )
 
@@ -79,8 +78,8 @@ class DictionaryFrameLogic:
                 return
 
             self._show_confirmation_dialog(
-                title="df_cpm_load_from_dic_file_title",
-                message="df_cpm_load_from_dic_file_msg",
+                title=DfPopups.LoadFromDicFile.TITLE.get_localized_string(),
+                message=DfPopups.LoadFromDicFile.MESSAGE.get_localized_string(),
                 callback=callback_handler
             )
 
@@ -94,10 +93,10 @@ class DictionaryFrameLogic:
             file_path = selected_files[0][1]
             CustomPopupMessageBox(
                 self.gui_instance,
-                title=self.loc("df_cpm_delete_dic_file_title"),
-                message=self.loc_param("df_cpm_delete_dic_file_msg", selected_files[0][0]),
-                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
-                         {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}]
+                title=DfPopups.DeleteDicFile.TITLE.get_localized_string(),
+                message=DfPopups.DeleteDicFile.MESSAGE.get_localized_string(selected_files[0][0]),
+                buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: callback_handler(True)},
+                         {"text": PopupBtns.CANCEL.get_localized_string(), "callback": lambda: callback_handler(False)}]
             )
 
     def _on_load_dic_template(self):
@@ -110,8 +109,8 @@ class DictionaryFrameLogic:
             return
 
         self._show_confirmation_dialog(
-            title="df_cpm_load_dic_template_title",
-            message="df_cpm_load_dic_template_msg",
+            title=DfPopups.LoadDicTemplate.TITLE.get_localized_string(),
+            message=DfPopups.LoadDicTemplate.MESSAGE.get_localized_string(),
             callback=callback_handler
         )
 
@@ -119,8 +118,8 @@ class DictionaryFrameLogic:
         if self.gui_instance.custom_textbox.is_empty():
             return
         self._show_confirmation_dialog(
-            title="df_cpm_clear_textbox_title",
-            message="df_cpm_clear_textbox_msg",
+            title=DfPopups.ClearTextbox.TITLE.get_localized_string(),
+            message=DfPopups.ClearTextbox.MESSAGE.get_localized_string(),
             callback=lambda is_confirmed: self.gui_instance.custom_textbox.clear_text() if is_confirmed else None
         )
 
@@ -134,17 +133,17 @@ class DictionaryFrameLogic:
                 if FileOps.directory_exists(new_language_path):
                     CustomPopupMessageBox(
                         self.gui_instance,
-                        title=self.loc("df_cpm_language_exists_title"),
-                        message=self.loc_param("df_cpm_language_exists_msg", new_language),
-                        buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                        title=DfPopups.LanguageAlreadyExists.TITLE.get_localized_string(),
+                        message=DfPopups.LanguageAlreadyExists.MESSAGE.get_localized_string(new_language),
+                        buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: None}]
                     )
                 FileOps.create_directory(new_language_path)
             else:
                 CustomPopupMessageBox(
                     self.gui_instance,
-                    title=self.loc("df_cpm_invalid_language_title"),
-                    message=self.loc_param("df_cpm_invalid_language_msg", result),
-                    buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: None}]
+                    title=DfPopups.InvalidLanguageName.TITLE.get_localized_string(),
+                    message=DfPopups.InvalidLanguageName.MESSAGE.get_localized_string(result),
+                    buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: None}]
                 )
 
     def _on_remove_language(self):
@@ -157,29 +156,25 @@ class DictionaryFrameLogic:
             language_path = selected_folders[0][1]
             CustomPopupMessageBox(
                 self.gui_instance,
-                title=self.loc("df_cpm_remove_language_title"),
-                message=self.loc_param("df_cpm_remove_language_msg", selected_folders[0][0]),
-                buttons=[{"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
-                         {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}]
+                title=DfPopups.DeleteLanguage.TITLE.get_localized_string(),
+                message=DfPopups.DeleteLanguage.MESSAGE.get_localized_string(selected_folders[0][0]),
+                buttons=[{"text": PopupBtns.CONFIRM.get_localized_string(), "callback": lambda: callback_handler(True)},
+                         {"text": PopupBtns.CANCEL.get_localized_string(), "callback": lambda: callback_handler(False)}]
             )
 
-    def _show_confirmation_dialog(self, title, message, callback, confirm_btn_text="cpm_btn_confirm", cancel_btn_text="cpm_btn_cancel", show_entry=False):
+    def _show_confirmation_dialog(self, title, message, callback, confirm_btn_text=None, cancel_btn_text=None, show_entry=False):
+        default_confirm_text = confirm_btn_text or PopupBtns.CONFIRM.get_localized_string()
+        default_cancel_text = cancel_btn_text or PopupBtns.CANCEL.get_localized_string()
         CustomPopupMessageBox(
             self.gui_instance,
-            title=self.loc(title),
-            message=self.loc(message),
+            title=title,
+            message=message,
             buttons=[
-                {"text": self.loc(confirm_btn_text), "callback": lambda: callback(True)},
-                {"text": self.loc(cancel_btn_text), "callback": lambda: callback(False)}
+                {"text": default_confirm_text, "callback": lambda: callback(True)},
+                {"text": default_cancel_text, "callback": lambda: callback(False)}
             ],
             show_entry=show_entry
         )
 
     def _on_language_updated(self):
-        self.gui_instance.btn_save_dic_file.update_localization()
-        self.gui_instance.btn_load_dic_file.update_localization()
-        self.gui_instance.btn_delete_dic_file.update_localization()
-        self.gui_instance.btn_load_template.update_localization()
-        self.gui_instance.btn_clear_textbox.update_localization()
-        self.gui_instance.btn_add_language.update_localization()
-        self.gui_instance.btn_remove_language.update_localization()
+        pass
