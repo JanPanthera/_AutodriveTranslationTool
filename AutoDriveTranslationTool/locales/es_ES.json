@@ -1,0 +1,310 @@
+{
+	"AutoDriveTranslationTool": {
+		"loading_screen_message": "Cargando...",
+		"Tabs": {
+			"dictionaries": "Diccionarios",
+			"options": "Opciones",
+			"translation": "Traducción"
+		}
+	},
+	"DictionariesFrame": {
+		"Widgets": {
+			"Buttons": {
+				"add_language": {
+					"text": "Agregar Idioma",
+					"tooltip": "Agregar un nuevo idioma a la carpeta de diccionarios."
+				},
+				"clear_edit_box": {
+					"text": "Limpiar",
+					"tooltip": "Borra el contenido del cuadro de edición."
+				},
+				"delete_dic_file": {
+					"text": "Borrar archivo",
+					"tooltip": "Borra el archivo de diccionario seleccionado."
+				},
+				"delete_language": {
+					"text": "Borrar idioma",
+					"tooltip": "Borra el idioma seleccionado de la carpeta de diccionarios."
+				},
+				"load_dic_file": {
+					"text": "Cargar desde archivo",
+					"tooltip": "Carga el contenido del archivo de diccionario seleccionado en el cuadro de edición."
+				},
+				"load_template": {
+					"text": "Cargar plantilla",
+					"tooltip": "Carga la plantilla de diccionario al cuadro de edición."
+				},
+				"save_dic_file": {
+					"text": "Guardar en archivo",
+					"tooltip": "Guarda el contenido del cuadro de edición en el archivo de diccionario seleccionado."
+				}
+			},
+			"Entries": {
+				"new_language": {
+					"placeholder": "Introducir el nombre del nuevo idioma",
+					"tooltip": "Introduce el nombre del nuevo idioma para añadirlo a la carpeta de diccionarios."
+				}
+			},
+			"Popups": {
+				"ClearTextbox": {
+					"message": "¿Estás seguro de que quieres limpiar el contenido del cuadro de edición? Esto no puede ser deshecho.",
+					"title": "Limpiar cuadro de edición"
+				},
+				"DeleteDicFile": {
+					"message": "¿Estás seguro de que quieres borrar el archivo de diccionario seleccionado?\n{0}",
+					"title": "Borrar archivo de diccionario"
+				},
+				"DeleteLanguage": {
+					"message": "¿Estás seguro de que quieres borrar el idioma seleccionado de la carpeta de diccionarios?\n{0}",
+					"title": "Borrar idioma"
+				},
+				"InvalidFileName": {
+					"message": "El nombre del archivo contiene algunos caracteres que no son permitidos.\n\nCaracteres inválidos:\n{0}\n\nPor favor, utiliza solo letras, números, guiones y guiones bajos.",
+					"title": "Nombre de archivo inválido"
+				},
+				"InvalidLanguageName": {
+					"message": "El nombre del idioma contiene algunos caracteres que no son permitidos.\n\nCaracteres inválidos:\n{0}\n\nPor favor, utiliza solo letras, números, guiones y guiones bajos.",
+					"title": "Nombre de idioma inválido"
+				},
+				"LanguageAlreadyExists": {
+					"message": "El idioma '{0}' ya existe en la carpeta de diccionarios.",
+					"title": "Idioma ya existe"
+				},
+				"LoadDicTemplate": {
+					"message": "¿Estás seguro de que quieres cargar la plantilla de diccionario al cuadro de edición? Esto sobrescribirá el contenido actual.",
+					"title": "Cargar plantilla de diccionario"
+				},
+				"SaveAsNewDicFile": {
+					"message": "Introduce el nombre del nuevo archivo de diccionario para guardar el contenido del cuadro de edición.",
+					"title": "Guardar como nuevo archivo de diccionario"
+				},
+				"SaveToDicFile": {
+					"message": "¿Estás seguro de que quieres guardar el contenido del cuadro de edición en el archivo de diccionario seleccionado?",
+					"title": "Guardar en archivo de diccionario"
+				}
+			}
+		}
+	},
+	"Generic": {
+		"Languages": {
+			"english": "Inglés",
+			"french": "Francés",
+			"german": "Alemán",
+			"italian": "Italiano",
+			"russian": "Ruso",
+			"spanish": "Español"
+		},
+		"UI": {
+			"ColorThemes": {
+				"ad-green": "Ad-Verde",
+				"blue": "Azul",
+				"dark-blue": "Azul-Oscuro",
+				"green": "Verde"
+			},
+			"Themes": {
+				"dark": "Oscuro",
+				"light": "Claro",
+				"system": "Sistema"
+			}
+		},
+		"Widgets": {
+			"Popup": {
+				"Buttons": {
+					"abort": "Abortar",
+					"accept": "Aceptar",
+					"back": "Atrás",
+					"cancel": "Cancelar",
+					"close": "Cerrar",
+					"confirm": "Confirmar",
+					"delete": "Eliminar",
+					"edit": "Editar",
+					"finish": "Terminar",
+					"ignore": "Ignorar",
+					"next": "Siguiente",
+					"no": "No",
+					"ok": "Ok",
+					"retry": "Reintentar",
+					"save": "Guardar",
+					"submit": "Enviar",
+					"yes": "Sí"
+				}
+			},
+			"TreeView": {
+				"Buttons": {
+					"collapse_all": {
+						"icon": "▶",
+						"text": "Colapsar todo",
+						"tooltip": "Contraer todas las carpetas"
+					},
+					"deselect_all": {
+						"icon": "☐",
+						"text": "Deseleccionar todo",
+						"tooltip": "Deseleccionar todos los nodos"
+					},
+					"expand_all": {
+						"icon": "▼",
+						"text": "Ampliar todo",
+						"tooltip": "Desplegar todas las carpetas"
+					},
+					"open_explorer": {
+						"icon": "📂",
+						"text": "Abrir en el Explorador",
+						"tooltip": "Abra el en el Explorador de archivos"
+					},
+					"refresh": {
+						"icon": "↻",
+						"text": "Actualizar",
+						"tooltip": "Actualizar la vista de árbol"
+					},
+					"select_all": {
+						"icon": "☑",
+						"text": "Seleccione todo...",
+						"tooltip": "Seleccionar todos los nodos"
+					}
+				}
+			}
+		}
+	},
+	"OptionsFrame": {
+		"Widgets": {
+			"Buttons": {
+				"reset_everything": {
+					"text": "Restablecer todo",
+					"tooltip": "Restablecer todas las configuraciones a sus valores predeterminados."
+				},
+				"reset_ui_appearance_settings": {
+					"text": "Restablecer la configuración de apariencia de la interfaz de usuario",
+					"tooltip": "Restablecer la apariencia de la interfaz de usuario a sus valores predeterminados."
+				},
+				"reset_window_position": {
+					"text": "Restablecer posición de la ventana",
+					"tooltip": "Restablecer la posición de la ventana a su valor predeterminado."
+				},
+				"reset_window_settings": {
+					"text": "Restablecer la configuración de la ventana",
+					"tooltip": "Restablecer la configuración de la ventana a sus valores predeterminados."
+				},
+				"reset_window_size": {
+					"text": "Restablecer tamaño de ventana",
+					"tooltip": "Restablecer el tamaño de la ventana a su valor predeterminado."
+				}
+			},
+			"Checkboxes": {
+				"center_window_on_startup": {
+					"text": "Ventana central",
+					"tooltip": "Centrar la ventana en la pantalla al iniciar la aplicación."
+				},
+				"save_window_position": {
+					"text": "Guardar posición de la ventana",
+					"tooltip": "Guardar la posición de la ventana al salir de la aplicación para restaurarla en el próximo inicio."
+				},
+				"save_window_size": {
+					"text": "Guardar tamaño de ventana",
+					"tooltip": "Guardar el tamaño de la ventana al salir de la aplicación para restaurarlo en el próximo inicio."
+				},
+				"use_high_dpi_scaling": {
+					"text": "Usar escalado de alta DPI",
+					"tooltip": "Usar escalado de alta DPI para una mejor apariencia en pantallas de alta resolución."
+				},
+				"whole_word_replacement": {
+					"text": "Reemplazo de palabras completas",
+					"tooltip": "Reemplazar palabras completas solo, no subcadenas."
+				}
+			},
+			"Labels": {
+				"translation_settings": "Configuración de Traducción",
+				"ui_appearance_settings": "Configuración de Apariencia",
+				"ui_color_theme": "Tema de Color de la Interfaz:",
+				"ui_language": "Idioma de la Interfaz:",
+				"ui_theme": "Tema de la Interfaz:",
+				"window_settings": "Configuración de Ventana"
+			},
+			"OptionMenus": {
+				"ui_color_theme": {
+					"placeholder": "Seleccionar un Tema de Color de la Interfaz",
+					"tooltip": "Seleccionar un Tema de Color de la Interfaz para la aplicación."
+				},
+				"ui_language": {
+					"placeholder": "Seleccionar un Idioma de la Interfaz",
+					"tooltip": "Seleccionar un Idioma de la Interfaz para la aplicación."
+				},
+				"ui_theme": {
+					"placeholder": "Seleccionar un Tema de la Interfaz",
+					"tooltip": "Seleccionar un Tema de la Interfaz para la aplicación."
+				}
+			}
+		}
+	},
+	"TranslationFrame": {
+		"Widgets": {
+			"Buttons": {
+				"clear_console": {
+					"icon": "🗑",
+					"text": "Limpiar consola",
+					"tooltip": "Limpiar la consola"
+				},
+				"open_output_dir": {
+					"icon": "📂",
+					"text": "Abrir directorio de salida",
+					"tooltip": "Abrir el directorio de salida en el Explorador"
+				},
+				"translate": {
+					"text": "Traducir",
+					"tooltip": "Traducir el texto seleccionado"
+				}
+			},
+			"Popups": {
+				"StartTranslation": {
+					"message": "¿Está seguro de que desea iniciar el proceso de traducción? Puede tardar un poco, dependiendo del número de archivos y del tamaño de los diccionarios.",
+					"title": "Iniciar traducción"
+				}
+			},
+			"TreeView": {
+				"dictionaries": {
+					"Buttons": {
+						"deselect_all": {
+							"tooltip": "Desmarcar todos los archivos de diccionario"
+						},
+						"open_explorer": {
+							"tooltip": "Abrir el directorio de diccionarios en el Explorador"
+						},
+						"select_all": {
+							"tooltip": "Seleccionar todos los archivos de diccionario"
+						}
+					}
+				},
+				"input": {
+					"Buttons": {
+						"deselect_all": {
+							"tooltip": "Desmarcar todos los archivos de entrada"
+						},
+						"open_explorer": {
+							"tooltip": "Abrir el directorio de entrada en el Explorador"
+						},
+						"select_all": {
+							"tooltip": "Seleccionar todos los archivos de entrada"
+						}
+					}
+				}
+			}
+		}
+	},
+	"TranslationScript": {
+		"avg_translations_per_file": "- Promedio de traducciones por archivo: {0:.2f}",
+		"error_invalid_dictionary": "El diccionario '{0}' no es un archivo .dic.",
+		"error_invalid_input_file": "El archivo de entrada '{0}' no es un archivo XML.",
+		"error_parsing_xml_file": "Error al analizar el archivo XML '{0}': {1}.",
+		"file_based_statistics": "\nEstadísticas basadas en archivos:",
+		"file_language_translations": "- {0} traducciones en {1}",
+		"file_translations": "{0}:",
+		"language_based_statistics": "\nEstadísticas basadas en el idioma:",
+		"language_translation_count": "- {0}: {1} traducciones",
+		"total_files_translated": "- Total de archivos traducidos: {0}",
+		"total_time_taken": "- Tiempo total transcurrido: {0}",
+		"total_translations_made": "- Total de traducciones realizadas: {0}",
+		"translation_based_statistics": "\nEstadísticas basadas en traducción (Top 5):",
+		"translation_summary": "Resumen de la traducción:",
+		"unique_words_translated": "- Palabras únicas traducidas: {0}",
+		"word_translation_count": "- {0}: {1} veces"
+	}
+}

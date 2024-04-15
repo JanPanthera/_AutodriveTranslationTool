@@ -1,0 +1,310 @@
+{
+	"AutoDriveTranslationTool": {
+		"loading_screen_message": "Caricamento...",
+		"Tabs": {
+			"dictionaries": "Dizionari",
+			"options": "Opzioni",
+			"translation": "Traduzione"
+		}
+	},
+	"DictionariesFrame": {
+		"Widgets": {
+			"Buttons": {
+				"add_language": {
+					"text": "Aggiungi lingua",
+					"tooltip": "Aggiungi una nuova lingua alla cartella dei dizionari."
+				},
+				"clear_edit_box": {
+					"text": "Cancella",
+					"tooltip": "Cancella il contenuto della casella di modifica."
+				},
+				"delete_dic_file": {
+					"text": "Cancellare il file",
+					"tooltip": "Elimina il file di dizionario selezionato."
+				},
+				"delete_language": {
+					"text": "Elimina Lingua",
+					"tooltip": "Elimina la lingua selezionata dalla cartella dei dizionari."
+				},
+				"load_dic_file": {
+					"text": "Carica da File",
+					"tooltip": "Carica il contenuto del file di dizionario selezionato nella casella di modifica."
+				},
+				"load_template": {
+					"text": "Carica Modello",
+					"tooltip": "Carica il modello di dizionario nella casella di modifica."
+				},
+				"save_dic_file": {
+					"text": "Salva su File",
+					"tooltip": "Salva il contenuto della casella di modifica nel file di dizionario selezionato."
+				}
+			},
+			"Entries": {
+				"new_language": {
+					"placeholder": "Inserisci il nome della nuova lingua",
+					"tooltip": "Inserisci il nome della nuova lingua da aggiungere alla cartella dei dizionari."
+				}
+			},
+			"Popups": {
+				"ClearTextbox": {
+					"message": "Sei sicuro di voler cancellare il contenuto della casella di modifica? Questa azione non può essere annullata.",
+					"title": "Cancella Casella di Modifica"
+				},
+				"DeleteDicFile": {
+					"message": "Sei sicuro di voler eliminare il file di dizionario selezionato?\n{0}",
+					"title": "Elimina File di Dizionario"
+				},
+				"DeleteLanguage": {
+					"message": "Sei sicuro di voler eliminare la lingua selezionata dalla cartella dei dizionari?\n{0}",
+					"title": "Elimina Lingua"
+				},
+				"InvalidFileName": {
+					"message": "Il nome del file contiene alcuni caratteri non consentiti.\n\nCaratteri non validi:\n{0}\n\nSi prega di utilizzare solo lettere, numeri, trattini e trattini bassi.",
+					"title": "Nome File Non Valido"
+				},
+				"InvalidLanguageName": {
+					"message": "Il nome della lingua contiene alcuni caratteri non consentiti.\n\nCaratteri non validi:\n{0}\n\nSi prega di utilizzare solo lettere, numeri, trattini e trattini bassi.",
+					"title": "Nome Lingua Non Valido"
+				},
+				"LanguageAlreadyExists": {
+					"message": "La lingua '{0}' esiste già nella cartella dei dizionari.",
+					"title": "Lingua Già Esistente"
+				},
+				"LoadDicTemplate": {
+					"message": "Sei sicuro di voler caricare il modello di dizionario nella casella di modifica? Questo sovrascriverà il contenuto attuale.",
+					"title": "Carica Modello di Dizionario"
+				},
+				"SaveAsNewDicFile": {
+					"message": "Inserisci il nome del nuovo file di dizionario per salvare il contenuto della casella di modifica.",
+					"title": "Salva come Nuovo File di Dizionario"
+				},
+				"SaveToDicFile": {
+					"message": "Sei sicuro di voler salvare il contenuto della casella di modifica nel file di dizionario selezionato?",
+					"title": "Salva su File di Dizionario"
+				}
+			}
+		}
+	},
+	"Generic": {
+		"Languages": {
+			"english": "Inglese",
+			"french": "Francese",
+			"german": "Tedesco",
+			"italian": "Italiano",
+			"russian": "Russo",
+			"spanish": "Spagnolo"
+		},
+		"UI": {
+			"ColorThemes": {
+				"ad-green": "Ad-Verde",
+				"blue": "Blu",
+				"dark-blue": "Blu-Scuro",
+				"green": "Verde"
+			},
+			"Themes": {
+				"dark": "Scuro",
+				"light": "Chiaro",
+				"system": "Sistema"
+			}
+		},
+		"Widgets": {
+			"Popup": {
+				"Buttons": {
+					"abort": "Annulla",
+					"accept": "Accetta",
+					"back": "Indietro",
+					"cancel": "Annulla",
+					"close": "Chiudi",
+					"confirm": "Conferma",
+					"delete": "Elimina",
+					"edit": "Modifica",
+					"finish": "Finisci",
+					"ignore": "Ignora",
+					"next": "Successivo",
+					"no": "No",
+					"ok": "Ok",
+					"retry": "Riprova",
+					"save": "Salva",
+					"submit": "Invia",
+					"yes": "Sì"
+				}
+			},
+			"TreeView": {
+				"Buttons": {
+					"collapse_all": {
+						"icon": "▶",
+						"text": "Chiudi tutto",
+						"tooltip": "Chiudi tutte le cartelle"
+					},
+					"deselect_all": {
+						"icon": "☐",
+						"text": "Deseleziona tutti",
+						"tooltip": "Deseleziona tutti i nodi"
+					},
+					"expand_all": {
+						"icon": "▼",
+						"text": "Espandi tutto",
+						"tooltip": "Espandi tutte le cartelle"
+					},
+					"open_explorer": {
+						"icon": "📂",
+						"text": "Apri in Esplora",
+						"tooltip": "Apri il file in Esplora file"
+					},
+					"refresh": {
+						"icon": "↻",
+						"text": "Aggiorna",
+						"tooltip": "Aggiorna la vista ad albero"
+					},
+					"select_all": {
+						"icon": "☑",
+						"text": "Seleziona tutti",
+						"tooltip": "Seleziona tutti i nodi"
+					}
+				}
+			}
+		}
+	},
+	"OptionsFrame": {
+		"Widgets": {
+			"Buttons": {
+				"reset_everything": {
+					"text": "Ripristina tutto",
+					"tooltip": "Ripristina tutte le impostazioni ai valori predefiniti."
+				},
+				"reset_ui_appearance_settings": {
+					"text": "Ripristina impostazioni aspetto UI",
+					"tooltip": "Ripristina le impostazioni dell'aspetto dell'interfaccia utente ai valori predefiniti."
+				},
+				"reset_window_position": {
+					"text": "Ripristina Posizione Finestra",
+					"tooltip": "Reimposta la posizione della finestra al valore predefinito."
+				},
+				"reset_window_settings": {
+					"text": "Ripristina Impostazioni Finestra",
+					"tooltip": "Ripristina le impostazioni della finestra ai valori predefiniti."
+				},
+				"reset_window_size": {
+					"text": "Ripristina Dimensioni Finestra",
+					"tooltip": "Ripristina le dimensioni della finestra alle sue dimensioni predefinite."
+				}
+			},
+			"Checkboxes": {
+				"center_window_on_startup": {
+					"text": "Centra Finestra all'Avvio",
+					"tooltip": "Centra la finestra al centro dello schermo all'avvio dell'applicazione."
+				},
+				"save_window_position": {
+					"text": "Salva Posizione Finestra",
+					"tooltip": "Salva la posizione della finestra all'uscita dell'applicazione per ripristinarla al prossimo avvio."
+				},
+				"save_window_size": {
+					"text": "Salva Dimensioni Finestra",
+					"tooltip": "Salva le dimensioni della finestra all'uscita dell'applicazione per ripristinarle al prossimo avvio."
+				},
+				"use_high_dpi_scaling": {
+					"text": "Usa Scalatura DPI Alta",
+					"tooltip": "Usa la scalatura DPI alta per una migliore apparenza su display ad alta risoluzione."
+				},
+				"whole_word_replacement": {
+					"text": "Sostituzione Parola Intera",
+					"tooltip": "Sostituisci solo parole intere, non sottostringhe."
+				}
+			},
+			"Labels": {
+				"translation_settings": "Impostazioni Traduzione",
+				"ui_appearance_settings": "Impostazioni Aspetto UI",
+				"ui_color_theme": "Tema Colore UI:",
+				"ui_language": "Lingua UI:",
+				"ui_theme": "Tema UI:",
+				"window_settings": "Impostazioni Finestra"
+			},
+			"OptionMenus": {
+				"ui_color_theme": {
+					"placeholder": "Seleziona un Tema Colore UI",
+					"tooltip": "Seleziona un Tema Colore UI per l'applicazione."
+				},
+				"ui_language": {
+					"placeholder": "Seleziona una Lingua UI",
+					"tooltip": "Seleziona una Lingua UI per l'applicazione."
+				},
+				"ui_theme": {
+					"placeholder": "Seleziona un Tema UI",
+					"tooltip": "Seleziona un Tema UI per l'applicazione."
+				}
+			}
+		}
+	},
+	"TranslationFrame": {
+		"Widgets": {
+			"Buttons": {
+				"clear_console": {
+					"icon": "🗑",
+					"text": "Pulisci Console",
+					"tooltip": "Pulisci la console"
+				},
+				"open_output_dir": {
+					"icon": "📂",
+					"text": "Apri Cartella Output",
+					"tooltip": "Apri la cartella di output in Esplora risorse"
+				},
+				"translate": {
+					"text": "Traduci",
+					"tooltip": "Traduci il testo selezionato"
+				}
+			},
+			"Popups": {
+				"StartTranslation": {
+					"message": "Sei sicuro di voler avviare il processo di traduzione? Potrebbe richiedere del tempo, a seconda del numero di file e delle dimensioni dei dizionari.",
+					"title": "Avvio della Traduzione"
+				}
+			},
+			"TreeView": {
+				"dictionaries": {
+					"Buttons": {
+						"deselect_all": {
+							"tooltip": "Deseleziona tutti i file di dizionario"
+						},
+						"open_explorer": {
+							"tooltip": "Apri la cartella dei dizionari in Esplora risorse"
+						},
+						"select_all": {
+							"tooltip": "Seleziona tutti i file di dizionario"
+						}
+					}
+				},
+				"input": {
+					"Buttons": {
+						"deselect_all": {
+							"tooltip": "Deseleziona tutti i file di input"
+						},
+						"open_explorer": {
+							"tooltip": "Apri la cartella di input in Esplora risorse"
+						},
+						"select_all": {
+							"tooltip": "Seleziona tutti i file di input"
+						}
+					}
+				}
+			}
+		}
+	},
+	"TranslationScript": {
+		"avg_translations_per_file": "- Media delle traduzioni per file: {0:.2f}",
+		"error_invalid_dictionary": "Il dizionario '{0}' non è un file .dic.",
+		"error_invalid_input_file": "Il file di input '{0}' non è un file XML.",
+		"error_parsing_xml_file": "Errore durante l'analisi del file XML '{0}': {1}.",
+		"file_based_statistics": "\nStatistiche basate su file:",
+		"file_language_translations": "- {0} traduzioni in {1}",
+		"file_translations": "{0}:",
+		"language_based_statistics": "\nStatistiche basate sul linguaggio:",
+		"language_translation_count": "- {0}: {1} traduzioni",
+		"total_files_translated": "- File totali tradotti: {0}",
+		"total_time_taken": "- Tempo totale impiegato: {0}",
+		"total_translations_made": "- Numero totale di traduzioni effettuate: {0}",
+		"translation_based_statistics": "\nStatistiche basate sulla traduzione (Top 5):",
+		"translation_summary": "Sommario della traduzione:",
+		"unique_words_translated": "- Parole uniche tradotte: {0}",
+		"word_translation_count": "- {0}: {1} volte"
+	}
+}
