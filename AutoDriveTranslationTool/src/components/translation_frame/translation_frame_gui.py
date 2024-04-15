@@ -4,8 +4,11 @@ import customtkinter as ctk
 
 from typing import Optional
 
-from GuiFramework.widgets import CustomCTKButton, FileTreeView, CustomConsoleTextbox
+from src.core.loc_keys import LocKeys
+from src.components.tree_view_controls import TreeViewControls
 
+from GuiFramework.widgets import CustomCTKButton, FileTreeView, CustomConsoleTextbox
+from GuiFramework.utilities.localization import Localizer
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -29,14 +32,9 @@ from AutoDriveTranslationTool.src.core.constants import FONT_BIG, FONT_ICON_BIG
 class TranslationFrameGui(ctk.CTkFrame):
     """Initialize the translation frame GUI components."""
 
-    def __init__(self, app_instance, tab_view) -> None:
+    def __init__(self, tab_view) -> None:
         """Initialize the translation frame GUI components."""
         super().__init__(tab_view)
-        self.app_instance = app_instance
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
-
         self._create_gui()
 
     def _create_gui(self) -> None:
@@ -59,7 +57,20 @@ class TranslationFrameGui(ctk.CTkFrame):
     def _create_input_files_frame(self) -> None:
         """Create the frame and buttons for input files."""
         self._configure_grid(self.input_files_frame, [(0, 0), (1, 1)], [(0, 1)])
-        self.input_files_tree_view_controls = self._create_tree_view_controls(self.input_files_frame)
+
+        TreeBtnsLoc = LocKeys.Generic.Widgets.TreeView.Buttons
+        InputTreeBtnsLoc = LocKeys.TranslationFrame.Widgets.TreeView.input.Buttons
+        self.input_files_tree_view_controls = TreeViewControls(
+            parent_frame=self.input_files_frame,
+            button_configurations={
+                "btn_collapse_all": {"text": TreeBtnsLoc.collapse_all.ICON, "tooltip": TreeBtnsLoc.collapse_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_expand_all": {"text": TreeBtnsLoc.expand_all.ICON, "tooltip": TreeBtnsLoc.expand_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_select_all": {"text": TreeBtnsLoc.select_all.ICON, "tooltip": InputTreeBtnsLoc.select_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_deselect_all": {"text": TreeBtnsLoc.deselect_all.ICON, "tooltip": InputTreeBtnsLoc.deselect_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_refresh": {"text": TreeBtnsLoc.refresh.ICON, "tooltip": TreeBtnsLoc.refresh.TOOLTIP, "pack_properties": {"side": "right"}},
+                "btn_open_explorer": {"text": TreeBtnsLoc.open_explorer.ICON, "tooltip": InputTreeBtnsLoc.open_explorer.TOOLTIP, "pack_properties": {"side": "right"}}
+            }
+        )
 
         self.input_files_tree_view = FileTreeView(parent_container=self.input_files_frame, root_path=CH.get_variable_value(CKL.INPUT_PATH), single_selection=False, expand_root_node=True, folder_selectable=False)
         self.input_files_tree_view.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(0, 10), sticky="nsew")
@@ -67,7 +78,20 @@ class TranslationFrameGui(ctk.CTkFrame):
     def _create_dictionaries_frame(self) -> None:
         """Create the frame and buttons for dictionaries."""
         self._configure_grid(self.dictionaries_frame, [(0, 0), (1, 1)], [(0, 1)])
-        self.dictionaries_tree_view_controls = self._create_tree_view_controls(self.dictionaries_frame)
+
+        TreeBtnsLoc = LocKeys.Generic.Widgets.TreeView.Buttons
+        DictTreeBtnsLoc = LocKeys.TranslationFrame.Widgets.TreeView.dictionaries.Buttons
+        self.dictionaries_tree_view_controls = TreeViewControls(
+            parent_frame=self.dictionaries_frame,
+            button_configurations={
+                "btn_collapse_all": {"text": TreeBtnsLoc.collapse_all.ICON, "tooltip": TreeBtnsLoc.collapse_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_expand_all": {"text": TreeBtnsLoc.expand_all.ICON, "tooltip": TreeBtnsLoc.expand_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_select_all": {"text": TreeBtnsLoc.select_all.ICON, "tooltip": DictTreeBtnsLoc.select_all.TOOLTIP, "pack_properties": {"side": "left"}},
+                "btn_deselect_all": {"text": TreeBtnsLoc.deselect_all.ICON.key, "tooltip": DictTreeBtnsLoc.deselect_all.TOOLTIP.key, "pack_properties": {"side": "left"}},
+                "btn_refresh": {"text": TreeBtnsLoc.refresh.ICON, "tooltip": TreeBtnsLoc.refresh.TOOLTIP, "pack_properties": {"side": "right"}},
+                "btn_open_explorer": {"text": TreeBtnsLoc.open_explorer.ICON, "tooltip": DictTreeBtnsLoc.open_explorer.TOOLTIP, "pack_properties": {"side": "right"}}
+            }
+        )
 
         self.dictionaries_tree_view = FileTreeView(parent_container=self.dictionaries_frame, root_path=CH.get_variable_value(CKL.DICTIONARIES_PATH), single_selection=False, expand_root_node=True, folder_selectable=False)
         self.dictionaries_tree_view.grid(row=1, column=0, columnspan=2, padx=(10, 10), pady=(0, 10), sticky="nsew")
@@ -78,25 +102,27 @@ class TranslationFrameGui(ctk.CTkFrame):
 
         btn_frame = self._construct_frame(self.console_output_frame, row=0, column=0, padx=(10, 10), pady=(10, 0), sticky="nsew")
 
+        TfBtnsLoc = LocKeys.TranslationFrame.Widgets.Buttons
+
         self.btn_translate = CustomCTKButton(
-            btn_text="tf_btn_translate", btn_properties={"master": btn_frame, "font": FONT_BIG, "height": 20, "corner_radius": 0},
+            btn_text=TfBtnsLoc.translate.TEXT,
+            btn_properties={"master": btn_frame, "font": FONT_BIG, "height": 20, "corner_radius": 0},
             pack_type="pack", pack_properties={"side": "left"},
-            tooltip_text="tf_btn_translate_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=TfBtnsLoc.translate.TOOLTIP
         )
 
         self.btn_open_output_dir = CustomCTKButton(
-            btn_text="📁", btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
+            btn_text=TfBtnsLoc.open_output_dir.ICON,
+            btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
             pack_type="pack", pack_properties={"side": "left"},
-            tooltip_text="tf_btn_open_output_dir_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=TfBtnsLoc.open_output_dir.TOOLTIP
         )
 
         self.btn_clear_console = CustomCTKButton(
-            btn_text="↻", btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
+            btn_text=TfBtnsLoc.clear_console.ICON,
+            btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
             pack_type="pack", pack_properties={"side": "right"},
-            tooltip_text="tf_btn_clear_console_tt",
-            loc_func=self.localization_manager.localize
+            tooltip_text=TfBtnsLoc.clear_console.TOOLTIP
         )
 
         self.textbox_output_console = CustomConsoleTextbox(
@@ -106,30 +132,6 @@ class TranslationFrameGui(ctk.CTkFrame):
             font=FONT_ICON_BIG,
         )
         self.textbox_output_console.grid(row=1, column=0, padx=(10, 10), pady=(0, 10), sticky="nsew")
-
-    def _create_tree_view_controls(self, parent_frame: ctk.CTkFrame) -> dict:
-        """Generate and return a dictionary of tree view control buttons."""
-        btn_frame = self._construct_frame(parent_frame, row=0, column=0, padx=(10, 10), pady=(10, 0), sticky="nsew")
-        self._configure_grid(btn_frame, column_weights=[(0, 1)])
-
-        button_configurations = [
-            ("btn_collapse_all", "▶", "tf_btn_collapse_all_tt", {"side": "left"}),
-            ("btn_expand_all", "▼", "tf_btn_expand_all_tt", {"side": "left"}),
-            ("btn_select_all", "☑", "tf_btn_select_all_tt", {"side": "left"}),
-            ("btn_deselect_all", "☒", "tf_btn_deselect_all_tt", {"side": "left"}),
-            ("btn_refresh", "↻", "tf_btn_refresh_tt", {"side": "right"}),
-            ("btn_open_explorer", "📁", "tf_btn_open_explorer_tt", {"side": "right"})
-        ]
-
-        return {
-            btn_name: CustomCTKButton(
-                btn_text=btn_text, btn_properties={"master": btn_frame, "font": FONT_ICON_BIG, "width": 20, "height": 20, "corner_radius": 0},
-                tooltip_text=btn_tooltip_text,
-                pack_type="pack", pack_properties=btn_pack_properties,
-                loc_func=self.localization_manager.localize
-            )
-            for btn_name, btn_text, btn_tooltip_text, btn_pack_properties in button_configurations
-        }
 
     def _construct_frame(self, parent, **grid_options):
         """Create and grid a CTkFrame within the given parent."""

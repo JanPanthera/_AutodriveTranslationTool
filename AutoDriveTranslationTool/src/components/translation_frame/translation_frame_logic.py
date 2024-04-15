@@ -1,7 +1,10 @@
 # AutoDriveTranslationTool/src/components/translation_frame/translation_frame_logic.py
 
+from src.core.loc_keys import LocKeys
+
 from GuiFramework.widgets import CustomPopupMessageBox
 
+from GuiFramework.utilities.localization import Localizer
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
 
@@ -11,13 +14,9 @@ from AutoDriveTranslationTool.src.functions import Translator
 class TranslationFrameLogic:
     """Initialize the translation frame logic components."""
 
-    def __init__(self, app_instance, gui_instance) -> None:
+    def __init__(self, gui_instance) -> None:
         """Initialize the translation frame logic components."""
-        self.app_instance = app_instance
         self.gui_instance = gui_instance
-
-        self.localization_manager = self.app_instance.localization_manager
-        self.loc = self.localization_manager.localize
 
     def _on_translate(self) -> None:
         """Start the translation process for selected languages."""
@@ -31,27 +30,23 @@ class TranslationFrameLogic:
                     output_path=CH.get_variable_value(CKL.OUTPUT_PATH),
                     output_widget=self.gui_instance.textbox_output_console,
                     progress_bar=self.gui_instance.progress_bar,
-                    whole_word=CH.get_variable_value(CKL.WHOLE_WORD_REPLACEMENT),
-                    localization_manager=self.localization_manager
+                    whole_word=CH.get_variable_value(CKL.WHOLE_WORD_REPLACEMENT)
                 )
+        PopupBtns = LocKeys.Generic.Widgets.Popup.Buttons
+        Popup = LocKeys.TranslationFrame.Widgets.Popups.StartTranslation
         CustomPopupMessageBox(
             self.gui_instance,
-            title=self.loc("tf_cpm_start_translation_title"),
-            message=self.loc("tf_cpm_start_translation_msg"),
+            title=Popup.TITLE.get_localized_string(),
+            message=Popup.MESSAGE.get_localized_string(),
             buttons=[
-                {"text": self.loc("cpm_btn_confirm"), "callback": lambda: callback_handler(True)},
-                {"text": self.loc("cpm_btn_cancel"), "callback": lambda: callback_handler(False)}
+                {"text": PopupBtns.YES.get_localized_string(), "callback": lambda: callback_handler(True)},
+                {"text": PopupBtns.CANCEL.get_localized_string(), "callback": lambda: callback_handler(False)}
             ]
         )
 
     def _on_language_updated(self) -> None:
         """Update the localization for language-related components."""
-        self.gui_instance.btn_translate.update_localization()
-        for button in self.gui_instance.input_files_tree_view_controls.values():
-            button.update_localization()
-        for button in self.gui_instance.dictionaries_tree_view_controls.values():
-            button.update_localization()
-        self.gui_instance.btn_clear_console.update_localization()
+        pass
 
     # TODO: own module or merged in to another
     # def _on_validate_output_files(self) -> None:
