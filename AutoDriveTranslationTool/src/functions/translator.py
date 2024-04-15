@@ -3,10 +3,12 @@
 import os
 import re
 import time
-from datetime import timedelta
 import xml.etree.ElementTree as ET
+from datetime import timedelta
 
 # Logger for debugging
+from src.core.loc_keys import LocKeys
+
 from AutoDriveTranslationTool.src.core.constants import LOGGER_NAME
 
 from GuiFramework.utilities.logging import Logger
@@ -32,7 +34,7 @@ class Translator:
             self.translations_per_word[source_text] = self.translations_per_word.get(source_text, 0) + 1
             self.unique_words_translated.add(source_text)
 
-    def __init__(self, input_files, dictionaries, input_path, output_path, output_widget=None, console_output=False, progress_bar=None, whole_word=False, localization_manager=None):
+    def __init__(self, input_files, dictionaries, input_path, output_path, output_widget=None, console_output=False, progress_bar=None, whole_word=False):
         """Initialize the translator and start the translation process."""
         start_time = time.time()
         self.logger = Logger.get_logger(LOGGER_NAME)
@@ -50,8 +52,6 @@ class Translator:
         if self.progress_bar:
             self.progress_bar.set(0)
         self.whole_word = whole_word
-        self.loc = localization_manager.localize
-        self.loc_param = localization_manager.localize_with_params
         self.dictionaries = self._create_merged_dictionaries()
         self.stats = self.TranslationStats()
         self._translate_files()
@@ -120,50 +120,38 @@ class Translator:
 
     def _show_stats(self):
         """Display translation statistics."""
-        # Translation key: "trn_translation_summary": "Translation Summary:"
-        self._output("trn_translation_summary")
-        # Translation key: "trn_total_files_translated": "- Total files translated: {0}"
-        self._output("trn_total_files_translated", self.stats.total_files_translated)
-        # Translation key: "trn_total_translations_made": "- Total translations made: {0}"
-        self._output("trn_total_translations_made", self.stats.total_translations_made)
-        # Translation key: "trn_avg_translations_per_file": "- Average translations per file: {0:.2f}"
-        self._output("trn_avg_translations_per_file", self.stats.avg_translations_per_file)
-        # Translation key: "trn_unique_words_translated": "- Unique words translated: {0}"
-        self._output("trn_unique_words_translated", len(self.stats.unique_words_translated))
-        # Translation key: "trn_total_time_taken": "- Total time taken: {0}"
-        self._output("trn_total_time_taken", timedelta(seconds=self.stats.total_time_taken))
+        TS_LOC = LocKeys.TranslationScript
+        self._output(TS_LOC.TRANSLATION_SUMMARY.get_localized_string())
+        self._output(TS_LOC.TOTAL_FILES_TRANSLATED.get_localized_string(self.stats.total_files_translated))
+        self._output(TS_LOC.TOTAL_TRANSLATIONS_MADE.get_localized_string(self.stats.total_translations_made))
+        self._output(TS_LOC.AVG_TRANSLATIONS_PER_FILE.get_localized_string(self.stats.avg_translations_per_file))
+        self._output(TS_LOC.UNIQUE_WORDS_TRANSLATED.get_localized_string(len(self.stats.unique_words_translated)))
+        self._output(TS_LOC.TOTAL_TIME_TAKEN.get_localized_string(timedelta(seconds=self.stats.total_time_taken)))
 
-        # Translation key: "trn_file_based_statistics": "\nFile-based Statistics:"
-        self._output("trn_file_based_statistics")
+        self._output(TS_LOC.FILE_BASED_STATISTICS.get_localized_string())
         current_file = None
         for file, translations_by_language in self.stats.translations_per_file.items():
             if file != current_file:
-                # Translation key: "trn_file_translations": "{0}:"
-                self._output("trn_file_translations", file, prefix='  -')
+                self._output(TS_LOC.FILE_TRANSLATIONS.get_localized_string(file), prefix='  -')
                 current_file = file
             for language, translations in translations_by_language.items():
-                # Translation key: "trn_file_language_translations": "- {0} translations in {1}"
-                self._output("trn_file_language_translations", translations, language, prefix='    -')
+                self._output(TS_LOC.FILE_LANGUAGE_TRANSLATIONS.get_localized_string(translations, language), prefix='    -')
 
-        # Translation key: "trn_translation_based_statistics": "\nTranslation-based Statistics (Top 5):"
-        self._output("trn_translation_based_statistics")
+        self._output(TS_LOC.TRANSLATION_BASED_STATISTICS.get_localized_string())
         sorted_translations = sorted(self.stats.translations_per_word.items(), key=lambda item: item[1], reverse=True)[:5]
         for word, count in sorted_translations:
-            # Translation key: "trn_word_translation_count": "- {0}: {1} times"
-            self._output("trn_word_translation_count", word, count)
+            self._output(TS_LOC.WORD_TRANSLATION_COUNT.get_localized_string(word, count))
 
-        # Translation key: "trn_language_based_statistics": "\nLanguage-based Statistics:"
-        self._output("trn_language_based_statistics")
+        self._output(TS_LOC.LANGUAGE_BASED_STATISTICS.get_localized_string())
         for language, count in self.stats.translations_per_language.items():
-            # Translation key: "trn_language_translation_count": "- {0}: {1} translations"
-            self._output("trn_language_translation_count", language, count)
+            self._output(TS_LOC.LANGUAGE_TRANSLATION_COUNT.get_localized_string(language, count))
 
     def _output(self, message, *args, **kwargs):
         """Output a message to the console or the output widget."""
         auto_new_line = kwargs.get('auto_new_line', True)
         prefix = kwargs.get('prefix', '')
 
-        final_message = self.loc_param(message, *args) if args and self.loc_param else self.loc(message) if self.loc else message
+        final_message = message
 
         final_message = f"{prefix} {final_message}"
         final_message += '\n' if auto_new_line else ''
@@ -176,28 +164,27 @@ class Translator:
 
     def _validate_input_files(self):
         """Validate the input files to ensure they are XML files."""
+        TF_LOC = LocKeys.TranslationFrame
         for file_name, input_file_path in self.input_files:
             if not input_file_path.endswith('.xml'):
                 self.input_files.remove((file_name, input_file_path))
                 self.logger.log_error(f"Input file '{input_file_path}' is not an XML file.", module_name='Translator')
-                # Translation key: "trn_error_invalid_input_file": "Input file '{0}' is not an XML file."
-                self._output("trn_error_invalid_input_file", input_file_path)
+                self._output(TF_LOC.ERRORS.INVALID_INPUT_FILE.get_localized_string(input_file_path))
             try:
                 ET.parse(input_file_path)
             except ET.ParseError as e:
                 self.input_files.remove((file_name, input_file_path))
                 self.logger.log_error(f"Error parsing XML file '{input_file_path}': {e}", module_name='Translator')
-                # Translation key: "trn_error_parsing_xml_file": "Error parsing XML file '{0}': {1}"
-                self._output("trn_error_parsing_xml_file", input_file_path, e)
+                self._output(TF_LOC.ERRORS.PARSING_XML_FILE.get_localized_string(input_file_path, e))
 
     def _validate_dictionaries(self):
         """Validate the dictionaries to ensure they are .dic files."""
+        TF_LOC = LocKeys.TranslationFrame
         for dictionary_name, dictionary_path in self.dictionaries_path:
             if not dictionary_path.endswith('.dic'):
                 self.dictionaries_path.remove((dictionary_name, dictionary_path))
                 self.logger.log_error(f"Dictionary '{dictionary_path}' is not a .dic file.", module_name='Translator')
-                # Translation key: "trn_error_invalid_dictionary": "Dictionary '{0}' is not a .dic file."
-                self._output("trn_error_invalid_dictionary", dictionary_path)
+                self._output(TF_LOC.ERRORS.INVALID_DICTIONARY.get_localized_string(dictionary_path))
 
     def _create_merged_dictionaries(self):
         """Merge dictionaries from provided paths into a single dictionary."""
