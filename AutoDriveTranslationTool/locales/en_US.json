@@ -1,310 +1,322 @@
 {
-	"AutoDriveTranslationTool": {
-		"loading_screen_message": "Loading...",
-		"Tabs": {
-			"dictionaries": "Dictionaries",
-			"options": "Options",
-			"translation": "Translation"
-		}
-	},
-	"DictionariesFrame": {
-		"Widgets": {
-			"Buttons": {
-				"add_language": {
-					"text": "Add Language",
-					"tooltip": "Add a new language to the dictionaries folder."
-				},
-				"clear_edit_box": {
-					"text": "Clear",
-					"tooltip": "Clear the content of the edit box."
-				},
-				"delete_dic_file": {
-					"text": "Delete File",
-					"tooltip": "Delete the selected dictionary file."
-				},
-				"delete_language": {
-					"text": "Delete Language",
-					"tooltip": "Delete the selected language from the dictionaries folder."
-				},
-				"load_dic_file": {
-					"text": "Load from File",
-					"tooltip": "Load the content of the selected dictionary file into the edit box."
-				},
-				"load_template": {
-					"text": "Load Template",
-					"tooltip": "Load the dictionary template into the edit box."
-				},
-				"save_dic_file": {
-					"text": "Save to File",
-					"tooltip": "Save the content of the edit box to the selected dictionary file."
-				}
-			},
-			"Entries": {
-				"new_language": {
-					"placeholder": "Enter the new language name",
-					"tooltip": "Enter the name of the new language to add to the dictionaries folder."
-				}
-			},
-			"Popups": {
-				"ClearTextbox": {
-					"message": "Are you sure you want to clear the content of the edit box? This cannot be undone.",
-					"title": "Clear Edit Box"
-				},
-				"DeleteDicFile": {
-					"message": "Are you sure you want to delete the selected dictionary file?\n{0}",
-					"title": "Delete Dictionary File"
-				},
-				"DeleteLanguage": {
-					"message": "Are you sure you want to delete the selected language from the dictionaries folder?\n{0}",
-					"title": "Delete Language"
-				},
-				"InvalidFileName": {
-					"message": "The filename contains some characters that aren't allowed.\n\nInvalid characters:\n{0}\n\nPlease use only letters, numbers, hyphens, and underscores.",
-					"title": "Invalid File Name"
-				},
-				"InvalidLanguageName": {
-					"message": "The language name contains some characters that aren't allowed.\n\nInvalid characters:\n{0}\n\nPlease use only letters, numbers, hyphens, and underscores.",
-					"title": "Invalid Language Name"
-				},
-				"LanguageAlreadyExists": {
-					"message": "The language '{0}' already exists in the dictionaries folder.",
-					"title": "Language Already Exists"
-				},
-				"LoadDicTemplate": {
-					"message": "Are you sure you want to load the dictionary template into the edit box? This will overwrite the current content.",
-					"title": "Load Dictionary Template"
-				},
-				"SaveAsNewDicFile": {
-					"message": "Enter the name of the new dictionary file to save the content of the edit box.",
-					"title": "Save as New Dictionary File"
-				},
-				"SaveToDicFile": {
-					"message": "Are you sure you want to save the content of the edit box to the selected dictionary file?",
-					"title": "Save to Dictionary File"
-				}
-			}
-		}
-	},
-	"Generic": {
-		"Languages": {
-			"english": "English",
-			"french": "French",
-			"german": "German",
-			"italian": "Italian",
-			"russian": "Russian",
-			"spanish": "Spanish"
-		},
-		"UI": {
-			"ColorThemes": {
-				"ad-green": "Ad-Green",
-				"blue": "Blue",
-				"dark-blue": "Dark-Blue",
-				"green": "Green"
-			},
-			"Themes": {
-				"dark": "Dark",
-				"light": "Light",
-				"system": "System"
-			}
-		},
-		"Widgets": {
-			"Popup": {
-				"Buttons": {
-					"abort": "Abort",
-					"accept": "Accept",
-					"back": "Back",
-					"cancel": "Cancel",
-					"close": "Close",
-					"confirm": "Confirm",
-					"delete": "Delete",
-					"edit": "Edit",
-					"finish": "Finish",
-					"ignore": "Ignore",
-					"next": "Next",
-					"no": "No",
-					"ok": "OK",
-					"retry": "Retry",
-					"save": "Save",
-					"submit": "Submit",
-					"yes": "Yes"
-				}
-			},
-			"TreeView": {
-				"Buttons": {
-					"collapse_all": {
-						"icon": "▶",
-						"text": "Collapse all",
-						"tooltip": "Collapse all folders"
-					},
-					"deselect_all": {
-						"icon": "☐",
-						"text": "Deselect all",
-						"tooltip": "Deselect all nodes"
-					},
-					"expand_all": {
-						"icon": "▼",
-						"text": "Expand all",
-						"tooltip": "Expand all folders"
-					},
-					"open_explorer": {
-						"icon": "📂",
-						"text": "Open in Explorer",
-						"tooltip": "Open in File Explorer"
-					},
-					"refresh": {
-						"icon": "↻",
-						"text": "Refresh",
-						"tooltip": "Refresh the tree view"
-					},
-					"select_all": {
-						"icon": "☑",
-						"text": "Select all",
-						"tooltip": "Select all nodes"
-					}
-				}
-			}
-		}
-	},
-	"OptionsFrame": {
-		"Widgets": {
-			"Buttons": {
-				"reset_everything": {
-					"text": "Reset Everything",
-					"tooltip": "Reset all settings to their default values."
-				},
-				"reset_ui_appearance_settings": {
-					"text": "Reset UI Appearance Settings",
-					"tooltip": "Reset UI appearance related settings to their default values."
-				},
-				"reset_window_position": {
-					"text": "Reset Window Position",
-					"tooltip": "Reset the window position to its default value."
-				},
-				"reset_window_settings": {
-					"text": "Reset Window Settings",
-					"tooltip": "Reset window related settings to their default values."
-				},
-				"reset_window_size": {
-					"text": "Reset Window Size",
-					"tooltip": "Reset the window size to its default value."
-				}
-			},
-			"Checkboxes": {
-				"center_window_on_startup": {
-					"text": "Center window",
-					"tooltip": "Center the window on the screen on application startup."
-				},
-				"save_window_position": {
-					"text": "Save window position",
-					"tooltip": "Save the window position on application exit to restore it on the next launch."
-				},
-				"save_window_size": {
-					"text": "Save window size",
-					"tooltip": "Save the window size on application exit to restore it on the next launch."
-				},
-				"use_high_dpi_scaling": {
-					"text": "Use high DPI scaling",
-					"tooltip": "Use high DPI scaling for better appearance on high resolution displays."
-				},
-				"whole_word_replacement": {
-					"text": "Whole word replacement",
-					"tooltip": "Replace whole words only, not substrings."
-				}
-			},
-			"Labels": {
-				"translation_settings": "Translation Settings",
-				"ui_appearance_settings": "Appearance Settings",
-				"ui_color_theme": "UI Color Theme:",
-				"ui_language": "UI Language:",
-				"ui_theme": "UI Theme:",
-				"window_settings": "Window Settings"
-			},
-			"OptionMenus": {
-				"ui_color_theme": {
-					"placeholder": "Select a UI Color Theme",
-					"tooltip": "Select a UI Color Theme for the application."
-				},
-				"ui_language": {
-					"placeholder": "Select a UI Language",
-					"tooltip": "Select a UI Language for the application."
-				},
-				"ui_theme": {
-					"placeholder": "Select a UI Theme",
-					"tooltip": "Select a UI Theme for the application."
-				}
-			}
-		}
-	},
-	"TranslationFrame": {
-		"Widgets": {
-			"Buttons": {
-				"clear_console": {
-					"icon": "🗑",
-					"text": "Clear console",
-					"tooltip": "Clear the console"
-				},
-				"open_output_dir": {
-					"icon": "📂",
-					"text": "Open output directory",
-					"tooltip": "Open the output directory in Explorer"
-				},
-				"translate": {
-					"text": "Translate",
-					"tooltip": "Translate the selected text"
-				}
-			},
-			"Popups": {
-				"StartTranslation": {
-					"message": "Are you sure you want to start the translation process? This may take a while depending on the number of files and the size of the dictionaries.",
-					"title": "Start Translation"
-				}
-			},
-			"TreeView": {
-				"dictionaries": {
-					"Buttons": {
-						"deselect_all": {
-							"tooltip": "Deselect all dictionary files"
-						},
-						"open_explorer": {
-							"tooltip": "Open the dictionaries directory in Explorer"
-						},
-						"select_all": {
-							"tooltip": "Select all dictionary files"
-						}
-					}
-				},
-				"input": {
-					"Buttons": {
-						"deselect_all": {
-							"tooltip": "Deselect all input files"
-						},
-						"open_explorer": {
-							"tooltip": "Open the input directory in Explorer"
-						},
-						"select_all": {
-							"tooltip": "Select all input files"
-						}
-					}
-				}
-			}
-		}
-	},
-	"TranslationScript": {
-		"avg_translations_per_file": "- Average translations per file: {0:.2f}",
-		"error_invalid_dictionary": "Dictionary '{0}' is not a .dic file.",
-		"error_invalid_input_file": "Input file '{0}' is not an XML file.",
-		"error_parsing_xml_file": "Error parsing XML file '{0}': {1}.",
-		"file_based_statistics": "\nFile-based Statistics:",
-		"file_language_translations": "- {0} translations in {1}",
-		"file_translations": "{0}:",
-		"language_based_statistics": "\nLanguage-based Statistics:",
-		"language_translation_count": "- {0}: {1} translations",
-		"total_files_translated": "- Total files translated: {0}",
-		"total_time_taken": "- Total time taken: {0}",
-		"total_translations_made": "- Total translations made: {0}",
-		"translation_based_statistics": "\nTranslation-based Statistics (Top 5):",
-		"translation_summary": "Translation summary:",
-		"unique_words_translated": "- Unique words translated: {0}",
-		"word_translation_count": "- {0}: {1} times"
-	}
+   "AutoDriveTranslationTool": {
+      "loading_screen_message": "Loading...",
+      "Tabs": {
+         "dictionaries": "Dictionaries",
+         "options": "Options",
+         "translation": "Translation"
+      }
+   },
+   "DictionariesFrame": {
+      "Widgets": {
+         "Buttons": {
+            "add_language": {
+               "text": "Add Language",
+               "tooltip": "Add a new language to the dictionaries folder."
+            },
+            "clear_edit_box": {
+               "text": "Clear",
+               "tooltip": "Clear the content of the edit box."
+            },
+            "delete_dic_file": {
+               "text": "Delete File",
+               "tooltip": "Delete the selected dictionary file."
+            },
+            "delete_language": {
+               "text": "Delete Language",
+               "tooltip": "Delete the selected language from the dictionaries folder."
+            },
+            "load_dic_file": {
+               "text": "Load from File",
+               "tooltip": "Load the content of the selected dictionary file into the edit box."
+            },
+            "load_template": {
+               "text": "Load Template",
+               "tooltip": "Load the dictionary template into the edit box."
+            },
+            "save_dic_file": {
+               "text": "Save to File",
+               "tooltip": "Save the content of the edit box to the selected dictionary file."
+            }
+         },
+         "Entries": {
+            "new_language": {
+               "placeholder": "Enter the new language name",
+               "tooltip": "Enter the name of the new language to add to the dictionaries folder."
+            }
+         },
+         "Popups": {
+            "ClearTextbox": {
+               "message": "Are you sure you want to clear the content of the edit box? This cannot be undone.",
+               "title": "Clear Edit Box"
+            },
+            "DeleteDicFile": {
+               "message": "Are you sure you want to delete the selected dictionary file?\n{0}",
+               "title": "Delete Dictionary File"
+            },
+            "DeleteLanguage": {
+               "message": "Are you sure you want to delete the selected language from the dictionaries folder?\n{0}",
+               "title": "Delete Language"
+            },
+            "InvalidFileName": {
+               "message": "The filename contains some characters that aren't allowed.\n\nInvalid characters:\n{0}\n\nPlease use only letters, numbers, hyphens, and underscores.",
+               "title": "Invalid File Name"
+            },
+            "InvalidLanguageName": {
+               "message": "The language name contains some characters that aren't allowed.\n\nInvalid characters:\n{0}\n\nPlease use only letters, numbers, hyphens, and underscores.",
+               "title": "Invalid Language Name"
+            },
+            "LanguageAlreadyExists": {
+               "message": "The language '{0}' already exists in the dictionaries folder.",
+               "title": "Language Already Exists"
+            },
+            "LoadDicTemplate": {
+               "message": "Are you sure you want to load the dictionary template into the edit box? This will overwrite the current content.",
+               "title": "Load Dictionary Template"
+            },
+            "SaveAsNewDicFile": {
+               "message": "Enter the name of the new dictionary file to save the content of the edit box.",
+               "title": "Save as New Dictionary File"
+            },
+            "SaveToDicFile": {
+               "message": "Are you sure you want to save the content of the edit box to the selected dictionary file?",
+               "title": "Save to Dictionary File"
+            }
+         }
+      }
+   },
+   "Generic": {
+      "Languages": {
+         "english": "English",
+         "french": "French",
+         "german": "German",
+         "italian": "Italian",
+         "russian": "Russian",
+         "spanish": "Spanish"
+      },
+      "UI": {
+         "ColorThemes": {
+            "ad-green": "Ad-Green",
+            "blue": "Blue",
+            "dark-blue": "Dark-Blue",
+            "green": "Green"
+         },
+         "Themes": {
+            "dark": "Dark",
+            "light": "Light",
+            "system": "System"
+         }
+      },
+      "Icons": {
+         "error": "❌",
+         "info": "ℹ",
+         "warning": "⚠",
+         "success": "✔",
+         "reset": "↻",
+         "refresh": "↻",
+         "reload": "↻"
+      },
+      "Widgets": {
+         "Popup": {
+            "Buttons": {
+               "abort": "Abort",
+               "accept": "Accept",
+               "back": "Back",
+               "cancel": "Cancel",
+               "close": "Close",
+               "confirm": "Confirm",
+               "delete": "Delete",
+               "edit": "Edit",
+               "finish": "Finish",
+               "ignore": "Ignore",
+               "next": "Next",
+               "no": "No",
+               "ok": "OK",
+               "retry": "Retry",
+               "save": "Save",
+               "submit": "Submit",
+               "yes": "Yes"
+            }
+         },
+         "TreeView": {
+            "Buttons": {
+               "collapse_all": {
+                  "icon": "▶",
+                  "text": "Collapse all",
+                  "tooltip": "Collapse all folders"
+               },
+               "deselect_all": {
+                  "icon": "☐",
+                  "text": "Deselect all",
+                  "tooltip": "Deselect all nodes"
+               },
+               "expand_all": {
+                  "icon": "▼",
+                  "text": "Expand all",
+                  "tooltip": "Expand all folders"
+               },
+               "open_explorer": {
+                  "icon": "📂",
+                  "text": "Open in Explorer",
+                  "tooltip": "Open in File Explorer"
+               },
+               "refresh": {
+                  "icon": "↻",
+                  "text": "Refresh",
+                  "tooltip": "Refresh the tree view"
+               },
+               "select_all": {
+                  "icon": "☑",
+                  "text": "Select all",
+                  "tooltip": "Select all nodes"
+               }
+            }
+         }
+      }
+   },
+   "OptionsFrame": {
+      "Widgets": {
+         "Buttons": {
+            "reset_save_window_size": {
+               "tooltip": "Reset the save window size to its default value."
+            },
+            "reset_everything": {
+               "text": "Reset Everything",
+               "tooltip": "Reset all settings to their default values."
+            },
+            "reset_ui_appearance_settings": {
+               "text": "Reset UI Appearance Settings",
+               "tooltip": "Reset UI appearance related settings to their default values."
+            },
+            "reset_window_position": {
+               "text": "Reset Window Position",
+               "tooltip": "Reset the window position to its default value."
+            },
+            "reset_window_settings": {
+               "text": "Reset Window Settings",
+               "tooltip": "Reset window related settings to their default values."
+            },
+            "reset_window_size": {
+               "text": "Reset Window Size",
+               "tooltip": "Reset the window size to its default value."
+            }
+         },
+         "Checkboxes": {
+            "center_window_on_startup": {
+               "text": "Center window",
+               "tooltip": "Center the window on the screen on application startup."
+            },
+            "save_window_position": {
+               "text": "Save window position",
+               "tooltip": "Save the window position on application exit to restore it on the next launch."
+            },
+            "save_window_size": {
+               "text": "Save window size",
+               "tooltip": "Save the window size on application exit to restore it on the next launch."
+            },
+            "use_high_dpi_scaling": {
+               "text": "Use high DPI scaling",
+               "tooltip": "Use high DPI scaling for better appearance on high resolution displays."
+            },
+            "whole_word_replacement": {
+               "text": "Whole word replacement",
+               "tooltip": "Replace whole words only, not substrings."
+            }
+         },
+         "Labels": {
+            "translation_settings": "Translation Settings",
+            "ui_appearance_settings": "Appearance Settings",
+            "ui_color_theme": "UI Color Theme:",
+            "ui_language": "UI Language:",
+            "ui_theme": "UI Theme:",
+            "window_settings": "Window Settings"
+         },
+         "OptionMenus": {
+            "ui_color_theme": {
+               "placeholder": "Select a UI Color Theme",
+               "tooltip": "Select a UI Color Theme for the application."
+            },
+            "ui_language": {
+               "placeholder": "Select a UI Language",
+               "tooltip": "Select a UI Language for the application."
+            },
+            "ui_theme": {
+               "placeholder": "Select a UI Theme",
+               "tooltip": "Select a UI Theme for the application."
+            }
+         }
+      }
+   },
+   "TranslationFrame": {
+      "Widgets": {
+         "Buttons": {
+            "clear_console": {
+               "icon": "🗑",
+               "text": "Clear console",
+               "tooltip": "Clear the console"
+            },
+            "open_output_dir": {
+               "icon": "📂",
+               "text": "Open output directory",
+               "tooltip": "Open the output directory in Explorer"
+            },
+            "translate": {
+               "text": "Translate",
+               "tooltip": "Translate the selected text"
+            }
+         },
+         "Popups": {
+            "StartTranslation": {
+               "message": "Are you sure you want to start the translation process? This may take a while depending on the number of files and the size of the dictionaries.",
+               "title": "Start Translation"
+            }
+         },
+         "TreeView": {
+            "dictionaries": {
+               "Buttons": {
+                  "deselect_all": {
+                     "tooltip": "Deselect all dictionary files"
+                  },
+                  "open_explorer": {
+                     "tooltip": "Open the dictionaries directory in Explorer"
+                  },
+                  "select_all": {
+                     "tooltip": "Select all dictionary files"
+                  }
+               }
+            },
+            "input": {
+               "Buttons": {
+                  "deselect_all": {
+                     "tooltip": "Deselect all input files"
+                  },
+                  "open_explorer": {
+                     "tooltip": "Open the input directory in Explorer"
+                  },
+                  "select_all": {
+                     "tooltip": "Select all input files"
+                  }
+               }
+            }
+         }
+      }
+   },
+   "TranslationScript": {
+      "avg_translations_per_file": "- Average translations per file: {0:.2f}",
+      "error_invalid_dictionary": "Dictionary '{0}' is not a .dic file.",
+      "error_invalid_input_file": "Input file '{0}' is not an XML file.",
+      "error_parsing_xml_file": "Error parsing XML file '{0}': {1}.",
+      "file_based_statistics": "\nFile-based Statistics:",
+      "file_language_translations": "- {0} translations in {1}",
+      "file_translations": "{0}:",
+      "language_based_statistics": "\nLanguage-based Statistics:",
+      "language_translation_count": "- {0}: {1} translations",
+      "total_files_translated": "- Total files translated: {0}",
+      "total_time_taken": "- Total time taken: {0}",
+      "total_translations_made": "- Total translations made: {0}",
+      "translation_based_statistics": "\nTranslation-based Statistics (Top 5):",
+      "translation_summary": "Translation summary:",
+      "unique_words_translated": "- Unique words translated: {0}",
+      "word_translation_count": "- {0}: {1} times"
+   }
 }

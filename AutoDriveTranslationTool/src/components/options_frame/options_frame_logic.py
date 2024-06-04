@@ -2,10 +2,6 @@
 
 import customtkinter as ctk
 
-from src.core.constants import (
-    ColorThemes, UI_THEMES, UI_COLOR_THEMES, UI_LANGUAGES
-)
-
 from GuiFramework.utilities import FileOps
 from GuiFramework.utilities.gui_utils import GuiUtils
 from GuiFramework.utilities.config import ConfigHandler as CH
@@ -67,14 +63,13 @@ class OptionsFrameLogic:
         theme_key = Localizer.get_localization_key_for_string(selected_theme)
         theme_to_save = Localizer.get_localized_string_for_locale(Locales.ENGLISH, theme_key)
         CH.set_variable_value(CKL.UI_THEME, ctk.StringVar(self.gui_instance, theme_to_save))
-        self.app_instance.window.set_ui_theme(theme_to_save.lower())
+        self.app_instance.window.set_ui_theme(theme_to_save)
 
     def _on_ui_color_theme_dropdown(self, selected_color_theme=None) -> None:
         """Set the UI color theme."""
         color_theme_key = Localizer.get_localization_key_for_string(selected_color_theme)
         CH.set_variable_value(CKL.UI_COLOR_THEME, ctk.StringVar(self.gui_instance, Localizer.get_localized_string_for_locale(Locales.ENGLISH, color_theme_key)))
-        color_theme = ColorThemes.get_color_theme(color_theme_key)
-        self.app_instance.window.set_ui_color_theme(color_theme)
+        self.app_instance.window.set_ui_color_theme((CH.get_variable_value(CKL.UI_COLOR_THEME)).get().lower())
 
     def _on_ui_language_dropdown(self, selected_language=None) -> None:
         """Set the UI language."""

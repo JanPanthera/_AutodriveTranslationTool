@@ -3,11 +3,11 @@
 import customtkinter as ctk
 from typing import Optional, Callable
 
-from src.core.constants import (
-    APP_ICON, LOGGER_NAME, LocKeys, ColorThemes,
+from AutoDriveTranslationTool.src.core.constants import (
+    APP_ICON, LOGGER_NAME, LocKeys, THEMES_PATH,
     TRANSLATION_FRAME_ID, DICTIONARIES_FRAME_ID, OPTIONS_FRAME_ID
 )
-from src.utilities import ConfigSetup
+from AutoDriveTranslationTool.src.utilities import ConfigSetup
 
 from GuiFramework.gui import Window
 
@@ -17,10 +17,10 @@ from GuiFramework.utilities import (
 
 from GuiFramework.widgets import TabView
 
-from src.components.translation_frame import TranslationFrame
-from src.components.languages_frame import LanguagesFrame
-from src.components.dictionary_frame import DictionaryFrame
-from src.components.options_frame import OptionsFrame
+from AutoDriveTranslationTool.src.components.translation_frame import TranslationFrame
+from AutoDriveTranslationTool.src.components.languages_frame import LanguagesFrame
+from AutoDriveTranslationTool.src.components.dictionary_frame import DictionaryFrame
+from AutoDriveTranslationTool.src.components.options_frame import OptionsFrame
 
 from GuiFramework.utilities.config import ConfigHandler as CH
 from GuiFramework.utilities.config.config_types import ConfigKeyList as CKL
@@ -122,13 +122,17 @@ class AutoDriveTranslationTool:
 
     def _initialize_window(self):
         """Configure and display the application window based on user settings."""
+        color_theme = CH.get_variable_value(CKL.UI_COLOR_THEME).get().lower()
+        if color_theme in ("ad-green"):
+            color_theme = FileOps.join_paths(THEMES_PATH, f"{color_theme}.json")
+
         window_config = {
             "window_title": "AutoDrive Translation Tool",
             "window_icon": APP_ICON,
             "window_size": tuple(map(int, CH.get_variable_value(CKL.WINDOW_SIZE).get().split('x'))),
             "window_position": tuple(map(int, CH.get_variable_value(CKL.WINDOW_POSITION).get().split('+'))),
             "ui_theme": CH.get_variable_value(CKL.UI_THEME).get(),
-            "ui_color_theme": ColorThemes.get_color_theme(Localizer.get_localization_key_for_string(CH.get_variable_value(CKL.UI_COLOR_THEME).get())),
+            "ui_color_theme": color_theme,
             "resizeable": CH.get_variable_value(CKL.RESIZEABLE).get(),
             "use_high_dpi": CH.get_variable_value(CKL.USE_HIGH_DPI_SCALING).get(),
             "centered": CH.get_variable_value(CKL.CENTER_WINDOW_ON_STARTUP).get(),

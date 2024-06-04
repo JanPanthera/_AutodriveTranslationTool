@@ -3,7 +3,7 @@
 import os
 import re
 from collections import defaultdict
-from src.utilities.func_helpers import output
+from AutoDriveTranslationTool.src.utilities.func_helpers import output
 
 
 class TranslationFinder:

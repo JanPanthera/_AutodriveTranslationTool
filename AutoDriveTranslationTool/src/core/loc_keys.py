@@ -114,6 +114,15 @@ class LocKeys:
                 LIGHT = LocalizationKey("Generic.UI.Themes.light")
                 SYSTEM = LocalizationKey("Generic.UI.Themes.system")
 
+        class Icons:
+            ERROR = LocalizationKey("Generic.Icons.error")
+            INFO = LocalizationKey("Generic.Icons.info")
+            WARNING = LocalizationKey("Generic.Icons.warning")
+            SUCCESS = LocalizationKey("Generic.Icons.success")
+            RESET = LocalizationKey("Generic.Icons.reset")
+            REFRESH = LocalizationKey("Generic.Icons.refresh")
+            RELOAD = LocalizationKey("Generic.Icons.reload")
+
         class Widgets:
 
             class Popup:
@@ -176,6 +185,9 @@ class LocKeys:
         class Widgets:
 
             class Buttons:
+
+                class reset_save_window_size:
+                    TOOLTIP = LocalizationKey("OptionsFrame.Widgets.Buttons.reset_save_window_size.tooltip")
 
                 class reset_everything:
                     TEXT = LocalizationKey("OptionsFrame.Widgets.Buttons.reset_everything.text")

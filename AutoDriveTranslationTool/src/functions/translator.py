@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from datetime import timedelta
 
 # Logger for debugging
-from src.core.loc_keys import LocKeys
+from AutoDriveTranslationTool.src.core.loc_keys import LocKeys
 
 from AutoDriveTranslationTool.src.core.constants import LOGGER_NAME
 

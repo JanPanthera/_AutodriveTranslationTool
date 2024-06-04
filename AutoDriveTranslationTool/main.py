@@ -14,7 +14,7 @@ def main() -> None:
             logger_name=LOGGER_NAME,
             log_name=LOG_NAME,
             log_directory=FileOps.resolve_development_path(__file__, "logs", "AutoDriveTranslationTool"),
-            log_level=LOG_LEVEL.DEBUG,  # TODO: Change to INFO for production
+            log_level=LOG_LEVEL.WARNING,
             module_name=APP_NAME
         ),
         rotate_on_init=True
@@ -23,6 +23,7 @@ def main() -> None:
     ADT_Tool = AutoDriveTranslationTool()
     try:
         ADT_Tool.run()
+
     except Exception as e:
         logger.log_error(f"An error occurred: {str(e)}", "main")
 

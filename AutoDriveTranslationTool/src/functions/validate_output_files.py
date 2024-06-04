@@ -2,7 +2,7 @@
 
 import os
 import re
-from src.utilities.func_helpers import output
+from AutoDriveTranslationTool.src.utilities.func_helpers import output
 
 
 class Validator:

@@ -4,8 +4,8 @@ import customtkinter as ctk
 
 from typing import Optional
 
-from src.core.loc_keys import LocKeys
-from src.components.tree_view_controls import TreeViewControls
+from AutoDriveTranslationTool.src.core.loc_keys import LocKeys
+from AutoDriveTranslationTool.src.components.tree_view_controls import TreeViewControls
 
 from GuiFramework.widgets import CustomCTKButton, FileTreeView, CustomConsoleTextbox
 from GuiFramework.utilities.localization import Localizer

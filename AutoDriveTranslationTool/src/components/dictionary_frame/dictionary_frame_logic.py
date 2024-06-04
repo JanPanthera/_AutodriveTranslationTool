@@ -1,6 +1,6 @@
 # AutoDriveTranslationTool/src/components/dictionary_frame/dictionary_frame_logic.py
 
-from src.core.loc_keys import LocKeys
+from AutoDriveTranslationTool.src.core.loc_keys import LocKeys
 
 from GuiFramework.widgets import CustomPopupMessageBox
 

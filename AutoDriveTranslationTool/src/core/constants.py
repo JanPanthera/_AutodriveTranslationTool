@@ -24,28 +24,12 @@ THEMES_PATH = FileOps.join_paths(RESOURCES_PATH, "themes")
 
 
 class ColorThemes:
-    _color_themes = {
-        UiLoc.ColorThemes.BLUE.key: "blue",
-        UiLoc.ColorThemes.DARK_BLUE.key: "dark-blue",
-        UiLoc.ColorThemes.GREEN.key: "green",
-        UiLoc.ColorThemes.AD_GREEN.key: FileOps.join_paths(THEMES_PATH, "ad-green.json")
-    }
-
     LocKeys = [
         UiLoc.ColorThemes.BLUE,
         UiLoc.ColorThemes.DARK_BLUE,
         UiLoc.ColorThemes.GREEN,
         UiLoc.ColorThemes.AD_GREEN
     ]
-
-    @classmethod
-    def get_color_theme(cls, color_theme_key: str) -> str:
-        """Get the color theme path for the given color theme key."""
-        if color_theme_key in cls._color_themes:
-            return cls._color_themes[color_theme_key]
-        else:
-            valid_keys = ', '.join(cls._color_themes.keys())
-            raise ValueError(f"Color theme '{color_theme_key}' not found. Valid keys are: {valid_keys}")
 
 
 UI_THEMES = [UiLoc.Themes.LIGHT, UiLoc.Themes.DARK, UiLoc.Themes.SYSTEM]

@@ -4,10 +4,10 @@ import customtkinter as ctk
 
 from typing import Optional
 
-from src.core.loc_keys import LocKeys
-from src.core.constants import (
-    FONT_BIG, FONT_BIG_BOLD,
-    ColorThemes, UI_THEMES, UI_LANGUAGES
+from AutoDriveTranslationTool.src.core.loc_keys import LocKeys
+from AutoDriveTranslationTool.src.core.constants import (
+    FONT_BIG, FONT_BIG_BOLD, FONT_ICON_BIG,
+    UI_THEMES, UI_LANGUAGES, ColorThemes
 )
 
 from GuiFramework.widgets import CustomCTKLabel, CustomCTKButton, CustomCTKCheckbox, CustomCTKOptionMenu
@@ -20,7 +20,24 @@ OfBtnsLoc = LocKeys.OptionsFrame.Widgets.Buttons
 OfLblsLoc = LocKeys.OptionsFrame.Widgets.Labels
 OfCheckboxesLoc = LocKeys.OptionsFrame.Widgets.Checkboxes
 OfOpMenuLoc = LocKeys.OptionsFrame.Widgets.OptionMenus
+OfGenIconsLoc = LocKeys.Generic.Icons
 
+# a class Setting, which is build from a checkbox and a button, the button is to restore the default value of the checkbox
+class Setting:
+    def __init__(self, master, checkbox_text, checkbox_value, tooltip_text):
+        self.checkbox_frame = ctk.CTkFrame(master=master, bg_color="red")
+        self.checkbox = CustomCTKCheckbox(
+            checkbox_text=checkbox_text,
+            checkbox_properties={"master": self.checkbox_frame, "variable": checkbox_value, "onvalue": True, "offvalue": False, "font": FONT_BIG},
+            pack_type="pack", pack_properties={"side": "left"},
+            tooltip_text=tooltip_text
+        )
+        self.btn_reset_checkbox = CustomCTKButton(
+            btn_text=OfGenIconsLoc.RESET.get_localized_string(),
+            btn_properties={"master": self.checkbox_frame, "font": FONT_ICON_BIG},
+            pack_type="pack", pack_properties={"side": "left"},
+            tooltip_text=OfGenIconsLoc.RESET.TOOLTIP
+        )
 
 class OptionsFrameGui(ctk.CTkFrame):
     """Initialize the options frame GUI components."""
@@ -33,7 +50,7 @@ class OptionsFrameGui(ctk.CTkFrame):
     def create_gui(self) -> None:
         """Create GUI components for options frame."""
         self.grid(row=0, column=0, sticky="nsew")
-        self._configure_grid(self, row_weights=[(0, 0), (1, 0), (2, 1), (3, 0)], column_weights=[(0, 1), (1, 1)])
+        self._configure_grid(self, row_weights=[(0, 0), (1, 0), (2, 1), (3, 0)], column_weights=[(0, 0), (1, 0)])
 
         self.window_settings_frame = self._construct_frame(self, row=0, column=0, padx=(10, 5), pady=(10, 5), sticky="nsew")
         self.ui_appearance_frame = self._construct_frame(self, row=0, column=1, padx=(5, 10), pady=(10, 5), sticky="nsew")
@@ -65,6 +82,12 @@ class OptionsFrameGui(ctk.CTkFrame):
             checkbox_properties={"master": self.window_settings_frame, "variable": CH.get_variable_value(CKL.SAVE_WINDOW_SIZE), "onvalue": True, "offvalue": False, "font": FONT_BIG},
             pack_type="grid", pack_properties={"row": 1, "column": 0, "padx": (10, 10), "pady": (5, 5), "sticky": "nsew"},
             tooltip_text=OfCheckboxesLoc.save_window_size.TOOLTIP
+        )
+        self.btn_reset_save_window_size = CustomCTKButton(
+            btn_text=OfBtnsLoc.reset_window_size.TEXT,
+            btn_properties={"master": self.window_settings_frame, "font": FONT_BIG_BOLD},
+            pack_type="grid", pack_properties={"row": 2, "column": 0, "padx": (10, 10), "pady": (5, 5), "sticky": "nsew"},
+            tooltip_text=OfBtnsLoc.reset_window_size.TOOLTIP
         )
 
         self.checkbox_save_window_pos = CustomCTKCheckbox(

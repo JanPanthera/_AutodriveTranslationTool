@@ -21,7 +21,7 @@ def create_exe():
         no_console=True
     )
 
-    hidden_imports = ["babel.numbers", "customtkinter"]
+    hidden_imports = ["GuiFramework", "babel.numbers", "customtkinter", "setuptools", "watchdog", "flake8", "black", "glfw", "PyOpenGL", "Babel"]
     for import_name in hidden_imports:
         exe_creator.add_hidden_import(import_name)
 
